@@ -95,25 +95,27 @@ model Blog {
 }
 
 model Reservasi {
-  id               String   @id @default(uuid())
-  memberId         String?
+  id               String    @id @default(uuid())
+  memberId         String
+  destinasiId      String
   namaUser         String
   nomorTelfon      String
   status           Boolean
-  tanggalReservasi DateTime @default(now())
-  member           Member?  @relation(fields: [memberId], references: [id])
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  tanggalReservasi DateTime  @default(now())
+  member           Member?   @relation(fields: [memberId], references: [id])
+  destinasi        Destinasi @relation(fields: [destinasiId], references: [id])
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model Destinasi {
   id            String  @id @default(uuid())
   ownerId       String  @unique
-  reservasiId   String  @unique
   image         String?
   namaDestinasi String
   deskripsi     String
   alamat        String
 
-  owner Owner @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  owner     Owner       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  Reservasi Reservasi[]
 }
