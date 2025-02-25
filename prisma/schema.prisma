@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -31,6 +25,8 @@ model User {
   blog          Blog[]
   member        Member?
   owner         Owner?
+  like          Like[]
+  dislike       DisLike[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -68,13 +64,13 @@ model VerificationToken {
 }
 
 model Forum {
-  id      String   @id @default(uuid())
+  id      String    @id @default(uuid())
   userId  String
   image   String?
   title   String
   content String[]
-  like    Int      @default(0)
-  dislike Int      @default(0)
+  like    Like[]
+  dislike DisLike[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -115,7 +111,28 @@ model Destinasi {
   namaDestinasi String
   deskripsi     String
   alamat        String
+  nomorOwner    String
 
   owner     Owner       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   Reservasi Reservasi[]
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  forumId   String   @unique
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  forum     Forum    @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DisLike {
+  id        String   @id @default(uuid())
+  forumId   String   @unique
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  forum     Forum    @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
