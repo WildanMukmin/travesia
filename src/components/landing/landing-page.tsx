@@ -1,6 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Button } from "../ui/button";
 
 const LandingPage = () => {
   return (
@@ -47,7 +63,7 @@ const LandingPage = () => {
 
       {/* Recent Articles Section */}
       <div className="mt-8">
-        <h2 className="text-xl font-bold border-b-2 border-blue-800 pb-2 mb-4">
+        <h2 className="text-3xl font-bold border-b-2 border-blue-800 pb-2 mb-4">
           Blog Terkini
         </h2>
 
@@ -133,6 +149,203 @@ const LandingPage = () => {
               </p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <h2 className="text-3xl font-bold border-b-2 border-blue-800 pb-2 mb-4">
+          Top Destinasi ⭐
+        </h2>
+        <div className="flex flex-col gap-3 items-center justify-center">
+          <Carousel
+            opts={{
+              align: "start",
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                <Card className="rounded-3xl w-[350px] hover:-translate-y-2 transition">
+                  <CardHeader>
+                    <Image
+                      src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                      alt="Scenic mountain road with view"
+                      width={300}
+                      height={400}
+                      className="rounded-lg"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>Wildan Mukmin</CardDescription>
+                    <CardTitle className="text-2xl text-wrap w-full max-w-full font-semibold">
+                      Scenic mountain road with view Scenic mountain road with
+                      view
+                    </CardTitle>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="#" className="text-sm text-blue-400">
+                      Lihat Destinasi
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </CarouselItem>
+              <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                <Card className="rounded-3xl w-[350px] hover:-translate-y-2 transition">
+                  <CardHeader>
+                    <Image
+                      src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                      alt="Scenic mountain road with view"
+                      width={300}
+                      height={400}
+                      className="rounded-lg"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>Wildan Mukmin</CardDescription>
+                    <CardTitle className="text-2xl text-wrap w-full max-w-full font-semibold">
+                      Scenic mountain road with view Scenic mountain road with
+                      view
+                    </CardTitle>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="#" className="text-sm text-blue-400">
+                      Lihat Destinasi
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </CarouselItem>
+              <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                <Card className="rounded-3xl w-[350px] hover:-translate-y-2 transition">
+                  <CardHeader>
+                    <Image
+                      src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                      alt="Scenic mountain road with view"
+                      width={300}
+                      height={400}
+                      className="rounded-lg"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>Wildan Mukmin</CardDescription>
+                    <CardTitle className="text-2xl text-wrap w-full max-w-full font-semibold">
+                      Scenic mountain road with view Scenic mountain road with
+                      view
+                    </CardTitle>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="#" className="text-sm text-blue-400">
+                      Lihat Destinasi
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </CarouselItem>
+              <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                <Card className="rounded-3xl w-[350px] hover:-translate-y-2 transition">
+                  <CardHeader>
+                    <Image
+                      src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                      alt="Scenic mountain road with view"
+                      width={300}
+                      height={400}
+                      className="rounded-lg"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>Wildan Mukmin</CardDescription>
+                    <CardTitle className="text-2xl text-wrap w-full max-w-full font-semibold">
+                      Scenic mountain road with view Scenic mountain road with
+                      view
+                    </CardTitle>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="#" className="text-sm text-blue-400">
+                      Lihat Destinasi
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </CarouselItem>
+              <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                <Card className="rounded-3xl w-[350px] hover:-translate-y-2 transition">
+                  <CardHeader>
+                    <Image
+                      src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                      alt="Scenic mountain road with view"
+                      width={300}
+                      height={400}
+                      className="rounded-lg"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>Wildan Mukmin</CardDescription>
+                    <CardTitle className="text-2xl text-wrap w-full max-w-full font-semibold">
+                      Scenic mountain road with view Scenic mountain road with
+                      view
+                    </CardTitle>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="#" className="text-sm text-blue-400">
+                      Lihat Destinasi
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </CarouselItem>
+              <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                <Card className="rounded-3xl w-[350px] hover:-translate-y-2 transition">
+                  <CardHeader>
+                    <Image
+                      src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                      alt="Scenic mountain road with view"
+                      width={300}
+                      height={400}
+                      className="rounded-lg"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>Wildan Mukmin</CardDescription>
+                    <CardTitle className="text-2xl text-wrap w-full max-w-full font-semibold">
+                      Scenic mountain road with view Scenic mountain road with
+                      view
+                    </CardTitle>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="#" className="text-sm text-blue-400">
+                      Lihat Destinasi
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </CarouselItem>
+              <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                <Card className="rounded-3xl w-[350px] hover:-translate-y-2 transition">
+                  <CardHeader>
+                    <Image
+                      src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                      alt="Scenic mountain road with view"
+                      width={300}
+                      height={400}
+                      className="rounded-lg"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>Wildan Mukmin</CardDescription>
+                    <CardTitle className="text-2xl text-wrap w-full max-w-full font-semibold">
+                      Scenic mountain road with view Scenic mountain road with
+                      view
+                    </CardTitle>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="#" className="text-sm text-blue-400">
+                      Lihat Destinasi
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+          <Button className="mt-5 px-8">
+            <Link href="#">Lihat Semua</Link>
+          </Button>
         </div>
       </div>
     </main>
