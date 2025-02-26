@@ -105,13 +105,14 @@ model Reservasi {
 }
 
 model Destinasi {
-  id            String  @id @default(uuid())
-  ownerId       String  @unique
-  image         String?
-  namaDestinasi String
-  deskripsi     String
-  alamat        String
-  nomorOwner    String
+  id             String  @id @default(uuid())
+  ownerId        String  @unique
+  image          String?
+  namaDestinasi  String
+  deskripsi      String
+  alamat         String
+  nomorOwner     String
+  kategoriLokasi String
 
   owner     Owner       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   Reservasi Reservasi[]
