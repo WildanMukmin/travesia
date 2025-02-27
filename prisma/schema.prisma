@@ -14,19 +14,20 @@ enum Role {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String    @unique
+  email         String       @unique
   emailVerified DateTime?
   imageProfile  String?
   password      String
-  role          Role      @default(MEMBER)
+  role          Role         @default(MEMBER)
   forum         Forum[]
   blog          Blog[]
   member        Member?
   owner         Owner?
   like          Like[]
   dislike       DisLike[]
+  notifikasi    Notifikasi[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -37,6 +38,7 @@ model User {
 model Member {
   id        String      @id @default(cuid())
   userId    String      @unique
+  gender    String
   reservasi Reservasi[]
 
   createdAt DateTime @default(now())
@@ -113,6 +115,8 @@ model Destinasi {
   alamat         String
   nomorOwner     String
   kategoriLokasi String
+  jamOprasional  String
+  buka           Boolean @default(false)
 
   owner     Owner       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   Reservasi Reservasi[]
@@ -134,6 +138,15 @@ model DisLike {
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   forum     Forum    @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notifikasi {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pesan     String   @default("Ada Pesan Baru!")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
