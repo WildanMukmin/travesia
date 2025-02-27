@@ -12,6 +12,7 @@ import Link from "next/link";
 interface DestinasiCardCarouselProps {
   src: string;
   judul: string;
+  id: string;
   deskripsi: string;
   penulis: string;
 }
@@ -19,11 +20,12 @@ interface DestinasiCardCarouselProps {
 const DestinasiCardCarousel = ({
   src = "",
   judul = "",
+  id = "",
   deskripsi = "",
   penulis = "",
 }: DestinasiCardCarouselProps) => {
   return (
-    <Card className="rounded-3xl w-[400px] hover:-translate-y-2 transition cursor-pointer">
+    <Card className="rounded-3xl w-[400px] hover:-translate-y-2 transition">
       <CardHeader>
         <Image
           src={src as string}
@@ -41,7 +43,7 @@ const DestinasiCardCarousel = ({
         <p className="text-xs font-normal text-gray-500">{deskripsi}</p>
       </CardContent>
       <CardFooter>
-        <Link href="#" className="text-sm text-blue-400">
+        <Link href={`/destinasi/${id}`} className="text-sm text-blue-400">
           Lihat Destinasi
         </Link>
       </CardFooter>

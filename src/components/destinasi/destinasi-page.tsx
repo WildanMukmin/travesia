@@ -21,56 +21,57 @@ const DestinasiPage = () => {
           <DestinasiCard
             src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
             judul="Destinasi 1"
+            id="destinasi-1"
             deskripsi="Deskripsi Singkat"
             penulis="Penulis 1"
           />
+
           <DestinasiCard
             src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
             judul="Destinasi 1"
+            id="9a8sud9qshqhwdiohh9w"
             deskripsi="Deskripsi Singkat"
             penulis="Penulis 1"
           />
+
           <DestinasiCard
             src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
             judul="Destinasi 1"
+            id="destinasi-1"
             deskripsi="Deskripsi Singkat"
             penulis="Penulis 1"
           />
+
           <DestinasiCard
             src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
             judul="Destinasi 1"
+            id="destinasi-1"
             deskripsi="Deskripsi Singkat"
             penulis="Penulis 1"
           />
+
           <DestinasiCard
             src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
             judul="Destinasi 1"
+            id="destinasi-1"
             deskripsi="Deskripsi Singkat"
             penulis="Penulis 1"
           />
+
           <DestinasiCard
             src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
             judul="Destinasi 1"
+            id="destinasi-1"
             deskripsi="Deskripsi Singkat"
             penulis="Penulis 1"
           />
+
           <DestinasiCard
             src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
             judul="Destinasi 1"
+            id="ue92qdhiasn9adhs"
             deskripsi="Deskripsi Singkat"
             penulis="Penulis 1"
-          />
-          <DestinasiCard
-            src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-            judul="Destinasi 2"
-            deskripsi="Deskripsi Singkat"
-            penulis="Penulis 2"
-          />
-          <DestinasiCard
-            src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-            judul="Destinasi 3"
-            deskripsi="Deskripsi Singkat"
-            penulis="Penulis 3"
           />
         </div>
       </div>

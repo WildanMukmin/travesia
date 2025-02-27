@@ -19,7 +19,8 @@ const BlogPage = () => {
       <div className="space-y-6">
         <CardDestinasi
           src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D"
-          judul="Judul"
+          judul="Blog 1"
+          slug="blog-1"
           deskripsi="Deskripsi Singkat Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Sunt animi cumque aut voluptatum, maiores odit nostrum neque
               fuga itaque ipsam inventore perspiciatis nobis labore expedita.
@@ -28,7 +29,8 @@ const BlogPage = () => {
         />
         <CardDestinasi
           src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D"
-          judul="Judul"
+          judul="Blog 1"
+          slug="blog-1"
           deskripsi="Deskripsi Singkat Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Sunt animi cumque aut voluptatum, maiores odit nostrum neque
               fuga itaque ipsam inventore perspiciatis nobis labore expedita.
@@ -37,7 +39,8 @@ const BlogPage = () => {
         />
         <CardDestinasi
           src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D"
-          judul="Judul"
+          judul="Blog 1"
+          slug="blog-1"
           deskripsi="Deskripsi Singkat Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Sunt animi cumque aut voluptatum, maiores odit nostrum neque
               fuga itaque ipsam inventore perspiciatis nobis labore expedita.

@@ -4,6 +4,7 @@ import Link from "next/link";
 interface CardDestinasiProps {
   src: string;
   judul: string;
+  slug: string;
   deskripsi: string;
   penulis: string;
 }
@@ -11,6 +12,7 @@ interface CardDestinasiProps {
 const CardDestinasi = ({
   src = "",
   judul = "",
+  slug = "",
   deskripsi = "",
   penulis = "",
 }: CardDestinasiProps) => {
@@ -25,11 +27,11 @@ const CardDestinasi = ({
         />
       </div>
       <div className="flex flex-col w-full h-[300px]">
-        <Link href="#">
+        <Link href={`/blog/${slug}`}>
           <h1 className="text-2xl font-bold">{judul}</h1>
         </Link>
         <h3 className="text-lg font-thin mt-1">
-          <Link href="#">{deskripsi}</Link>
+          <Link href={`/blog/${slug}`}>{deskripsi}</Link>
         </h3>
         <p className="text-sm mt-2 items-end justify-end">
           dibuat oleh : {penulis}
