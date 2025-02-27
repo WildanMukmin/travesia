@@ -28,18 +28,29 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
         Kembali ke Destinasi
       </Link>
 
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        {/* Hero Section with Image */}
-        <div className="relative w-full h-96 hover:scale-105 transition">
-          <Image
-            src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-            alt="Scenic mountain road with view"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
-          {/* <div className="absolute top-4 right-4 flex space-x-2">
+      {/* Content Section */}
+      <div className="p-8">
+        <div className="flex justify-between items-start mb-6">
+          <div className="mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 font-serif mb-2">
+              Nama Destinasi
+            </h1>
+            <span className="text-gray-600">Kategori</span>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          {/* Hero Section with Image */}
+          <div className="relative w-full h-96 hover:scale-105 transition mb-7">
+            <Image
+              src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+              alt="Scenic mountain road with view"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
+            {/* <div className="absolute top-4 right-4 flex space-x-2">
             <Button
               variant="outline"
               size="icon"
@@ -55,17 +66,6 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
               <Bookmark className="w-5 h-5" />
             </Button>
           </div> */}
-        </div>
-
-        {/* Content Section */}
-        <div className="p-8">
-          <div className="flex justify-between items-start mb-6">
-            <div className="mb-4">
-              <h1 className="text-4xl font-bold text-gray-900 font-serif mb-2">
-                Nama Destinasi
-              </h1>
-              <span className="text-gray-600">Kategori</span>
-            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -163,7 +163,7 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
                 </div>
 
                 <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                  <Link href="/reservasi">Buat Reservasi</Link>
+                  <Link href="/reservasi/buat-reservasi">Buat Reservasi</Link>
                 </Button>
               </div>
             </div>
