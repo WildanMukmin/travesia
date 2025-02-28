@@ -43,7 +43,10 @@ const DestinasiCardCarousel = ({
         <p className="text-xs font-normal text-gray-500">{deskripsi}</p>
       </CardContent>
       <CardFooter>
-        <Link href={`/destinasi/${id}`} className="text-sm text-blue-400">
+        <Link
+          href={`/destinasi/detail/${id}`}
+          className="text-sm text-blue-400"
+        >
           Lihat Destinasi
         </Link>
       </CardFooter>

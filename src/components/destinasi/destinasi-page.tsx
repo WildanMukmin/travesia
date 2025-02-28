@@ -27,6 +27,36 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 const DestinasiPage = () => {
+  const dummy = [
+    {
+      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
+      kategori: "indonesia",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
+      kategori: "indonesia",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
+      kategori: "indonesia",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
+      kategori: "indonesia",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
+      kategori: "indonesia",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
+      kategori: "indonesia",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
+      kategori: "indonesia",
+    },
+  ];
   return (
     <main className="mt-10 flex flex-col">
       <div className="flex justify-start mb-8">
@@ -59,84 +89,14 @@ const DestinasiPage = () => {
             className="w-full max-w-6xl"
           >
             <CarouselContent>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
-              <CarouselItem className="md:basis-1/2 lg:basis-40">
-                <DestinasiKategoriCard
-                  kategori={"Kategori"}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                />
-              </CarouselItem>
+              {dummy.map((data, index) => (
+                <CarouselItem className="md:basis-1/2 lg:basis-56" key={index}>
+                  <DestinasiKategoriCard
+                    kategori={data.kategori}
+                    src={data.src}
+                  />
+                </CarouselItem>
+              ))}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />

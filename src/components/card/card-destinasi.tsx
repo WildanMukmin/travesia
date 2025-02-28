@@ -49,7 +49,7 @@ const DestinasiCard = ({
         <p className="text-sm text-gray-600 mt-1">{deskripsi}</p>
       </CardContent>
       <CardFooter className="pt-0">
-        <Link href={`/destinasi/${id}`} className="text-blue-500">
+        <Link href={`/destinasi/detail/${id}`} className="text-blue-500">
           Lihat Destinasi
         </Link>
       </CardFooter>

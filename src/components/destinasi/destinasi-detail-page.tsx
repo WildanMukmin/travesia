@@ -33,7 +33,7 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
         <div className="flex justify-between items-start mb-6">
           <div className="mb-4">
             <h1 className="text-4xl font-bold text-gray-900 font-serif mb-2">
-              Nama Destinasi
+              Nama Destinasi : {id}
             </h1>
             <span className="text-gray-600">Kategori</span>
           </div>

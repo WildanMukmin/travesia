@@ -1,4 +1,4 @@
-import DestinasiDetailPage from "@/components/destinasi/destinasi-detail-page";
+import DestinasiKategoriPage from "@/components/destinasi/destinasi-kategori";
 
 interface PageProps {
   params: {
@@ -9,5 +9,5 @@ interface PageProps {
 export default async function Page({ params }: PageProps) {
   const { kategori } = params;
 
-  return <DestinasiDetailPage id={kategori} />;
+  return <DestinasiKategoriPage kategori={kategori} />;
 }

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface CardDestinasiProps {
   src: string;
@@ -33,9 +34,12 @@ const CardDestinasi = ({
         <h3 className="text-lg font-thin mt-1">
           <Link href={`/blog/${slug}`}>{deskripsi}</Link>
         </h3>
-        <p className="text-sm mt-2 items-end justify-end">
+        <p className="text-sm mt-2 items-end justify-end mb-auto">
           dibuat oleh : {penulis}
         </p>
+        <Button className="max-w-xs justify-start" variant="link">
+          <Link href={`/blog/${slug}`}>Lihat Selengkapnya</Link>
+        </Button>
       </div>
     </div>
   );

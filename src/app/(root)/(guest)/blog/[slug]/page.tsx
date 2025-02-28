@@ -1,3 +1,5 @@
+import BlogDetailPage from "@/components/blog/blog-detail-page";
+
 interface PageProps {
   params: {
     slug: string;
@@ -7,9 +9,5 @@ interface PageProps {
 export default async function Page({ params }: PageProps) {
   const { slug } = params;
 
-  return (
-    <main>
-      <h1>Blog Detail {slug}</h1>
-    </main>
-  );
+  return <BlogDetailPage slug={slug} />;
 }
