@@ -18,45 +18,13 @@ import DestinasiKategoriCard from "@/components/card/card-kategori";
 import DestinasiCard from "@/components/card/card-destinasi";
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 const DestinasiPage = () => {
-  const dummy = [
-    {
-      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
-      kategori: "indonesia",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
-      kategori: "indonesia",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
-      kategori: "indonesia",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
-      kategori: "indonesia",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
-      kategori: "indonesia",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
-      kategori: "indonesia",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D",
-      kategori: "indonesia",
-    },
-  ];
   return (
     <main className="mt-10 flex flex-col">
       <div className="flex justify-start mb-8">
@@ -89,11 +57,11 @@ const DestinasiPage = () => {
             className="w-full max-w-6xl"
           >
             <CarouselContent>
-              {dummy.map((data, index) => (
-                <CarouselItem className="md:basis-1/2 lg:basis-56" key={index}>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+                <CarouselItem className="md:basis-1/2 lg:basis-56" key={item}>
                   <DestinasiKategoriCard
-                    kategori={data.kategori}
-                    src={data.src}
+                    kategori={`kategori-${item}`}
+                    src="https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D"
                   />
                 </CarouselItem>
               ))}
@@ -110,30 +78,17 @@ const DestinasiPage = () => {
         </h2>
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <DestinasiCard
-              src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-              judul="Destinasi 1"
-              id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
-              deskripsi="Deskripsi Singkat"
-              kategori="Kategori"
-              penulis="Penulis 1"
-            />
-            <DestinasiCard
-              src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-              judul="Destinasi 1"
-              id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
-              deskripsi="Deskripsi Singkat"
-              kategori="Kategori"
-              penulis="Penulis 1"
-            />
-            <DestinasiCard
-              src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-              judul="Destinasi 1"
-              id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
-              deskripsi="Deskripsi Singkat"
-              kategori="Kategori"
-              penulis="Penulis 1"
-            />
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+              <DestinasiCard
+                key={item}
+                src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                judul={`Destinasi ${item}`}
+                kategori={`Kategori-${item}`}
+                penulis={`Penulis ${item}`}
+                deskripsi="Deskripsi Singkat"
+                id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
+              />
+            ))}
           </div>
         </div>
       </div>

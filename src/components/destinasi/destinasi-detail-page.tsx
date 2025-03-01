@@ -1,17 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  MapPin,
-  Clock,
-  User,
-  Calendar,
-  Star,
-  Share2,
-  Bookmark,
-  ArrowLeft,
-  BadgeCheck,
-} from "lucide-react";
+import { MapPin, Clock, User, ArrowLeft, BadgeCheck } from "lucide-react";
 
 interface DestinasiDetailPageProps {
   id: string;
@@ -161,10 +151,11 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
                     </div>
                   </div>
                 </div>
-
-                <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                  <Link href="/reservasi/buat-reservasi">Buat Reservasi</Link>
-                </Button>
+                <Link href="/reservasi/buat-reservasi">
+                  <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+                    Buat Reservasi
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

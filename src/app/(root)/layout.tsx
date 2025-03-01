@@ -51,12 +51,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center space-x-4">
               {!isLogin && (
                 <>
-                  <Button variant="outline">
-                    <Link href="/login">Login</Link>
-                  </Button>
-                  <Button variant="outline">
-                    <Link href="/register">Register</Link>
-                  </Button>
+                  <Link href="/login">
+                    <Button variant="outline">Login</Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button variant="outline">Register</Button>
+                  </Link>
                 </>
               )}
               {isLogin && (
