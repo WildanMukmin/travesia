@@ -58,30 +58,17 @@ const DestinasiKategoriPage = ({ kategori }: DestinasiKategoriPageProps) => {
         </h2>
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <DestinasiCard
-              src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-              judul="Destinasi 1"
-              id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
-              deskripsi="Deskripsi Singkat"
-              kategori={kategori.charAt(0).toUpperCase() + kategori.slice(1)}
-              penulis="Penulis 1"
-            />
-            <DestinasiCard
-              src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-              judul="Destinasi 1"
-              id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
-              deskripsi="Deskripsi Singkat"
-              kategori={kategori.charAt(0).toUpperCase() + kategori.slice(1)}
-              penulis="Penulis 1"
-            />
-            <DestinasiCard
-              src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-              judul="Destinasi 1"
-              id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
-              deskripsi="Deskripsi Singkat"
-              kategori={kategori.charAt(0).toUpperCase() + kategori.slice(1)}
-              penulis="Penulis 1"
-            />
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+              <DestinasiCard
+                key={item}
+                src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                judul={`Destinasi ${item}`}
+                id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
+                deskripsi="Deskripsi Singkat"
+                kategori={kategori.charAt(0).toUpperCase() + kategori.slice(1)}
+                penulis={`Penulis ${item}`}
+              />
+            ))}
           </div>
         </div>
       </div>

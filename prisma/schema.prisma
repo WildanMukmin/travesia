@@ -94,6 +94,7 @@ model Reservasi {
   destinasiId      String
   namaUser         String
   nomorTelfon      String
+  jumlahOrang      Int       @default(1)
   status           String    @default("diproses") //dibatalkan selesai menunggu_pembayaran
   tanggalReservasi DateTime  @default(now())
   member           Member?   @relation(fields: [memberId], references: [id])

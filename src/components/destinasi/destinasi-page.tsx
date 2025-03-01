@@ -57,7 +57,7 @@ const DestinasiPage = () => {
             className="w-full max-w-6xl"
           >
             <CarouselContent>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
                 <CarouselItem className="md:basis-1/2 lg:basis-56" key={item}>
                   <DestinasiKategoriCard
                     kategori={`kategori-${item}`}
@@ -78,7 +78,7 @@ const DestinasiPage = () => {
         </h2>
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
               <DestinasiCard
                 key={item}
                 src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"

@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const isLogin = true;
+  const isLogin = false;
   return (
     <div className="max-w-screen-xl mx-auto px-4">
       {/* Header */}
@@ -213,6 +213,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <p>Developers : Wildan Mukmin</p>
               <p>Designers : Bungaran Natanael</p>
               <p>Sistem Analist : Febrina Aulia Azahra</p>
+              <p>QA : Napis Rizqullah</p>
             </div>
 
             {/* Column 3: Additional Links and Trustmark */}
@@ -220,14 +221,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/pusat-bantuan" className="font-normal font">
                 Pusat Bantuan
               </Link>
-              <Link href="/tentang-kami" className="font-normal font">
-                Tentang Kami
-              </Link>
               <Link href="/kontak" className="font-normal font">
                 Kontak
-              </Link>
-              <Link href="/media-sosial" className="font-normal font">
-                Media Sosial
               </Link>
               <Link href="/kententuan-layanan" className="font-normal font">
                 Ketentuan Layanan
@@ -244,11 +239,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Copyright section */}
           <div className="text-center text-sm text-gray-600">
             <p>
-              Pariwisata - Travesia adalah sistem digital yang dirancang untuk
-              menghubungkan para pecinta petualangan alam dengan destinasi,
-              komunitas, event, dan perlengkapan terbaik, sekaligus menyediakan
-              platform untuk berbagi pengalaman, dan tips. @2025 Travesia. All
-              rights reserved
+              Travesia adalah sistem digital yang dirancang untuk menghubungkan
+              para pecinta petualangan alam dengan destinasi, komunitas, event,
+              dan perlengkapan terbaik, sekaligus menyediakan platform untuk
+              berbagi pengalaman, dan tips. @2025 Travesia. All rights reserved
             </p>
           </div>
         </div>
