@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const isLogin = false;
+  const isLogin = true;
   return (
     <div className="max-w-screen-xl mx-auto px-4">
       {/* Header */}
