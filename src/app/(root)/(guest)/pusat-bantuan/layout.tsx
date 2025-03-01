@@ -20,13 +20,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       id: 2,
       title: "Akses Destinasi & Reservasi",
       icon: <MapPin className="h-5 w-5" />,
-      path: "/pusat-bantuan/akses-destinasi",
+      path: "/pusat-bantuan/akses-destinasi-&-reservasi",
     },
     {
       id: 3,
       title: "Forum Komunitas & Blog",
       icon: <MessageSquare className="h-5 w-5" />,
-      path: "/pusat-bantuan/forum-komunitas",
+      path: "/pusat-bantuan/forum-komunitas-&-blog",
     },
     {
       id: 4,

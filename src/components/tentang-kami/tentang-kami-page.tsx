@@ -278,7 +278,7 @@ const TentangKamiPage = () => {
               {technologies.map((tech) => (
                 <div
                   key={tech.name}
-                  className="border rounded-lg p-4 text-center hover:border-primary hover:-translate-y-2 transition"
+                  className="border rounded-lg p-4 text-center hover:border-primary hover:-translate-y-2 transition opacity-70 hover:opacity-100"
                 >
                   <h3 className="font-medium">{tech.name}</h3>
                   <p className="text-sm text-muted-foreground">

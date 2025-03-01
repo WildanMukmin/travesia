@@ -218,7 +218,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Column 3: Additional Links and Trustmark */}
             <div className="flex flex-col space-y-4">
-              <Link href="/pusat-bantuan" className="font-normal font">
+              <Link
+                href="/pusat-bantuan/kelola-akun"
+                className="font-normal font"
+              >
                 Pusat Bantuan
               </Link>
               <Link href="/kontak" className="font-normal font">
