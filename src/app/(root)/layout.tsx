@@ -28,9 +28,9 @@ import {
 export default function Layout({ children }: { children: React.ReactNode }) {
   const isLogin = true;
   return (
-    <div className="max-w-screen-xl mx-auto px-4">
+    <>
       {/* Header */}
-      <header className="py-4">
+      <header className="py-4 max-w-screen-xl mx-auto px-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="text-3xl font-bold">
             <div className="flex flex-col">
@@ -95,80 +95,80 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </header>
-
-      {/* Navigation */}
-      <NavigationMenu className="justify-start border-t border-b py-2 my-2 w-full max-w-full">
-        <NavigationMenuList className="space-x-6">
-          <NavigationMenuItem>
-            <Link href="/" legacyBehavior passHref>
-              <NavigationMenuLink className="font-medium font-serif">
-                HOME
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/blog" legacyBehavior passHref>
-              <NavigationMenuLink className="font-medium font-serif">
-                BLOG
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          {isLogin && (
+      <div className="max-w-screen-xl mx-auto px-4">
+        {/* Navigation */}
+        <NavigationMenu className="justify-start border-t border-b py-2 my-2 w-full max-w-full">
+          <NavigationMenuList className="space-x-6">
             <NavigationMenuItem>
-              <Link href="/forum" legacyBehavior passHref>
+              <Link href="/" legacyBehavior passHref>
                 <NavigationMenuLink className="font-medium font-serif">
-                  FORUM
+                  HOME
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-          )}
-          <NavigationMenuItem>
-            <Link href="/destinasi" legacyBehavior passHref>
-              <NavigationMenuLink className="font-medium font-serif">
-                DESTINASI
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          {isLogin && (
             <NavigationMenuItem>
-              <Link href="/reservasi" legacyBehavior passHref>
+              <Link href="/blog" legacyBehavior passHref>
                 <NavigationMenuLink className="font-medium font-serif">
-                  RESERVASI
+                  BLOG
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-          )}
-          <NavigationMenuItem>
-            <Link href="/tentang-kami" legacyBehavior passHref>
-              <NavigationMenuLink className="font-medium font-serif">
-                TENTANG KAMI
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-        {isLogin && (
-          <div className="ml-auto">
-            <Button variant="outline">
-              <Link
-                href="/dashboard"
-                className="font-bold flex items-center gap-2"
-              >
-                <HomeIcon />
-                Dashboard
+            {isLogin && (
+              <NavigationMenuItem>
+                <Link href="/forum" legacyBehavior passHref>
+                  <NavigationMenuLink className="font-medium font-serif">
+                    FORUM
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            )}
+            <NavigationMenuItem>
+              <Link href="/destinasi" legacyBehavior passHref>
+                <NavigationMenuLink className="font-medium font-serif">
+                  DESTINASI
+                </NavigationMenuLink>
               </Link>
-            </Button>
-          </div>
-        )}
-      </NavigationMenu>
+            </NavigationMenuItem>
+            {isLogin && (
+              <NavigationMenuItem>
+                <Link href="/reservasi" legacyBehavior passHref>
+                  <NavigationMenuLink className="font-medium font-serif">
+                    RESERVASI
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            )}
+            <NavigationMenuItem>
+              <Link href="/tentang-kami" legacyBehavior passHref>
+                <NavigationMenuLink className="font-medium font-serif">
+                  TENTANG KAMI
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+          {isLogin && (
+            <div className="ml-auto">
+              <Button variant="outline">
+                <Link
+                  href="/dashboard"
+                  className="font-bold flex items-center gap-2"
+                >
+                  <HomeIcon />
+                  Dashboard
+                </Link>
+              </Button>
+            </div>
+          )}
+        </NavigationMenu>
 
-      {children}
-
+        {children}
+      </div>
       <footer className="w-full bg-gray-100 py-8 mt-12">
         <div className="max-w-screen-xl mx-auto px-4">
           {/* Footer top section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-8">
             {/* Column 1: Logo and social */}
-            <div className="space-y-6">
+            <div className="space-y-6 ml-6">
               <Link href="/" className="text-3xl font-bold">
                 <div className="flex flex-col">
                   <span>TRAVESIA</span>
@@ -208,7 +208,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Column 2: Navigation Links */}
-            <div className="flex flex-col space-y-4 font-semibold text-gray-600">
+            <div className="flex flex-col space-y-4 font-semibold text-gray-600 ml-6">
               <h1 className="font-bold text-black">Dibuat Oleh :</h1>
               <p>Developers : Wildan Mukmin</p>
               <p>Designers : Bungaran Natanael</p>
@@ -217,7 +217,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Column 3: Additional Links and Trustmark */}
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4 ml-16">
               <Link
                 href="/pusat-bantuan/kelola-akun"
                 className="font-normal font"
@@ -227,8 +227,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/kontak" className="font-normal font">
                 Kontak
               </Link>
-              <Link href="/kententuan-layanan" className="font-normal font">
-                Ketentuan Layanan
+              <Link href="/syarat-ketentuan" className="font-normal font">
+                Syarat dan Ketentuan
               </Link>
               <Link href="/kebijakan-privasi" className="font-normal font">
                 Kebijakan Privasi
@@ -250,6 +250,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
