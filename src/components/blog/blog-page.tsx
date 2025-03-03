@@ -1,4 +1,4 @@
-import CardDestinasi from "@/components/card/card-blog";
+import CardBlog from "@/components/card/card-blog";
 import {
   Pagination,
   PaginationContent,
@@ -13,12 +13,12 @@ const BlogPage = () => {
   return (
     <main className="mt-10 max-w-full mx-auto px-4">
       <h2 className="text-3xl font-bold border-b-2 border-blue-800 pb-2 mb-6">
-        Destinasi
+        Blog
       </h2>
 
       <div className="space-y-10">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((index) => (
-          <CardDestinasi
+          <CardBlog
             key={index}
             src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
             judul={`Blog ${index}`}

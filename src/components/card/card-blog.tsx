@@ -27,7 +27,7 @@ const CardBlog = ({
           className="object-cover rounded-t-lg md:rounded-l-lg md:rounded-t-none"
         />
       </div>
-      <div className="flex flex-col w-full p-6">
+      <div className="flex flex-col w-1/2 p-6">
         <Link href={`/blog/${slug}`}>
           <h1 className="text-2xl font-bold hover:underline cursor-pointer">
             {judul}

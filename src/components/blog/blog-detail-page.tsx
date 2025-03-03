@@ -8,7 +8,10 @@ interface BlogDetailPageProps {
 const BlogDetailPage = ({ slug }: BlogDetailPageProps) => {
   // This would typically be fetched from an API based on the slug
   const blogPost = {
-    title: "Scenic mountain road with view",
+    title: slug
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" "),
     author: "Wildan Mukmin",
     image:
       "https://images.unsplash.com/photo-1740514531864-ea9cec02fbac?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D", // You'll need to replace this with your actual image path

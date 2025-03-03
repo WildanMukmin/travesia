@@ -106,6 +106,52 @@ const PusatBantuanAksesDestinasiReservasiPage = () => {
               </div>
             )}
           </div>
+
+          {/* Question 1-3 */}
+          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50"
+              onClick={() => toggleQuestion("1-3")}
+            >
+              <h3 className="text-md font-medium">
+                Bagaimana cara membatalkan reservasi destinasi?
+              </h3>
+              {openQuestion === "1-2" ? (
+                <ChevronUp className="h-5 w-5 text-gray-500" />
+              ) : (
+                <ChevronDown className="h-5 w-5 text-gray-500" />
+              )}
+            </div>
+
+            {openQuestion === "1-2" && (
+              <div className="p-4 border-t border-gray-100 bg-gray-50">
+                <div className="text-gray-700">
+                  <p>Untuk membatalkan reservasi destinasi:</p>
+                  <ol className="ml-5 mt-2 list-decimal space-y-2">
+                    <li>Pilih destinasi yang ingin Anda kunjungi.</li>
+                    <li>
+                      Pada halaman detail destinasi, lihat kalender ketersediaan
+                      dan pilih tanggal kunjungan.
+                    </li>
+                    <li>
+                      Pilih jumlah pengunjung dan paket atau tiket yang
+                      tersedia.
+                    </li>
+                    <li>Klik tombol "Reservasi Sekarang".</li>
+                    <li>
+                      Lengkapi informasi yang diminta, termasuk data pribadi dan
+                      preferensi.
+                    </li>
+                    <li>Pilih metode pembayaran dan selesaikan transaksi.</li>
+                    <li>
+                      Setelah pembayaran berhasil, Anda akan menerima email
+                      konfirmasi reservasi.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </main>

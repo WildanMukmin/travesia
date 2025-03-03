@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const isLogin = true;
+  const isLogin = false;
   return (
     <>
       {/* Header */}
