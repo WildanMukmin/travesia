@@ -21,7 +21,7 @@ import * as z from "zod";
 import { sighUpSchema } from "@/lib/zod";
 import { CardWrapper } from "./card-wrapper";
 import Image from "next/image";
-import { register } from "@/app/actions/register";
+import { register } from "@/actions/register";
 
 const RegisterPage = () => {
   // <-------------------------- Role Tools -------------------------->
@@ -48,7 +48,7 @@ const RegisterPage = () => {
   // <-------------------------- Form Tools -------------------------->
   const [onFormRegistration, setOnFormRegistration] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  // const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   // const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -65,7 +65,7 @@ const RegisterPage = () => {
   });
   const handleSubmit = (data: z.infer<typeof sighUpSchema>) => {
     setErrorMessage("");
-    setSuccessMessage("");
+    // setSuccessMessage("");
     data.role = role;
     // if (logoFile) {
     //   data.logo = logoFile
@@ -75,8 +75,6 @@ const RegisterPage = () => {
       register(data).then((res) => {
         if (res?.error) {
           setErrorMessage(res?.error);
-        } else {
-          setSuccessMessage("Akun Berhasil Dibuat");
         }
       });
     });
@@ -278,7 +276,7 @@ const RegisterPage = () => {
                     </Button>
                   </div>
                   {errorMessage && <FormError message={errorMessage} />}
-                  {successMessage && <FormSuccess message={successMessage} />}
+                  {/* {successMessage && <FormSuccess message={successMessage} />} */}
                   <div className="flex flex-col md:flex-row justify-between pt-4 gap-4">
                     <Button
                       type="button"

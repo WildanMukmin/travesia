@@ -36,10 +36,10 @@ export default auth((req) => {
     return; // Kembali tanpa melakukan apa-apa
   }
 
-  // // Protect private routes (e.g., /settings)
-  // if (!isLoggedIn) {
-  //   return Response.redirect(new URL("/login", nextUrl));
-  // }
+  // Protect private routes (e.g., /settings)
+  if (!isLoggedIn) {
+    return Response.redirect(new URL("/login", nextUrl));
+  }
 
   return; // Allow access to all other routes for logged-in users
 });
