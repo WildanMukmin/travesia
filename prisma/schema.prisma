@@ -160,15 +160,6 @@ model Notifikasi {
   updatedAt DateTime @updatedAt
 }
 
-model VerificationToken {
-  id      String   @id @default(uuid())
-  email   String
-  token   String   @unique
-  expires DateTime
-
-  @@unique([email, token])
-}
-
 model Image {
   id          String @id @default(uuid())
   userId      String @unique
@@ -184,4 +175,22 @@ model Image {
   destinasi Destinasi @relation(fields: [destinasiId], references: [id], onDelete: Cascade)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model VerificationToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
 }

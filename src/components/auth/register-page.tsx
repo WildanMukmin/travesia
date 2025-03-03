@@ -17,12 +17,11 @@ import { startTransition, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FormSuccess } from "@/components/auth/form-succsess";
 import { FormError } from "@/components/auth/form-error";
-import { ImagePlus } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
 import * as z from "zod";
 import { sighUpSchema } from "@/lib/zod";
 import { CardWrapper } from "./card-wrapper";
 import Image from "next/image";
+import { register } from "@/app/actions/register";
 
 const RegisterPage = () => {
   // <-------------------------- Role Tools -------------------------->
@@ -73,14 +72,15 @@ const RegisterPage = () => {
     // }
     startTransition(() => {
       setIsPending(true);
-      // registerCompany(data).then((response) => {
-      //   setSuccessMessage(response?.message ?? '')
-      //   setErrorMessage(response?.error ?? '')
-      //   setIsPending(false)
-      // })
-      console.log(data);
-      setIsPending(false);
+      register(data).then((res) => {
+        if (res?.error) {
+          setErrorMessage(res?.error);
+        } else {
+          setSuccessMessage("Akun Berhasil Dibuat");
+        }
+      });
     });
+    setIsPending(false);
   };
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
