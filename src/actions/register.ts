@@ -7,6 +7,8 @@ import { sighUpSchema } from "@/lib/zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { signIn } from "@/auth";
 
 export const register = async (value: z.infer<typeof sighUpSchema>) => {
   const validatedFields = sighUpSchema.safeParse(value);
@@ -36,12 +38,11 @@ export const register = async (value: z.infer<typeof sighUpSchema>) => {
       role: role ?? undefined,
     },
   });
-  revalidatePath("/login");
-  redirect(`/login?message=Akun-berhasil-dibuat!`);
+  revalidatePath(DEFAULT_LOGIN_REDIRECT);
   //   return { message: "Registrasi berhasil, silahkan login" };
-  // await signIn('credentials', {
-  //     email,
-  //     password,
-  //     redirectTo: '/dashboard',
-  //   })
+  await signIn("credentials", {
+    email,
+    password,
+    redirectTo: DEFAULT_LOGIN_REDIRECT,
+  });
 };
