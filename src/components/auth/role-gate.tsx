@@ -1,6 +1,7 @@
 import { Role } from "@prisma/client";
-import { FormError } from "@/components/auth/form-error";
 import { currentUserRole } from "@/lib/authenticate";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface RoleGateProps {
   children: React.ReactNode;
@@ -12,7 +13,13 @@ const RoleGate = async ({ children, accessRole }: RoleGateProps) => {
   if (role !== accessRole) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <FormError message="You don't have access to this page" />
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Terjadi Kesalahan</AlertTitle>
+          <AlertDescription>
+            Kamu tidak memiliki akses ke halaman ini
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
