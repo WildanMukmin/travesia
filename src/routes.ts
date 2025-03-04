@@ -15,3 +15,7 @@ export const authRoutes = ["/login", "/register", "logout", "/forgot-password"];
 export const apiAuthPrefix = "/api/auth";
 
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
+
+export const blogPrefix = "/blog";
+
+export const destinasiPrefix = "/destinasi";

@@ -5,6 +5,8 @@ import {
   publicRoutes,
   DEFAULT_LOGIN_REDIRECT,
   authRoutes,
+  blogPrefix,
+  destinasiPrefix,
 } from "./routes";
 
 const { auth } = NextAuth(authConfig);
@@ -15,11 +17,21 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isBlogRoute = nextUrl.pathname.startsWith(blogPrefix);
+  const isDestinasiRoute = nextUrl.pathname.startsWith(destinasiPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   // Allow API Auth routes
   if (isApiAuthRoute) {
+    return; // Kembali tanpa melakukan apa-apa
+  }
+
+  if (isBlogRoute) {
+    return; // Kembali tanpa melakukan apa-apa
+  }
+
+  if (isDestinasiRoute) {
     return; // Kembali tanpa melakukan apa-apa
   }
 
