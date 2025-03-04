@@ -48,10 +48,9 @@ const RegisterPage = () => {
   // <-------------------------- Form Tools -------------------------->
   const [onFormRegistration, setOnFormRegistration] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState("");
-  // const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  // const [logoFile, setLogoFile] = useState<File | null>(null);
+  // const [successMessage, setSuccessMessage] = useState("");
 
   const form = useForm<z.infer<typeof sighUpSchema>>({
     resolver: zodResolver(sighUpSchema),
@@ -65,20 +64,17 @@ const RegisterPage = () => {
   });
   const handleSubmit = (data: z.infer<typeof sighUpSchema>) => {
     setErrorMessage("");
+    setIsPending(true);
     // setSuccessMessage("");
     data.role = role;
-    // if (logoFile) {
-    //   data.logo = logoFile
-    // }
     startTransition(() => {
-      setIsPending(true);
       register(data).then((res) => {
         if (res?.error) {
           setErrorMessage(res?.error);
         }
       });
+      setIsPending(false);
     });
-    setIsPending(false);
   };
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -160,7 +156,7 @@ const RegisterPage = () => {
             headerLabel="Daftar Akun"
             description="Lengkapi data untuk mendaftar akun"
             paragraphSwitchButton="Sudah memiliki akun? "
-            switchButtonLabel="Sign In"
+            switchButtonLabel="Masuk"
             switchButtonHref="/login"
           >
             <Form {...form}>
@@ -287,14 +283,14 @@ const RegisterPage = () => {
                       disabled={form.formState.isSubmitting || isPending}
                       className="w-full bg-slate-500 text-white hover:bg-slate-600"
                     >
-                      {isPending ? "Loading..." : "Kembali"}
+                      {isPending ? "Memuat..." : "Kembali"}
                     </Button>
                     <Button
                       type="submit"
                       disabled={form.formState.isSubmitting || isPending}
                       className="w-full bg-green-500 text-white hover:bg-green-600"
                     >
-                      {isPending ? "Loading..." : "Daftar"}
+                      {isPending ? "Memuat..." : "Daftar"}
                     </Button>
                   </div>
                 </div>

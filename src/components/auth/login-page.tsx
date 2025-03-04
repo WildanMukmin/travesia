@@ -21,20 +21,13 @@ import { signInSchema } from "@/lib/zod";
 import { CardWrapper } from "./card-wrapper";
 import Image from "next/image";
 import { login } from "@/actions/login";
-import { useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
-  const searchParams = useSearchParams();
-  const message = searchParams.get("message");
-  useEffect(() => {
-    if (message) {
-      setSuccessMessage(message.split("-").join(" "));
-    }
-  }, [message]);
+
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -48,15 +41,14 @@ const LoginPage = () => {
   const handleSubmit = (data: z.infer<typeof signInSchema>) => {
     setErrorMessage("");
     setSuccessMessage("");
+    setIsPending(true);
     startTransition(() => {
-      setIsPending(true);
       login(data).then((data) => {
-        // setSuccessMessage(data?.success ?? "");
         setErrorMessage(data?.error ?? "");
         setSuccessMessage("");
+        setIsPending(false);
       });
     });
-    setIsPending(false);
   };
   return (
     <main className="max-w-7xl mx-auto h-[800px] px-4 flex flex-col items-center justify-center">
@@ -64,9 +56,9 @@ const LoginPage = () => {
       <div className="flex flex-col md:flex-row-reverse gap-4 w-full">
         <CardWrapper
           headerLabel="Selamat Datang!"
-          description="Lengkapi data untuk login akun anda!"
+          description="Lengkapi data untuk masuk ke akun anda!"
           paragraphSwitchButton="Belum memiliki akun? "
-          switchButtonLabel="Sign Up"
+          switchButtonLabel="Daftar"
           switchButtonHref="/register"
         >
           <Form {...form}>
@@ -140,10 +132,10 @@ const LoginPage = () => {
 
                 <Button
                   type="submit"
-                  disabled={form.formState.isSubmitting || isPending}
+                  disabled={isPending}
                   className="w-full bg-green-500 text-white hover:bg-green-600"
                 >
-                  {isPending ? "Loading..." : "Sign In"}
+                  {isPending ? "Memuat..." : "Masuk"}
                 </Button>
               </div>
             </form>

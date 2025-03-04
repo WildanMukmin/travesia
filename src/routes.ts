@@ -1,4 +1,14 @@
-export const publicRoutes = ["/"];
+export const publicRoutes = [
+  "/",
+  "/tentang-kami",
+  "/kontak",
+  "/kebijakan-privasi",
+  "/syarat-ketentuan",
+  "/pusat-bantuan/kelola-akun",
+  "/pusat-bantuan/akses-destinasi-&-reservasi",
+  "/pusat-bantuan/forum-komunitas-&-blog",
+  "/pusat-bantuan/kelola-destinasi",
+];
 
 export const authRoutes = ["/login", "/register", "logout", "/forgot-password"];
 

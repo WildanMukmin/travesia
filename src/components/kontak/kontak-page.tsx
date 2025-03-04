@@ -238,7 +238,6 @@ const KontakPage = () => {
                   Direktorat Jenderal Perhubungan Konsumen dan Tertib Niaga,
                 </p>
                 <p>Kementerian Perdagangan Republik Indonesia</p>
-                <p className="font-medium mt-1">WhatsApp No: +62812-345-6789</p>
               </div>
             </div>
           </CardContent>
