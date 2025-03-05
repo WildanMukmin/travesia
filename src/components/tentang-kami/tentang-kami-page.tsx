@@ -46,8 +46,7 @@ const TentangKamiPage = () => {
     {
       name: "Bungaran Natanael",
       role: "Designer",
-      image:
-        "https://images.unsplash.com/photo-1503249023995-51b0f3778ccf?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D",
+      image: "/img-profile/nael.jpeg",
       socials: {
         linkedin: "#",
         instagram: "#",

@@ -13,6 +13,7 @@ import {
 import { Facebook, HomeIcon, Instagram, Search, Twitter } from "lucide-react";
 import { currentUser } from "@/lib/authenticate";
 import ProfileDropdown from "@/components/profile/profile-dropdown";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,10 +49,16 @@ export default async function RootLayout({
           <div className="flex justify-between items-center">
             <Link href="/" className="text-3xl font-bold">
               <div className="flex flex-col">
-                <span>TRAVESIA</span>
+                {/* <span>TRAVESIA</span>
                 <span className="text-[18px] font-semibold text-gray-400">
                   Travels Indonesia
-                </span>
+                </span> */}
+                <Image
+                  src="/travesia-logo-horizontal.png"
+                  alt="Logo"
+                  width={300}
+                  height={100}
+                />
               </div>
             </Link>
 
@@ -153,14 +160,20 @@ export default async function RootLayout({
               <div className="space-y-6 ml-6">
                 <Link href="/" className="text-3xl font-bold">
                   <div className="flex flex-col">
-                    <span>TRAVESIA</span>
+                    {/* <span>TRAVESIA</span>
                     <span className="text-[18px] font-semibold text-gray-400">
                       Travels Indonesia
-                    </span>
+                    </span> */}
+                    <Image
+                      src="/travesia-logo-horizontal.png"
+                      alt="Logo"
+                      width={260}
+                      height={100}
+                    />
                   </div>
                 </Link>
 
-                <div className="space-y-4">
+                <div className="space-y-4 flex-col flex items-center justify-center mr-28">
                   <p className="font-normal hover:underline">Ikuti Kami</p>
                   <div className="flex space-x-6">
                     <Link
