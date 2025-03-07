@@ -1,13 +1,4 @@
-import {
-  LayoutDashboard,
-  User,
-  Settings,
-  LogOut,
-  Activity,
-  MapPinCheck,
-  MapPinX,
-  Plane,
-} from "lucide-react";
+import { Activity, MapPinCheck, MapPinX, Plane } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -74,7 +65,7 @@ const DashboardMemberPage = ({ name }: DashboardMemberPageProps) => {
   return (
     <main className="flex min-h-screen flex-col bg-gray-50">
       {/* Main Content */}
-      <section className="flex-1 p-8">
+      <section className="flex flex-col p-8">
         <h2 className="text-3xl font-semibold mb-6 text-gray-800">
           Welcome Back, {name.charAt(0).toUpperCase() + name.slice(1)}
         </h2>

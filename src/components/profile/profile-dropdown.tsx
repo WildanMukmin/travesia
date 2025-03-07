@@ -47,9 +47,7 @@ const ProfileDropdown = ({ name }: ProfileDropdownProps) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <p className="text-sm font-semibold mt-2">
-        <Link href="/profile">{name}</Link>
-      </p>
+      <p className="text-sm font-semibold mt-2">{name}</p>
     </div>
   );
 };
