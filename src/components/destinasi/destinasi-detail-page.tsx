@@ -1,7 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, User, ArrowLeft, BadgeCheck } from "lucide-react";
+import {
+  MapPin,
+  Clock,
+  User,
+  ArrowLeft,
+  BadgeCheck,
+  DollarSign,
+} from "lucide-react";
 
 interface DestinasiDetailPageProps {
   id: string;
@@ -147,6 +154,20 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
                       </h4>
                       <p className="text-gray-600">
                         Setiap Hari: 08.00 - 18.00 WIB
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start">
+                    <DollarSign className="w-5 h-5 text-blue-600 mt-1 mr-3" />
+                    <div>
+                      <h4 className="font-medium text-gray-900">Harga Tiket</h4>
+                      <p className="text-gray-600 leading-relaxed">
+                        {new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 2,
+                        }).format(10000000)}
                       </p>
                     </div>
                   </div>

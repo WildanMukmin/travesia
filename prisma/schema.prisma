@@ -97,6 +97,7 @@ model Reservasi {
   jumlahOrang      Int       @default(1)
   status           String    @default("diproses") //dibatalkan selesai menunggu_pembayaran
   tanggalReservasi DateTime  @default(now())
+  hargaPembayaran  BigInt
   member           Member?   @relation(fields: [memberId], references: [id])
   destinasi        Destinasi @relation(fields: [destinasiId], references: [id])
   createdAt        DateTime  @default(now())
@@ -107,6 +108,7 @@ model Destinasi {
   id             String   @id @default(uuid())
   ownerId        String   @unique
   namaDestinasi  String
+  harga          BigInt
   deskripsi      String
   alamat         String
   nomorOwner     String

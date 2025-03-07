@@ -60,7 +60,7 @@ const ReservasiMemberSelesaiPage = () => {
                         <div className="flex gap-2 flex-row-reverse">
                           <ButtonDetailTable
                             name=""
-                            aksi={() => handleClickDetail(activity.id)}
+                            reservasiId={activity.id}
                             content="Detail"
                           />
                           <ButtonDeleteTable
