@@ -1,13 +1,5 @@
-import {
-  LayoutDashboard,
-  User,
-  Settings,
-  LogOut,
-  Activity,
-  MapPinCheck,
-  MapPinX,
-  Plane,
-} from "lucide-react";
+import React from "react";
+import { Activity, MapPinCheck, MapPinX, Plane } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -18,13 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
-interface DashboardMemberPageProps {
-  name: string;
-}
-
-const DashboardMemberPage = ({ name }: DashboardMemberPageProps) => {
-  // Mock data - replace with actual data fetching
+const ReservasiMemberPage = () => {
   const memberData = {
     name: "Wildan Mukmin",
     memberSince: "January 2024",
@@ -54,46 +42,39 @@ const DashboardMemberPage = ({ name }: DashboardMemberPageProps) => {
     {
       title: "Perjalanan Selesai",
       value: "24",
-      link: "/reservasi/reservasi-selesai",
       icon: <MapPinCheck className="h-6 w-6 text-blue-500" />,
     },
     {
       title: "Perjalanan Dibatalkan",
       value: "11",
-      link: "/reservasi/reservasi-dibatalkan",
       icon: <MapPinX className="h-6 w-6 text-red-500" />,
     },
     {
       title: "Total Reservasi",
       value: "35",
-      link: "/reservasi",
       icon: <Plane className="h-6 w-6 text-purple-500" />,
     },
   ];
-
   return (
-    <main className="flex min-h-screen flex-col bg-gray-50">
+    <main className="flex min-h-screen bg-gray-50">
       {/* Main Content */}
       <section className="flex-1 p-8">
         <h2 className="text-3xl font-semibold mb-6 text-gray-800">
-          Welcome Back, {name.charAt(0).toUpperCase() + name.slice(1)}
+          Reservasi Anda Member
         </h2>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {statsCards.map((card, index) => (
-            <Link href={card.link}>
-              <Card key={index} className="hover:shadow-lg transition-all">
-                <CardContent className="flex items-center p-6">
-                  {card.icon}
-                  <div className="ml-4">
-                    <h3 className="text-sm text-gray-500">{card.title}</h3>
-                    <p className="text-2xl font-bold">{card.value}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+        <div className="flex space-x-4 mb-6">
+          <Link href="/reservasi">
+            <Button>Semua Perjalanan</Button>
+          </Link>
+          <Link href="/reservasi/reservasi-selesai">
+            <Button>Perjalanan Selesai</Button>
+          </Link>
+          <Link href="/reservasi/reservasi-dibatalkan">
+            <Button>Perjalanan Dibatalkan</Button>
+          </Link>
+          <Link href="/destinasi">
+            <Button>Buat Reservasi</Button>
+          </Link>
         </div>
 
         {/* Recent Activities */}
@@ -101,7 +82,7 @@ const DashboardMemberPage = ({ name }: DashboardMemberPageProps) => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Activity className="mr-2 h-5 w-5 text-blue-600" />
-              Aktifitas Terkini
+              Tabel Reservasi
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -128,37 +109,8 @@ const DashboardMemberPage = ({ name }: DashboardMemberPageProps) => {
           </CardContent>
         </Card>
       </section>
-      <section>
-        <div className="flex p-8 gap-8">
-          <Link href={"/blog"} className="w-full">
-            <Card className="hover:shadow-lg transition-all w-full">
-              <CardContent className="flex items-center p-6">
-                <div className="ml-4">
-                  <h3 className="text-sm text-gray-500">
-                    Postingan Blog Terakhir
-                  </h3>
-                  <p className="text-2xl font-bold">blog</p>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-
-          <Link href={"/blog"} className="w-full">
-            <Card className="hover:shadow-lg transition-all w-full">
-              <CardContent className="flex items-center p-6">
-                <div className="ml-4">
-                  <h3 className="text-sm text-gray-500">
-                    Postingan Forum Terakhir
-                  </h3>
-                  <p className="text-2xl font-bold">Forum</p>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-        </div>
-      </section>
     </main>
   );
 };
 
-export default DashboardMemberPage;
+export default ReservasiMemberPage;

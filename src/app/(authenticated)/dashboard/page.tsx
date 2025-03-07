@@ -19,7 +19,7 @@ export default async function Page() {
   if (user?.role === Role.MEMBER) {
     return (
       <RoleGate accessRole={Role.MEMBER}>
-        <DashboardMemberPage />
+        <DashboardMemberPage name={user.name || "Member"} />
       </RoleGate>
     );
   }
