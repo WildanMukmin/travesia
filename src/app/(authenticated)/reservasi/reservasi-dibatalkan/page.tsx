@@ -1,4 +1,5 @@
 import RoleGate from "@/components/auth/role-gate";
+import ReservasiMemberDibatalkanPage from "@/components/reservasi/reservasi-member-dibatalkan-page";
 import { currentUser } from "@/lib/authenticate";
 import { Role } from "@prisma/client";
 
@@ -7,7 +8,7 @@ export default async function Page() {
   if (user?.role === Role.MEMBER) {
     return (
       <RoleGate accessRole={Role.MEMBER}>
-        <h1>Reservasi Dibatalkan Member</h1>
+        <ReservasiMemberDibatalkanPage />
       </RoleGate>
     );
   }
