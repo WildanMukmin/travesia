@@ -2,14 +2,57 @@
 
 import { prisma } from "@/lib/prisma";
 import { daftarDestinasiSchema } from "@/lib/zod";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import * as z from "zod";
 
+export type DestinasiWithOwner = Prisma.PromiseReturnType<typeof getDestinasi>;
+
 export const daftarDestinasi = async (
-  data: z.infer<typeof daftarDestinasiSchema>
+  data: z.infer<typeof daftarDestinasiSchema>,
 ) => {
   const validatedFields = daftarDestinasiSchema.safeParse(data);
+  const kategoriLokasiData = [
+    "Aceh",
+    "Bali",
+    "Banten",
+    "Bengkulu",
+    "DI Yogyakarta",
+    "DKI Jakarta",
+    "Gorontalo",
+    "Jambi",
+    "Jawa Barat",
+    "Jawa Tengah",
+    "Jawa Timur",
+    "Kalimantan Barat",
+    "Kalimantan Selatan",
+    "Kalimantan Tengah",
+    "Kalimantan Timur",
+    "Kalimantan Utara",
+    "Kepulauan Bangka Belitung",
+    "Kepulauan Riau",
+    "Lampung",
+    "Maluku",
+    "Maluku Utara",
+    "Nusa Tenggara Barat",
+    "Nusa Tenggara Timur",
+    "Papua",
+    "Papua Barat",
+    "Papua Barat Daya",
+    "Papua Pegunungan",
+    "Papua Selatan",
+    "Papua Tengah",
+    "Riau",
+    "Sulawesi Barat",
+    "Sulawesi Selatan",
+    "Sulawesi Tengah",
+    "Sulawesi Tenggara",
+    "Sulawesi Utara",
+    "Sumatera Barat",
+    "Sumatera Selatan",
+    "Sumatera Utara",
+  ];
 
   if (!validatedFields.success) {
     return { error: "Mohon isi form dengan benar!" };
@@ -61,6 +104,10 @@ export const daftarDestinasi = async (
     return { error: "Anda sudah memiliki destinasi" };
   }
 
+  if (!kategoriLokasiData.includes(kategoriLokasi)) {
+    return { error: "Kategori lokasi tidak valid" };
+  }
+
   try {
     await prisma.destinasi.create({
       data: {
@@ -110,7 +157,11 @@ export const getAllDestinasi = async () => {
         updatedAt: "desc",
       },
       include: {
-        owner: true,
+        owner: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
     return destinasi;
@@ -122,7 +173,7 @@ export const getAllDestinasi = async () => {
 
 export const getPaginatedDestinasi = async (
   page: number = 1,
-  limit: number = 10
+  limit: number = 10,
 ) => {
   try {
     const skip = (page - 1) * limit; // Menghitung jumlah data yang dilewati
@@ -149,6 +200,25 @@ export const getPaginatedDestinasi = async (
     };
   } catch (error) {
     console.error("Error fetching paginated destinasi:", error);
+    return null;
+  }
+};
+
+export const getDestinasiById = async (id: string) => {
+  try {
+    const destinasi = await prisma.destinasi.findUnique({
+      where: { id },
+      include: {
+        owner: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+    return destinasi;
+  } catch (error) {
+    console.error("Error fetching destinasi:", error);
     return null;
   }
 };

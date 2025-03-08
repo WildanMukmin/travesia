@@ -44,7 +44,7 @@ const DestinasiKategoriPage = ({ kategori }: DestinasiKategoriPageProps) => {
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
                 <Link href={`/destinasi/kategori/${kategori}`}>
-                  {kategori.charAt(0).toUpperCase() + kategori.slice(1)}
+                  {kategori.split("-").join(" ")}
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -54,7 +54,7 @@ const DestinasiKategoriPage = ({ kategori }: DestinasiKategoriPageProps) => {
 
       <div>
         <h2 className="text-3xl font-bold border-b-2 border-blue-800 pb-2 mb-6">
-          Destinasi di {kategori.charAt(0).toUpperCase() + kategori.slice(1)}
+          Destinasi di {kategori.split("-").join(" ")}
         </h2>
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -65,7 +65,7 @@ const DestinasiKategoriPage = ({ kategori }: DestinasiKategoriPageProps) => {
                 judul={`Destinasi ${item}`}
                 id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
                 deskripsi="Deskripsi Singkat"
-                kategori={kategori.charAt(0).toUpperCase() + kategori.slice(1)}
+                kategori={kategori.split("-").join(" ")}
                 penulis={`Penulis ${item}`}
               />
             ))}

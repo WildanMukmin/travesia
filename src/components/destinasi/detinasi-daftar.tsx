@@ -24,6 +24,13 @@ import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-succsess";
 import Image from "next/image";
 import { daftarDestinasi } from "@/actions/destinasi";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface DestinasiDaftarPageProps {
   userId: string;
@@ -38,6 +45,46 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [srcImage, setSrcImage] = useState<string | null>(null);
+  const kategoriLokasiData = [
+    "Aceh",
+    "Bali",
+    "Banten",
+    "Bengkulu",
+    "DI Yogyakarta",
+    "DKI Jakarta",
+    "Gorontalo",
+    "Jambi",
+    "Jawa Barat",
+    "Jawa Tengah",
+    "Jawa Timur",
+    "Kalimantan Barat",
+    "Kalimantan Selatan",
+    "Kalimantan Tengah",
+    "Kalimantan Timur",
+    "Kalimantan Utara",
+    "Kepulauan Bangka Belitung",
+    "Kepulauan Riau",
+    "Lampung",
+    "Maluku",
+    "Maluku Utara",
+    "Nusa Tenggara Barat",
+    "Nusa Tenggara Timur",
+    "Papua",
+    "Papua Barat",
+    "Papua Barat Daya",
+    "Papua Pegunungan",
+    "Papua Selatan",
+    "Papua Tengah",
+    "Riau",
+    "Sulawesi Barat",
+    "Sulawesi Selatan",
+    "Sulawesi Tengah",
+    "Sulawesi Tenggara",
+    "Sulawesi Utara",
+    "Sumatera Barat",
+    "Sumatera Selatan",
+    "Sumatera Utara",
+  ];
   const form = useForm<z.infer<typeof daftarDestinasiSchema>>({
     resolver: zodResolver(daftarDestinasiSchema),
     defaultValues: {
@@ -219,17 +266,23 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
                   name="kategoriLokasi"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">
-                        Kategori Wisata
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          disabled={isPending}
-                          placeholder="Contoh: Pantai, Gunung, Taman"
-                          className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        />
-                      </FormControl>
+                      <FormLabel>Job Type</FormLabel>
+                      <Select
+                        disabled={isPending}
+                        onValueChange={field.onChange}
+                        value={field.value || ""}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Lokasi Destinasi Anda" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {kategoriLokasiData.map((item) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

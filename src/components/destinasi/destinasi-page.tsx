@@ -24,12 +24,53 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { DestinasiWithOwner } from "@/actions/destinasi";
 
 interface DestinasiPageProps {
   data: any[];
 }
 
 const DestinasiPage = ({ data }: DestinasiPageProps) => {
+  const kategoriLokasiData = [
+    "Aceh",
+    "Bali",
+    "Banten",
+    "Bengkulu",
+    "DI Yogyakarta",
+    "DKI Jakarta",
+    "Gorontalo",
+    "Jambi",
+    "Jawa Barat",
+    "Jawa Tengah",
+    "Jawa Timur",
+    "Kalimantan Barat",
+    "Kalimantan Selatan",
+    "Kalimantan Tengah",
+    "Kalimantan Timur",
+    "Kalimantan Utara",
+    "Kepulauan Bangka Belitung",
+    "Kepulauan Riau",
+    "Lampung",
+    "Maluku",
+    "Maluku Utara",
+    "Nusa Tenggara Barat",
+    "Nusa Tenggara Timur",
+    "Papua",
+    "Papua Barat",
+    "Papua Barat Daya",
+    "Papua Pegunungan",
+    "Papua Selatan",
+    "Papua Tengah",
+    "Riau",
+    "Sulawesi Barat",
+    "Sulawesi Selatan",
+    "Sulawesi Tengah",
+    "Sulawesi Tenggara",
+    "Sulawesi Utara",
+    "Sumatera Barat",
+    "Sumatera Selatan",
+    "Sumatera Utara",
+  ];
   return (
     <main className="mt-10 flex flex-col">
       <div className="flex justify-start mb-8">
@@ -62,10 +103,10 @@ const DestinasiPage = ({ data }: DestinasiPageProps) => {
             className="w-full max-w-6xl"
           >
             <CarouselContent>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-                <CarouselItem className="md:basis-1/2 lg:basis-56" key={item}>
+              {kategoriLokasiData.map((item) => (
+                <CarouselItem className="md:basis-1/2 lg:basis-64" key={item}>
                   <DestinasiKategoriCard
-                    kategori={`kategori-${item}`}
+                    kategori={`${item}`}
                     src="https://images.unsplash.com/photo-1740501410249-bed15e937ca0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyN3x8fGVufDB8fHx8fA%3D%3D"
                   />
                 </CarouselItem>
@@ -83,16 +124,16 @@ const DestinasiPage = ({ data }: DestinasiPageProps) => {
         </h2>
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {data.length > 0 ? (
+            {data && data.length > 0 ? (
               data.map((field) => (
                 <DestinasiCard
                   key={field.id}
                   src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
                   judul={`Destinasi ${field.namaDestinasi}`}
-                  kategori={`Kategori-${field.kategoriLokasi}`}
-                  penulis={`Owner ${field.owner.user.name}`}
+                  kategori={`${field.kategoriLokasi}`}
+                  penulis={`Owner ${field.owner?.user?.name ?? "Unknown"}`}
                   deskripsi={field.deskripsi.slice(0, 100)}
-                  id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
+                  id={field.id}
                 />
               ))
             ) : (

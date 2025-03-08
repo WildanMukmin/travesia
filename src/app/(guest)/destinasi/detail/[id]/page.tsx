@@ -1,4 +1,6 @@
+import { getDestinasiById } from "@/actions/destinasi";
 import DestinasiDetailPage from "@/components/destinasi/destinasi-detail-page";
+import { currentUserRole } from "@/lib/authenticate";
 
 interface PageProps {
   params: Promise<{
@@ -8,6 +10,33 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
+  const data = await getDestinasiById(id);
 
-  return <DestinasiDetailPage id={id} />;
+  if (!id) {
+    return null;
+  }
+
+  if (!data) {
+    return (
+      <main>
+        <h1>Destinasi Tidak Ditemukan</h1>
+      </main>
+    );
+  }
+
+  const role = await currentUserRole();
+
+  return (
+    <DestinasiDetailPage
+      namaDestinasi={data?.namaDestinasi || ""}
+      deskripsi={data?.deskripsi || ""}
+      fasilitas={data?.fasilitas || []}
+      kategoriLokasi={data?.kategoriLokasi || ""}
+      namaOwner={data?.owner?.user?.name || ""}
+      lokasi={data?.alamat || ""}
+      jamOperasional={data?.jamOprasional || ""}
+      harga={data?.harga || 0}
+      role={role}
+    />
+  );
 }

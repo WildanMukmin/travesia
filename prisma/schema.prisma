@@ -124,28 +124,32 @@ model Destinasi {
 
 model Like {
   id        String   @id @default(uuid())
-  forumId   String   @unique
-  userId    String   @unique
+  forumId   String
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   forum     Forum    @relation(fields: [forumId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([forumId, userId]) // User hanya bisa like satu kali per forum
 }
 
 model DisLike {
   id        String   @id @default(uuid())
-  forumId   String   @unique
-  userId    String   @unique
+  forumId   String
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   forum     Forum    @relation(fields: [forumId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([forumId, userId]) // User hanya bisa dislike satu kali per forum
 }
 
 model Comment {
   id        String   @id @default(uuid())
-  forumId   String   @unique
-  userId    String   @unique
+  forumId   String
+  userId    String
   pesan     String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   forum     Forum    @relation(fields: [forumId], references: [id], onDelete: Cascade)
@@ -163,20 +167,24 @@ model Notifikasi {
 }
 
 model Image {
-  id          String @id @default(uuid())
-  userId      String @unique
-  forumId     String @unique
-  blogId      String @unique
-  destinasiId String @unique
-  namaFoto    String
-  gambar      String
+  id       String @id @default(uuid())
+  namaFoto String
+  gambar   String
 
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  forum     Forum     @relation(fields: [forumId], references: [id], onDelete: Cascade)
-  blog      Blog      @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  destinasi Destinasi @relation(fields: [destinasiId], references: [id], onDelete: Cascade)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  // Optional relations
+  userId      String? @unique
+  forumId     String? @unique
+  blogId      String? @unique
+  destinasiId String? @unique
+
+  // Optional relations
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  forum     Forum?     @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  blog      Blog?      @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  destinasi Destinasi? @relation(fields: [destinasiId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {

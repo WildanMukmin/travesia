@@ -9,12 +9,31 @@ import {
   BadgeCheck,
   DollarSign,
 } from "lucide-react";
+import { Role } from "@prisma/client";
 
 interface DestinasiDetailPageProps {
-  id: string;
+  role: Role;
+  namaDestinasi: string;
+  kategoriLokasi: string;
+  deskripsi: string;
+  fasilitas: string[];
+  namaOwner: string;
+  lokasi: string;
+  jamOperasional: string;
+  harga: number;
 }
 
-const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
+const DestinasiDetailPage = ({
+  role,
+  namaDestinasi,
+  kategoriLokasi,
+  deskripsi,
+  fasilitas,
+  namaOwner,
+  lokasi,
+  jamOperasional,
+  harga,
+}: DestinasiDetailPageProps) => {
   return (
     <main className="container mx-auto px-4 py-8 max-w-5xl">
       <Link
@@ -30,9 +49,9 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
         <div className="flex justify-between items-start mb-6">
           <div className="mb-4">
             <h1 className="text-4xl font-bold text-gray-900 font-serif mb-2">
-              Nama Destinasi : {id}
+              {namaDestinasi}
             </h1>
-            <span className="text-gray-600">Kategori</span>
+            <span className="text-gray-600">{kategoriLokasi}</span>
           </div>
         </div>
 
@@ -41,7 +60,7 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
           <div className="relative w-full h-96 hover:scale-105 transition mb-7">
             <Image
               src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-              alt="Scenic mountain road with view"
+              alt={namaDestinasi}
               fill
               className="object-cover"
               priority
@@ -71,52 +90,21 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
                   Tentang Destinasi
                 </h2>
-                <p className="text-gray-600 mb-6">
-                  Deskripsi Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit. Pariatur sint consequatur nam ad commodi autem eaque non
-                  placeat vero incidunt? Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Necessitatibus quod voluptatum nobis ducimus
-                  distinctio laudantium.
-                </p>
-                <p className="text-gray-600 mb-6">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio
-                  veritatis explicabo minima tempore quaerat voluptatem,
-                  possimus, consectetur corrupti pariatur tempora necessitatibus
-                  officia. Veniam, eius inventore.
-                </p>
+                <p className="text-gray-600 mb-6">{deskripsi}</p>
 
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
                   Fasilitas
                 </h2>
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   {/* Fasilitas list */}
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                      <BadgeCheck className="w-4 h-4 text-blue-600" />
+                  {fasilitas.map((fasilitas, index) => (
+                    <div key={index} className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                        <BadgeCheck className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <span className="text-gray-700">{fasilitas}</span>
                     </div>
-                    <span className="text-gray-700">Pemandu Wisata</span>
-                  </div>
-                  {/* Fasilitas list */}
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                      <BadgeCheck className="w-4 h-4 text-blue-600" />
-                    </div>
-                    <span className="text-gray-700">Pemandu Wisata</span>
-                  </div>
-                  {/* Fasilitas list */}
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                      <BadgeCheck className="w-4 h-4 text-blue-600" />
-                    </div>
-                    <span className="text-gray-700">Pemandu Wisata</span>
-                  </div>
-                  {/* Fasilitas list */}
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                      <BadgeCheck className="w-4 h-4 text-blue-600" />
-                    </div>
-                    <span className="text-gray-700">Pemandu Wisata</span>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -132,7 +120,7 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
                     <User className="w-5 h-5 text-blue-600 mt-1 mr-3" />
                     <div>
                       <h4 className="font-medium text-gray-900">Pengelola</h4>
-                      <p className="text-gray-600">Nama Owner</p>
+                      <p className="text-gray-600">{namaOwner}</p>
                     </div>
                   </div>
 
@@ -140,9 +128,7 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
                     <MapPin className="w-5 h-5 text-blue-600 mt-1 mr-3" />
                     <div>
                       <h4 className="font-medium text-gray-900">Lokasi</h4>
-                      <p className="text-gray-600">
-                        Jl. Panorama Indah No. 123, Kota Wisata
-                      </p>
+                      <p className="text-gray-600">{lokasi}</p>
                     </div>
                   </div>
 
@@ -153,7 +139,7 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
                         Jam Operasional
                       </h4>
                       <p className="text-gray-600">
-                        Setiap Hari: 08.00 - 18.00 WIB
+                        Setiap Hari: {jamOperasional} WIB
                       </p>
                     </div>
                   </div>
@@ -167,16 +153,39 @@ const DestinasiDetailPage = ({ id }: DestinasiDetailPageProps) => {
                           style: "currency",
                           currency: "IDR",
                           minimumFractionDigits: 2,
-                        }).format(10000000)}
+                        }).format(harga)}
                       </p>
                     </div>
                   </div>
                 </div>
-                <Link href="/reservasi/buat-reservasi">
-                  <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                    Buat Reservasi
-                  </Button>
-                </Link>
+                {role === Role.MEMBER && (
+                  <Link href="/reservasi/buat-reservasi">
+                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+                      Buat Reservasi
+                    </Button>
+                  </Link>
+                )}
+                {role === Role.OWNER && (
+                  <Link href="/reservasi">
+                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+                      Buat Reservasi
+                    </Button>
+                  </Link>
+                )}
+                {role === Role.ADMIN && (
+                  <Link href="/reservasi">
+                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+                      Buat Reservasi
+                    </Button>
+                  </Link>
+                )}
+                {!role && (
+                  <Link href="/login">
+                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+                      Buat Reservasi
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
