@@ -1,7 +1,6 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -14,7 +13,6 @@ interface DestinasiCardCarouselProps {
   judul: string;
   id: string;
   deskripsi: string;
-  penulis: string;
 }
 
 const DestinasiCardCarousel = ({
@@ -22,7 +20,6 @@ const DestinasiCardCarousel = ({
   judul = "",
   id = "",
   deskripsi = "",
-  penulis = "",
 }: DestinasiCardCarouselProps) => {
   return (
     <Card className="rounded-3xl w-[400px] hover:-translate-y-2 transition">
@@ -36,7 +33,6 @@ const DestinasiCardCarousel = ({
         />
       </CardHeader>
       <CardContent>
-        <CardDescription>{penulis}</CardDescription>
         <CardTitle className="text-2xl text-wrap w-full max-w-full font-semibold">
           {judul}
         </CardTitle>

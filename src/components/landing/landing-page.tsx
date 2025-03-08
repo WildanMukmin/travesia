@@ -11,8 +11,13 @@ import {
 import { Button } from "@/components/ui/button";
 import DestinasiCard from "@/components/card/card-destinasi-carousel";
 import CardBlog from "@/components/card/card-blog";
+import { Destinasi } from "@prisma/client";
 
-const LandingPage = () => {
+interface LandingPageProps {
+  destinasi: Destinasi[];
+}
+
+const LandingPage = ({ destinasi }: LandingPageProps) => {
   return (
     <main className="flex-wrap">
       {/* Featured Image with Category and Title */}
@@ -91,31 +96,39 @@ const LandingPage = () => {
           Top Destinasi ⭐
         </h2>
         <div className="flex flex-col gap-3 items-center justify-center">
-          <Carousel
-            opts={{
-              align: "start",
-            }}
-            className="w-full"
-          >
-            <CarouselContent>
-              {[1, 2, 3, 4, 5].map((item) => (
-                <CarouselItem className="md:basis-1/2 lg:basis-1/3" key={item}>
-                  <DestinasiCard
-                    src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                    judul={`Destinasi ${item}`}
-                    id={`destinasi-${item}`}
-                    deskripsi={`Deskripsi Singkat`}
-                    penulis={`Penulis ${item}`}
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-          <Link href="/destinasi">
-            <Button className="mt-5 px-8">Lihat Semua</Button>
-          </Link>
+          {destinasi.length < 1 ? (
+            <div>Belum Ada Destinasi Tersedia</div>
+          ) : (
+            <>
+              <Carousel
+                opts={{
+                  align: "start",
+                }}
+                className="w-full"
+              >
+                <CarouselContent>
+                  {destinasi.map((item) => (
+                    <CarouselItem
+                      className="md:basis-1/2 lg:basis-1/3"
+                      key={item.id}
+                    >
+                      <DestinasiCard
+                        src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                        judul={`Destinasi ${item.namaDestinasi}`}
+                        id={`destinasi-${item.id}`}
+                        deskripsi={`${item.deskripsi.slice(0, 100)}......`}
+                      />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+              <Link href="/destinasi">
+                <Button className="mt-5 px-8">Lihat Semua</Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </main>

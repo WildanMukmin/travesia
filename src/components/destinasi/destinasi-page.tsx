@@ -24,7 +24,12 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-const DestinasiPage = () => {
+
+interface DestinasiPageProps {
+  data: any[];
+}
+
+const DestinasiPage = ({ data }: DestinasiPageProps) => {
   return (
     <main className="mt-10 flex flex-col">
       <div className="flex justify-start mb-8">
@@ -78,17 +83,21 @@ const DestinasiPage = () => {
         </h2>
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-              <DestinasiCard
-                key={item}
-                src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                judul={`Destinasi ${item}`}
-                kategori={`Kategori-${item}`}
-                penulis={`Penulis ${item}`}
-                deskripsi="Deskripsi Singkat"
-                id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
-              />
-            ))}
+            {data.length > 0 ? (
+              data.map((field) => (
+                <DestinasiCard
+                  key={field.id}
+                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                  judul={`Destinasi ${field.namaDestinasi}`}
+                  kategori={`Kategori-${field.kategoriLokasi}`}
+                  penulis={`Owner ${field.owner.user.name}`}
+                  deskripsi={field.deskripsi.slice(0, 100)}
+                  id="jne9q8uw0rqi-weri023h9rhdf9wehq0-csdas"
+                />
+              ))
+            ) : (
+              <p>Belum ada destinasi</p>
+            )}
           </div>
         </div>
       </div>
