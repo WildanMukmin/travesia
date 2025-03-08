@@ -3,12 +3,12 @@ import * as z from "zod";
 
 export const signInSchema = z.object({
   email: z
-    .string({ required_error: "Email is required" })
-    .min(1, "Email is required")
-    .email("Invalid email"),
+    .string({ required_error: "Email Wajib di isi" })
+    .min(1, "Email Wajib di isi")
+    .email("Email Tidak Valid"),
   password: z
-    .string({ required_error: "Password is required" })
-    .min(1, "Password is required"),
+    .string({ required_error: "Password Wajib di isi" })
+    .min(1, "Password Wajib di isi"),
 });
 
 export const sighUpSchema = z
@@ -21,11 +21,25 @@ export const sighUpSchema = z
     image: z
       .instanceof(File)
       .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
-        message: "Logo must be an image file",
+        message: "Logo harus sebuah file",
       })
       .optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
+    message: "Passwords Tidak Cocok",
     path: ["confirmPassword"],
   });
+
+export const daftarDestinasiSchema = z.object({
+  userId: z.string().optional(),
+  namaDestinasi: z.string().min(1, "Nama Destinasi Wajib di isi"),
+  harga: z.string().min(1, "Nama Destinasi Wajib di isi"),
+  deskripsi: z.string().min(1, "Deskripsi Wajib di isi"),
+  alamat: z.string().min(1, "Alamat Destinasi Wajib di isi"),
+  nomorOwner: z.string().min(1, "Nomor Owner Destinasi Wajib di isi"),
+  kategoriLokasi: z.string().min(1, "Lokasi Destinasi Wajib di isi"),
+  jamOprasional: z.string().min(1, "Jam Oprasional Wajib di isi"),
+  fasilitas: z
+    .array(z.string())
+    .min(1, "Setidaknya berikan 1 fasilitas utama anda"),
+});

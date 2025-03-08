@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { startTransition, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FormSuccess } from "@/components/auth/form-succsess";
 import { FormError } from "@/components/auth/form-error";
 import * as z from "zod";
 import { sighUpSchema } from "@/lib/zod";

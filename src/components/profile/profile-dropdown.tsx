@@ -28,7 +28,7 @@ const ProfileDropdown = ({ name }: ProfileDropdownProps) => {
               alt="wildan mukmin"
             />
             <AvatarFallback>
-              <User height={15} width={15} />
+              <User height={25} width={25} className="text-black" />
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>

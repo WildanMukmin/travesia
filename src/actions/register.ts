@@ -5,10 +5,10 @@ import * as z from "zod";
 import { getUserByEmail } from "@/data/user";
 import { sighUpSchema } from "@/lib/zod";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { signIn } from "@/auth";
+import { Role } from "@prisma/client";
 
 export const register = async (value: z.infer<typeof sighUpSchema>) => {
   const validatedFields = sighUpSchema.safeParse(value);
@@ -30,7 +30,7 @@ export const register = async (value: z.infer<typeof sighUpSchema>) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       name,
       email,
@@ -38,8 +38,26 @@ export const register = async (value: z.infer<typeof sighUpSchema>) => {
       role: role ?? undefined,
     },
   });
+
+  if (role === Role.OWNER) {
+    await prisma.owner.create({
+      data: {
+        userId: user.id,
+      },
+    });
+  } else if (role === Role.MEMBER) {
+    await prisma.member.create({
+      data: {
+        userId: user.id,
+      },
+    });
+  }
+
+  if (!user.id) {
+    return { error: "Registrasi gagal, silahkan coba lagi!" };
+  }
+
   revalidatePath(DEFAULT_LOGIN_REDIRECT);
-  //   return { message: "Registrasi berhasil, silahkan login" };
   await signIn("credentials", {
     email,
     password,
