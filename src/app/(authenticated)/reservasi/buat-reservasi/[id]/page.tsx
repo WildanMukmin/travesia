@@ -1,4 +1,6 @@
+import { getDestinasiById } from "@/actions/destinasi";
 import RoleGate from "@/components/auth/role-gate";
+import ReservasiMemberBuatReservasi from "@/components/reservasi/reservasi-member-buat-reservasi";
 import { currentUser } from "@/lib/authenticate";
 import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -15,10 +17,19 @@ export default async function Page({ params }: PageProps) {
   }
 
   const user = await currentUser();
+  const destinasi = await getDestinasiById(id);
   if (user?.role === Role.MEMBER) {
     return (
       <RoleGate accessRole={Role.MEMBER}>
-        <h1>Reservasi Buat Member dengan destinasi id = {id}</h1>
+        <ReservasiMemberBuatReservasi
+          id={id}
+          namaDestinasi={destinasi?.namaDestinasi || ""}
+          deskripsi={destinasi?.deskripsi || ""}
+          harga={destinasi?.harga || 0}
+          kategoriLokasi={destinasi?.kategoriLokasi || ""}
+          nomorOwner={destinasi?.nomorOwner || ""}
+          alamatDestinasi={destinasi?.alamat || ""}
+        />
       </RoleGate>
     );
   }
