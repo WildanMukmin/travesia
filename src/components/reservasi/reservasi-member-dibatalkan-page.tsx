@@ -13,7 +13,9 @@ import {
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
 import ButtonDeleteTable from "@/components/utils/button-delete-table";
+import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import { tabelData } from "./dummy-data";
+import { Role } from "@prisma/client";
 
 const ReservasiMemberDibatalkanPage = () => {
   const handleClickDetail = (id: string) => {
@@ -25,68 +27,70 @@ const ReservasiMemberDibatalkanPage = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Activity className="mr-2 h-5 w-5 text-blue-600" />
-          Tabel Reservasi Dibatalkan
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nama</TableHead>
-              <TableHead>Tanggal</TableHead>
-              <TableHead>Aktivitas</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Aksi</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tabelData.length > 0 ? (
-              tabelData.map(
-                (activity) =>
-                  activity.status === "dibatalkan" && (
-                    <TableRow key={activity.id}>
-                      <TableCell>{activity.name}</TableCell>
-                      <TableCell>{activity.date}</TableCell>
-                      <TableCell>{activity.activity}</TableCell>
-                      <TableCell>
-                        {activity.status.charAt(0).toUpperCase() +
-                          activity.status.slice(1)}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex gap-2 flex-row-reverse">
-                          <ButtonDetailTable
-                            name=""
-                            reservasiId={activity.id}
-                            content="Detail"
-                          />
-                          <ButtonDeleteTable
-                            name=""
-                            aksi={() => handleClickDelete(activity.id)}
-                            content="Hapus"
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ),
-              )
-            ) : (
+    <ReservasiWrapComponent role={Role.MEMBER}>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Activity className="mr-2 h-5 w-5 text-blue-600" />
+            Tabel Reservasi Dibatalkan
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={4}>
-                  <AlertTable
-                    detail="Belum ada reservasi"
-                    title="Data Kosong"
-                  />
-                </TableCell>
+                <TableHead>Nama</TableHead>
+                <TableHead>Tanggal</TableHead>
+                <TableHead>Aktivitas</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Aksi</TableHead>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+            </TableHeader>
+            <TableBody>
+              {tabelData.length > 0 ? (
+                tabelData.map(
+                  (activity) =>
+                    activity.status === "dibatalkan" && (
+                      <TableRow key={activity.id}>
+                        <TableCell>{activity.name}</TableCell>
+                        <TableCell>{activity.date}</TableCell>
+                        <TableCell>{activity.activity}</TableCell>
+                        <TableCell>
+                          {activity.status.charAt(0).toUpperCase() +
+                            activity.status.slice(1)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex gap-2 flex-row-reverse">
+                            <ButtonDetailTable
+                              name=""
+                              reservasiId={activity.id}
+                              content="Detail"
+                            />
+                            <ButtonDeleteTable
+                              name=""
+                              aksi={() => handleClickDelete(activity.id)}
+                              content="Hapus"
+                            />
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )
+                )
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4}>
+                    <AlertTable
+                      detail="Belum ada reservasi"
+                      title="Data Kosong"
+                    />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </ReservasiWrapComponent>
   );
 };
 

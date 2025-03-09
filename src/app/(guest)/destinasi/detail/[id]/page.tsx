@@ -1,6 +1,6 @@
 import { getDestinasiById } from "@/actions/destinasi";
 import DestinasiDetailPage from "@/components/destinasi/destinasi-detail-page";
-import { currentUserRole } from "@/lib/authenticate";
+import { currentUser } from "@/lib/authenticate";
 
 interface PageProps {
   params: Promise<{
@@ -23,11 +23,10 @@ export default async function Page({ params }: PageProps) {
       </main>
     );
   }
-
-  const role = await currentUserRole();
-
+  const user = await currentUser();
   return (
     <DestinasiDetailPage
+      userId={data?.owner?.user?.id || ""}
       id={data?.id || ""}
       namaDestinasi={data?.namaDestinasi || ""}
       deskripsi={data?.deskripsi || ""}
@@ -37,7 +36,8 @@ export default async function Page({ params }: PageProps) {
       lokasi={data?.alamat || ""}
       jamOperasional={data?.jamOprasional || ""}
       harga={data?.harga || 0}
-      role={role}
+      role={user?.role || ""}
+      currentUserId={user?.id || ""}
     />
   );
 }

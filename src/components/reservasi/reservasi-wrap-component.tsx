@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Role } from "@prisma/client";
+
+interface ReservasiWrapComponentProps {
+  children: React.ReactNode;
+  role: Role;
+}
 
 const ReservasiWrapComponent = ({
   children,
-}: {
-  children: React.ReactNode;
-}) => {
+  role,
+}: ReservasiWrapComponentProps) => {
   return (
     <main className="flex min-h-screen bg-gray-50">
       {/* Main Content */}
@@ -15,25 +20,27 @@ const ReservasiWrapComponent = ({
         </h2>
         <div className="flex space-x-4 mb-6">
           <Link href="/reservasi">
-            <Button size={"sm"} variant={"outline"}>
+            <Button size={"sm"} variant={"default"}>
               Semua Reservasi
             </Button>
           </Link>
           <Link href="/reservasi/reservasi-selesai">
-            <Button size={"sm"} variant={"outline"}>
+            <Button size={"sm"} variant={"default"}>
               Reservasi Selesai
             </Button>
           </Link>
           <Link href="/reservasi/reservasi-dibatalkan">
-            <Button size={"sm"} variant={"outline"}>
+            <Button size={"sm"} variant={"default"}>
               Reservasi Dibatalkan
             </Button>
           </Link>
-          <Link href="/destinasi">
-            <Button size={"sm"} variant={"outline"}>
-              Buat Reservasi
-            </Button>
-          </Link>
+          {role === Role.MEMBER && (
+            <Link href="/destinasi">
+              <Button size={"sm"} variant={"default"}>
+                Buat Reservasi
+              </Button>
+            </Link>
+          )}
         </div>
 
         {children}

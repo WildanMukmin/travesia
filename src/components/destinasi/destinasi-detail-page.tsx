@@ -8,11 +8,11 @@ import {
   ArrowLeft,
   BadgeCheck,
   DollarSign,
+  SquarePen,
 } from "lucide-react";
 import { Role } from "@prisma/client";
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/breadcrumb";
 
 interface DestinasiDetailPageProps {
+  userId: string;
+  currentUserId: string;
   id: string;
   role: Role;
   namaDestinasi: string;
@@ -34,6 +36,8 @@ interface DestinasiDetailPageProps {
 }
 
 const DestinasiDetailPage = ({
+  userId,
+  currentUserId,
   id,
   role,
   namaDestinasi,
@@ -200,31 +204,35 @@ const DestinasiDetailPage = ({
                     </div>
                   </div>
                 </div>
-                {role === Role.MEMBER && (
-                  <Link href="/reservasi/buat-reservasi">
-                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                      Buat Reservasi
-                    </Button>
-                  </Link>
-                )}
-                {role === Role.OWNER && (
-                  <Link href="/reservasi">
-                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                      Buat Reservasi
-                    </Button>
-                  </Link>
-                )}
-                {role === Role.ADMIN && (
-                  <Link href="/reservasi">
-                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                      Buat Reservasi
-                    </Button>
-                  </Link>
-                )}
                 {!role && (
                   <Link href="/login">
                     <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+                      Login Akun Untuk Reservasi
+                    </Button>
+                  </Link>
+                )}
+
+                {role === Role.MEMBER && (
+                  <Link href={`/reservasi/buat-reservasi/${id}`}>
+                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
                       Buat Reservasi
+                    </Button>
+                  </Link>
+                )}
+
+                {role === Role.OWNER && currentUserId === userId && (
+                  <Link href={`/destinasi/edit-destinasi?id=${id}`}>
+                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
+                      <SquarePen />
+                      Edit Destinasi
+                    </Button>
+                  </Link>
+                )}
+
+                {role === Role.ADMIN && (
+                  <Link href="/dashboard-admin">
+                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+                      Dashboard Admin
                     </Button>
                   </Link>
                 )}
