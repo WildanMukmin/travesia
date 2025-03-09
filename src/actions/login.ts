@@ -33,10 +33,8 @@ export const login = async (data: z.infer<typeof signInSchema>) => {
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
-    console.log("Login berhasil");
     return;
   } catch (e) {
-    console.log("Login Error:", e);
     if (e instanceof AuthError) {
       switch (e.type) {
         case "CredentialsSignin":

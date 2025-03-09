@@ -8,7 +8,6 @@ import Link from "next/link";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname(); // Mendapatkan path aktif saat ini
   const isActive = (path: string) => pathname === path;
-  console.log(pathname);
   const categories = [
     {
       id: 1,

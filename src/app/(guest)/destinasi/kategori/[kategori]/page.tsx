@@ -1,3 +1,4 @@
+import { getDestinasiByKategori } from "@/actions/destinasi";
 import DestinasiKategoriPage from "@/components/destinasi/destinasi-kategori";
 
 interface PageProps {
@@ -8,6 +9,6 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { kategori } = await params;
-
-  return <DestinasiKategoriPage kategori={kategori} />;
+  const data = await getDestinasiByKategori(kategori.split("-").join(" "));
+  return <DestinasiKategoriPage data={data || []} kategori={kategori} />;
 }

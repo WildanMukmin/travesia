@@ -222,3 +222,22 @@ export const getDestinasiById = async (id: string) => {
     return null;
   }
 };
+
+export const getDestinasiByKategori = async (kategori: string) => {
+  try {
+    const destinasi = await prisma.destinasi.findMany({
+      where: { kategoriLokasi: kategori },
+      include: {
+        owner: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+    return destinasi;
+  } catch (error) {
+    console.error("Error fetching destinasi:", error);
+    return null;
+  }
+};

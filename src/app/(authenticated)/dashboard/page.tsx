@@ -26,7 +26,6 @@ export default async function Page() {
   }
   if (user?.role === Role.OWNER) {
     const data = await getOwnerDestinasi(user.id || "");
-    console.log(data);
     return (
       <RoleGate accessRole={Role.OWNER}>
         <DashboardOwnerPage data={data} />

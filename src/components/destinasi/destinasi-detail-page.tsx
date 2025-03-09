@@ -10,8 +10,18 @@ import {
   DollarSign,
 } from "lucide-react";
 import { Role } from "@prisma/client";
+import {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 interface DestinasiDetailPageProps {
+  id: string;
   role: Role;
   namaDestinasi: string;
   kategoriLokasi: string;
@@ -24,6 +34,7 @@ interface DestinasiDetailPageProps {
 }
 
 const DestinasiDetailPage = ({
+  id,
   role,
   namaDestinasi,
   kategoriLokasi,
@@ -35,7 +46,38 @@ const DestinasiDetailPage = ({
   harga,
 }: DestinasiDetailPageProps) => {
   return (
-    <main className="container mx-auto px-4 py-8 max-w-5xl">
+    <main className="mt-10 flex flex-col">
+      <div className="flex justify-start mb-8">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/destinasi">Destinasi</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link
+                  href={`/destinasi/kategori/${kategoriLokasi.split(" ").join("-")}`}
+                >
+                  {kategoriLokasi}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{namaDestinasi}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <Link
         href="/destinasi"
         className="flex items-center text-blue-600 mb-6 hover:underline w-fit"

@@ -21,6 +21,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
@@ -83,9 +84,7 @@ const DestinasiPage = ({ data }: DestinasiPageProps) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/destinasi">Destinasi</Link>
-              </BreadcrumbLink>
+              <BreadcrumbPage>Destinasi</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -129,7 +128,7 @@ const DestinasiPage = ({ data }: DestinasiPageProps) => {
                 <DestinasiCard
                   key={field.id}
                   src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                  judul={`Destinasi ${field.namaDestinasi}`}
+                  judul={`${field.namaDestinasi}`}
                   kategori={`${field.kategoriLokasi}`}
                   penulis={`Owner ${field.owner?.user?.name ?? "Unknown"}`}
                   deskripsi={field.deskripsi.slice(0, 100)}

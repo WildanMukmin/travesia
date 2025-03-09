@@ -28,6 +28,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <DestinasiDetailPage
+      id={data?.id || ""}
       namaDestinasi={data?.namaDestinasi || ""}
       deskripsi={data?.deskripsi || ""}
       fasilitas={data?.fasilitas || []}
