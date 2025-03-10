@@ -23,7 +23,7 @@ const ButtonDetailTable = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Link href={`/reservasi/detail-reservasi?id=${reservasiId}`}>
+          <Link href={`/reservasi/detail-reservasi/${reservasiId}`}>
             <Button className="rounded-full w-8 h-8">
               <Info />
             </Button>

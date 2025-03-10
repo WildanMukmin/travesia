@@ -1,27 +1,27 @@
+import { getDestinasiById } from "@/actions/destinasi";
+import { getReservasiById } from "@/actions/reservasi";
 import RoleGate from "@/components/auth/role-gate";
 import ReservasiMemberDetailPage from "@/components/reservasi/reservasi-member-detail-page";
 import { currentUser } from "@/lib/authenticate";
 import { Role } from "@prisma/client";
 
-export default async function Page() {
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
+  if (!id) {
+    return null;
+  }
   const user = await currentUser();
   if (user?.role === Role.MEMBER) {
+    const reservasi = await getReservasiById(id);
     return (
       <RoleGate accessRole={Role.MEMBER}>
-        <ReservasiMemberDetailPage
-          id={user.id || ""}
-          namaUser={user.name || ""}
-          telponUser={"097192836232"}
-          namaOwner={"Wildan Mukmin"}
-          namaDestinasi={"Pahawang"}
-          alamatDestinasi={
-            "jln pahawang no 1 lampung tengah lorem ipsum lorem ipsum lorem ipsum"
-          }
-          jumlahOrang={2}
-          tanggalReservasi={"2023-01-01"}
-          statusReservasi={"diproses"}
-          jamReservasi={new Date()}
-        />
+        <ReservasiMemberDetailPage reservasiData={reservasi} />
       </RoleGate>
     );
   }

@@ -16,12 +16,15 @@ import ButtonDeleteTable from "@/components/utils/button-delete-table";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import { tabelData } from "./dummy-data";
 import { Role } from "@prisma/client";
+import { ReservasiWithMemberAll } from "@/actions/reservasi";
 
-const ReservasiMemberDibatalkanPage = () => {
-  const handleClickDetail = (id: string) => {
-    console.log("Detail button clicked");
-  };
+interface ReservasiMemberDibatalkanPageProps {
+  reservasiData: ReservasiWithMemberAll;
+}
 
+const ReservasiMemberDibatalkanPage = ({
+  reservasiData,
+}: ReservasiMemberDibatalkanPageProps) => {
   const handleClickDelete = (id: string) => {
     console.log("Delete button clicked");
   };
@@ -47,38 +50,54 @@ const ReservasiMemberDibatalkanPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tabelData.length > 0 ? (
-                tabelData.map(
-                  (activity) =>
-                    activity.status === "dibatalkan" && (
-                      <TableRow key={activity.id}>
-                        <TableCell>{activity.name}</TableCell>
-                        <TableCell>{activity.date}</TableCell>
-                        <TableCell>{activity.activity}</TableCell>
+              {reservasiData && reservasiData.length > 0 ? (
+                (() => {
+                  const selesaiReservasi = reservasiData.filter(
+                    (data) => data.status === "dibatalkan",
+                  );
+
+                  return selesaiReservasi.length > 0 ? (
+                    selesaiReservasi.map((data) => (
+                      <TableRow key={data.id}>
+                        <TableCell>{data.namaUser}</TableCell>
                         <TableCell>
-                          {activity.status.charAt(0).toUpperCase() +
-                            activity.status.slice(1)}
+                          {new Date(data.tanggalReservasi).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell>{data.status}</TableCell>
+                        <TableCell>
+                          {data.status.charAt(0).toUpperCase() +
+                            data.status.slice(1)}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex gap-2 flex-row-reverse">
                             <ButtonDetailTable
                               name=""
-                              reservasiId={activity.id}
+                              reservasiId={data.id}
                               content="Detail"
                             />
                             <ButtonDeleteTable
                               name=""
-                              aksi={() => handleClickDelete(activity.id)}
+                              aksi={() => handleClickDelete(data.id)}
                               content="Hapus"
                             />
                           </div>
                         </TableCell>
                       </TableRow>
-                    ),
-                )
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center">
+                        <AlertTable
+                          detail="Belum ada reservasi selesai"
+                          title="Data Kosong"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })()
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4}>
+                  <TableCell colSpan={5} className="text-center">
                     <AlertTable
                       detail="Belum ada reservasi"
                       title="Data Kosong"

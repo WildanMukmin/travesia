@@ -47,7 +47,7 @@ export default async function RootLayout({
         <header className="py-4 max-w-screen-xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <Link href="/" className="text-3xl font-bold">
-              <div className="flex flex-col">
+              <div className="flex flex-col bg-transparent">
                 {/* <span>TRAVESIA</span>
                 <span className="text-[18px] font-semibold text-gray-400">
                   Travels Indonesia
@@ -156,13 +156,9 @@ export default async function RootLayout({
             {/* Footer top section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-8">
               {/* Column 1: Logo and social */}
-              <div className="space-y-6 ml-6">
+              <div className="space-y-6 ml-6 bg-transparent">
                 <Link href="/" className="text-3xl font-bold">
                   <div className="flex flex-col">
-                    {/* <span>TRAVESIA</span>
-                    <span className="text-[18px] font-semibold text-gray-400">
-                      Travels Indonesia
-                    </span> */}
                     <Image
                       src="/travesia-logo-horizontal.png"
                       alt="Logo"

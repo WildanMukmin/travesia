@@ -1,3 +1,4 @@
+import { getAllReservasiByUserId } from "@/actions/reservasi";
 import RoleGate from "@/components/auth/role-gate";
 import ReservasiMemberPage from "@/components/reservasi/reservasi-member-page";
 import ReservasiOwnerPage from "@/components/reservasi/reservasi-owner-page";
@@ -7,9 +8,10 @@ import { Role } from "@prisma/client";
 export default async function Page() {
   const user = await currentUser();
   if (user?.role === Role.MEMBER) {
+    const reservasi = await getAllReservasiByUserId(user?.id || "");
     return (
       <RoleGate accessRole={Role.MEMBER}>
-        <ReservasiMemberPage />
+        <ReservasiMemberPage reservasiData={reservasi} />
       </RoleGate>
     );
   }

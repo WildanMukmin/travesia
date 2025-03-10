@@ -13,15 +13,15 @@ import {
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
 import ButtonDeleteTable from "@/components/utils/button-delete-table";
-import { tabelData } from "./dummy-data";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import { Role } from "@prisma/client";
+import { ReservasiWithMemberAll } from "@/actions/reservasi";
 
-const ReservasiMemberPage = () => {
-  const handleClickDetail = (id: string) => {
-    console.log("Detail button clicked");
-  };
+interface ReservasiMemberPageProps {
+  reservasiData: ReservasiWithMemberAll;
+}
 
+const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
   const handleClickDelete = (id: string) => {
     console.log("Delete button clicked");
   };
@@ -47,26 +47,28 @@ const ReservasiMemberPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tabelData.length > 0 ? (
-                tabelData.map((activity) => (
-                  <TableRow key={activity.id}>
-                    <TableCell>{activity.name}</TableCell>
-                    <TableCell>{activity.date}</TableCell>
-                    <TableCell>{activity.activity}</TableCell>
+              {reservasiData && reservasiData.length > 0 ? (
+                reservasiData.map((data) => (
+                  <TableRow key={data.id}>
+                    <TableCell>{data.namaUser}</TableCell>
                     <TableCell>
-                      {activity.status.charAt(0).toUpperCase() +
-                        activity.status.slice(1)}
+                      {data.tanggalReservasi.toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>{data.status}</TableCell>
+                    <TableCell>
+                      {data.status.charAt(0).toUpperCase() +
+                        data.status.slice(1)}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-2 flex-row-reverse">
                         <ButtonDetailTable
                           name=""
-                          reservasiId={activity.id}
+                          reservasiId={data.id}
                           content="Detail"
                         />
                         <ButtonDeleteTable
                           name=""
-                          aksi={() => handleClickDelete(activity.id)}
+                          aksi={() => handleClickDelete(data.id)}
                           content="Hapus"
                         />
                       </div>

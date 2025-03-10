@@ -27,35 +27,14 @@ import AlertPage from "@/components/utils/alert-page";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import { useState } from "react";
 import { Role } from "@prisma/client";
+import { ReservasiWithMember } from "@/actions/reservasi";
 
 interface ReservasiMemberDetailPageProps {
-  id: string;
-  namaUser: string;
-  telponUser: string;
-  emailUser?: string;
-  namaOwner: string;
-  namaDestinasi: string;
-  alamatDestinasi: string;
-  jumlahOrang: number;
-  tanggalReservasi: string;
-  catatanTambahan?: string;
-  jamReservasi?: Date;
-  statusReservasi: string;
+  reservasiData: ReservasiWithMember;
 }
 
 const ReservasiMemberDetailPage = ({
-  id,
-  namaUser,
-  telponUser,
-  emailUser,
-  namaOwner,
-  namaDestinasi,
-  alamatDestinasi,
-  tanggalReservasi,
-  catatanTambahan,
-  jumlahOrang,
-  jamReservasi,
-  statusReservasi,
+  reservasiData,
 }: ReservasiMemberDetailPageProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -79,17 +58,14 @@ const ReservasiMemberDetailPage = ({
     console.log("Cancel button clicked");
   };
 
-  const formatTanggal = (tanggal: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return new Date(tanggal).toLocaleDateString("id-ID", options);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   };
 
-  if (!id) {
+  if (!reservasiData) {
     return (
       <AlertPage detail="Reservasi tidak ditemukan" title="Terjadi Kesalahan" />
     );
@@ -105,15 +81,16 @@ const ReservasiMemberDetailPage = ({
             </CardTitle>
             <Badge
               className={`${
-                statusColors[statusReservasi as keyof typeof statusColors] ||
-                "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                statusColors[
+                  reservasiData.status as keyof typeof statusColors
+                ] || "bg-gray-100 text-gray-700 hover:bg-gray-200"
               } px-3 py-1 flex items-center`}
             >
-              {statusIcons[statusReservasi as keyof typeof statusIcons]}
-              {statusReservasi}
+              {statusIcons[reservasiData.status as keyof typeof statusIcons]}
+              {reservasiData.status}
             </Badge>
           </div>
-          <p className="text-sm text-gray-500">ID: {id}</p>
+          <p className="text-sm text-gray-500">ID: {reservasiData.id}</p>
         </CardHeader>
 
         <CardContent className="space-y-6 pt-4">
@@ -126,7 +103,9 @@ const ReservasiMemberDetailPage = ({
                 <div className="flex items-center gap-3">
                   <UserIcon className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <div>
-                    <span className="font-medium block">{namaUser}</span>
+                    <span className="font-medium block">
+                      {reservasiData.namaUser}
+                    </span>
                     <span className="text-xs text-gray-500">
                       Nama Pengunjung
                     </span>
@@ -135,15 +114,17 @@ const ReservasiMemberDetailPage = ({
                 <div className="flex items-center gap-3">
                   <PhoneIcon className="w-5 h-5 text-green-600 flex-shrink-0" />
                   <div>
-                    <span className="block">{telponUser}</span>
+                    <span className="block">{reservasiData.nomorTelfon}</span>
                     <span className="text-xs text-gray-500">Nomor Telepon</span>
                   </div>
                 </div>
-                {emailUser && (
+                {reservasiData.id && (
                   <div className="flex items-center gap-3">
                     <MailIcon className="w-5 h-5 text-orange-600 flex-shrink-0" />
                     <div>
-                      <span className="block">{emailUser}</span>
+                      <span className="block">
+                        {reservasiData.member?.user.email}
+                      </span>
                       <span className="text-xs text-gray-500">Email</span>
                     </div>
                   </div>
@@ -159,16 +140,20 @@ const ReservasiMemberDetailPage = ({
                 <div className="flex items-center gap-3">
                   <UserIcon className="w-5 h-5 text-purple-600 flex-shrink-0" />
                   <div>
-                    <span className="font-medium block">{namaOwner}</span>
+                    <span className="font-medium block">
+                      {reservasiData.destinasi.owner.user.name}
+                    </span>
                     <span className="text-xs text-gray-500">Pemilik</span>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <MapPinIcon className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="block font-medium">{namaDestinasi}</span>
+                    <span className="block font-medium">
+                      {reservasiData.destinasi.namaDestinasi}
+                    </span>
                     <span className="text-sm text-gray-600 block">
-                      {alamatDestinasi}
+                      {reservasiData.destinasi.alamat}
                     </span>
                     <span className="text-xs text-gray-500">Lokasi</span>
                   </div>
@@ -188,7 +173,10 @@ const ReservasiMemberDetailPage = ({
                   <CalendarIcon className="w-5 h-5 text-indigo-600 flex-shrink-0" />
                   <div>
                     <span className="block">
-                      {formatTanggal(tanggalReservasi)}
+                      {reservasiData.tanggalReservasi.toLocaleDateString(
+                        "id-ID",
+                        options,
+                      )}
                     </span>
                     <span className="text-xs text-gray-500">
                       Tanggal Kunjungan
@@ -197,12 +185,12 @@ const ReservasiMemberDetailPage = ({
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {jamReservasi && (
+                {reservasiData.createdAt && (
                   <div className="flex items-center gap-3">
                     <Clock className="w-5 h-5 text-teal-600 flex-shrink-0" />
                     <div>
                       <span className="block">
-                        {jamReservasi.toLocaleTimeString()}
+                        {reservasiData.createdAt.toLocaleTimeString()}
                       </span>
                       <span className="text-xs text-gray-500">
                         Jam Reservasi dibuat
@@ -216,7 +204,9 @@ const ReservasiMemberDetailPage = ({
                 <div className="flex items-center gap-3">
                   <UserIcon className="w-5 h-5 text-teal-600 flex-shrink-0" />
                   <div>
-                    <span className="block">{jumlahOrang} orang</span>
+                    <span className="block">
+                      {reservasiData.jumlahOrang} orang
+                    </span>
                     <span className="text-xs text-gray-500">
                       Jumlah Pengunjung
                     </span>
@@ -224,12 +214,14 @@ const ReservasiMemberDetailPage = ({
                 </div>
               </div>
 
-              {catatanTambahan && (
+              {reservasiData.catatanTambahan && (
                 <div className="bg-gray-50 p-3 rounded-md">
                   <h4 className="text-sm font-medium mb-1">
                     Catatan Tambahan:
                   </h4>
-                  <p className="text-sm text-gray-700">{catatanTambahan}</p>
+                  <p className="text-sm text-gray-700">
+                    {reservasiData.catatanTambahan}
+                  </p>
                 </div>
               )}
             </div>
@@ -243,7 +235,11 @@ const ReservasiMemberDetailPage = ({
                   <DollarSign className="w-5 h-5 text-purple-600 flex-shrink-0" />
                   <div>
                     <span className="font-medium block">
-                      Rp 1000.000.000,00
+                      {new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 2, // Menghapus desimal jika tidak diperlukan
+                      }).format(reservasiData.totalHarga)}
                     </span>
                     <span className="text-xs text-gray-500">Pembayaran</span>
                   </div>
@@ -255,7 +251,7 @@ const ReservasiMemberDetailPage = ({
           <div className="space-y-4 "></div>
         </CardContent>
 
-        {statusReservasi === "diproses" && (
+        {reservasiData.status === "diproses" && (
           <CardFooter className="flex gap-3 justify-end pt-0">
             <Button
               variant="outline"
