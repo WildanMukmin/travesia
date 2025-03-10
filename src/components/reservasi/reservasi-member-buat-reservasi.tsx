@@ -12,36 +12,40 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useRef, useState } from "react";
+import { startTransition, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
-import { ArrowLeft, Plus, X } from "lucide-react";
-import { daftarDestinasiSchema } from "@/lib/zod";
+import { ArrowLeft } from "lucide-react";
+import { buatReservasiSchema } from "@/lib/zod";
 import { FormError } from "@/components/auth/form-error";
-import { daftarDestinasi } from "@/actions/destinasi";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { buatReservasi } from "@/actions/reservasi";
 
 interface ReservasiMemberBuatReservasiProps {
-  id: string;
+  destinasiId: string;
+  userId: string;
   namaDestinasi: string;
   deskripsi: string;
-  harga: number;
+  harga: string;
   kategoriLokasi: string;
   nomorOwner: string;
   alamatDestinasi: string;
 }
 
 const ReservasiMemberBuatReservasi = ({
-  id,
+  destinasiId,
+  userId,
   namaDestinasi,
   deskripsi,
   harga,
@@ -51,85 +55,36 @@ const ReservasiMemberBuatReservasi = ({
 }: ReservasiMemberBuatReservasiProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
-  const [facilitiesInput, setFacilitiesInput] = useState("");
-  const kategoriLokasiData = [
-    "Aceh",
-    "Bali",
-    "Banten",
-    "Bengkulu",
-    "DI Yogyakarta",
-    "DKI Jakarta",
-    "Gorontalo",
-    "Jambi",
-    "Jawa Barat",
-    "Jawa Tengah",
-    "Jawa Timur",
-    "Kalimantan Barat",
-    "Kalimantan Selatan",
-    "Kalimantan Tengah",
-    "Kalimantan Timur",
-    "Kalimantan Utara",
-    "Kepulauan Bangka Belitung",
-    "Kepulauan Riau",
-    "Lampung",
-    "Maluku",
-    "Maluku Utara",
-    "Nusa Tenggara Barat",
-    "Nusa Tenggara Timur",
-    "Papua",
-    "Papua Barat",
-    "Papua Barat Daya",
-    "Papua Pegunungan",
-    "Papua Selatan",
-    "Papua Tengah",
-    "Riau",
-    "Sulawesi Barat",
-    "Sulawesi Selatan",
-    "Sulawesi Tengah",
-    "Sulawesi Tenggara",
-    "Sulawesi Utara",
-    "Sumatera Barat",
-    "Sumatera Selatan",
-    "Sumatera Utara",
-  ];
-  const form = useForm<z.infer<typeof daftarDestinasiSchema>>({
-    resolver: zodResolver(daftarDestinasiSchema),
+  const form = useForm<z.infer<typeof buatReservasiSchema>>({
+    resolver: zodResolver(buatReservasiSchema),
     defaultValues: {
-      namaDestinasi: "",
-      harga: "",
-      deskripsi: "",
-      alamat: "",
-      nomorOwner: "",
-      kategoriLokasi: "",
-      jamOprasional: "",
-      fasilitas: [],
+      userId: userId,
+      destinasiId: destinasiId,
+      namaUser: "",
+      jumlahPengunjung: "",
+      telponUser: "",
+      catatanTambahan: "",
+      tanggalReservasi: new Date(),
+      namaDestinasi: namaDestinasi,
+      deskripsi: deskripsi,
+      harga: harga,
+      kategoriLokasi: kategoriLokasi,
+      nomorOwner: nomorOwner,
+      alamatDestinasi: alamatDestinasi,
     },
   });
 
-  const handleSubmitData = (data: z.infer<typeof daftarDestinasiSchema>) => {
+  const handleSubmitData = (data: z.infer<typeof buatReservasiSchema>) => {
     setErrorMessage("");
     setIsPending(true);
     startTransition(() => {
-      daftarDestinasi(data).then((data) => {
-        if (data?.error) {
-          setErrorMessage(data?.error);
+      buatReservasi(data).then((res) => {
+        if (res?.error) {
+          setErrorMessage(res.error);
         }
       });
       setIsPending(false);
     });
-  };
-
-  const handleAddFacility = () => {
-    if (facilitiesInput.trim() !== "") {
-      const newFacility = facilitiesInput.trim();
-      const currentFacilities = form.getValues("fasilitas") || [];
-
-      if (!currentFacilities.includes(newFacility)) {
-        form.setValue("fasilitas", [...currentFacilities, newFacility]);
-      }
-
-      setFacilitiesInput("");
-    }
   };
 
   return (
@@ -154,6 +109,15 @@ const ReservasiMemberBuatReservasi = ({
               onSubmit={form.handleSubmit(handleSubmitData)}
               className="space-y-6"
             >
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-blue-800">
+                  Informasi Destinasi
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Detail tentang lokasi yang ingin Anda kunjungi
+                </p>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
@@ -166,8 +130,45 @@ const ReservasiMemberBuatReservasi = ({
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={isPending}
-                          placeholder="Masukkan nama destinasi wisata"
+                          disabled={true}
+                          className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="alamatDestinasi"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium">
+                        Alamat Destinasi
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={true}
+                          className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="kategoriLokasi"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium">Kategori</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={true}
                           className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
                         />
                       </FormControl>
@@ -185,56 +186,7 @@ const ReservasiMemberBuatReservasi = ({
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={isPending}
-                          placeholder="Contoh: 25000"
-                          className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="kategoriLokasi"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Kategori Lokasi</FormLabel>
-                      <Select
-                        disabled={isPending}
-                        onValueChange={field.onChange}
-                        value={field.value || ""}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Lokasi Destinasi Anda" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {kategoriLokasiData.map((item) => (
-                            <SelectItem key={item} value={item}>
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="jamOprasional"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-medium">
-                        Jam Operasional
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          disabled={isPending}
-                          placeholder="Contoh: 08:00 - 17:00"
+                          disabled={true}
                           className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
                         />
                       </FormControl>
@@ -246,20 +198,29 @@ const ReservasiMemberBuatReservasi = ({
 
               <Separator className="my-4" />
 
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-blue-800">
+                  Informasi Pengunjung
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Masukkan data diri Anda untuk keperluan reservasi
+                </p>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
-                  name="alamat"
+                  name="namaUser"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-medium">
-                        Alamat Lengkap
+                        Nama Lengkap
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           disabled={isPending}
-                          placeholder="Masukkan alamat lengkap destinasi"
+                          placeholder="Masukkan nama lengkap Anda"
                           className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
                         />
                       </FormControl>
@@ -270,17 +231,17 @@ const ReservasiMemberBuatReservasi = ({
 
                 <FormField
                   control={form.control}
-                  name="nomorOwner"
+                  name="telponUser"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-medium">
-                        Nomor Kontak
+                        Nomor Telepon
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           disabled={isPending}
-                          placeholder="Masukkan nomor telepon aktif"
+                          placeholder="Contoh: 08123456789"
                           className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
                         />
                       </FormControl>
@@ -291,18 +252,20 @@ const ReservasiMemberBuatReservasi = ({
 
                 <FormField
                   control={form.control}
-                  name="deskripsi"
+                  name="jumlahPengunjung"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-medium">
-                        Deskripsi Destinasi
+                        Jumlah Pengunjung
                       </FormLabel>
                       <FormControl>
-                        <textarea
+                        <Input
                           {...field}
+                          type="number"
+                          min="1"
                           disabled={isPending}
-                          placeholder="Deskripsikan destinasi wisata Anda secara detail"
-                          className="w-full min-h-24 px-3 py-2 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                          placeholder="Masukkan jumlah pengunjung"
+                          className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
                         />
                       </FormControl>
                       <FormMessage />
@@ -312,68 +275,67 @@ const ReservasiMemberBuatReservasi = ({
 
                 <FormField
                   control={form.control}
-                  name="fasilitas"
+                  name="tanggalReservasi"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="flex flex-col">
                       <FormLabel className="font-medium">
-                        Fasilitas Tersedia
+                        Tanggal Kunjungan
                       </FormLabel>
-                      <div className="flex gap-2">
-                        <FormControl>
-                          <Input
-                            value={facilitiesInput}
-                            onChange={(e) => setFacilitiesInput(e.target.value)}
-                            placeholder="Contoh: Toilet, Parkir, Wifi"
-                            disabled={isPending}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                handleAddFacility();
-                              }
-                            }}
-                            className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          />
-                        </FormControl>
-                        <Button
-                          type="button"
-                          onClick={handleAddFacility}
-                          className="bg-blue-600 hover:bg-blue-700"
-                          disabled={isPending}
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {field.value?.map((facility) => (
-                          <Badge
-                            key={facility}
-                            variant="secondary"
-                            className="px-3 py-1 bg-blue-50 text-blue-700 flex items-center gap-1"
-                          >
-                            {facility}
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
                             <Button
-                              variant="ghost"
-                              type="button"
-                              onClick={() =>
-                                field.onChange(
-                                  field.value?.filter((s) => s !== facility)
-                                )
-                              }
-                              className="h-5 w-5 p-0 ml-1 text-blue-700 hover:text-red-600 hover:bg-transparent"
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500",
+                                !field.value && "text-muted-foreground",
+                              )}
                             >
-                              <X className="h-3 w-3" />
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pilih tanggal</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
-                          </Badge>
-                        ))}
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Tambahkan fasilitas dan tekan tombol + atau Enter
-                      </p>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) => date < new Date()}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
+
+              <FormField
+                control={form.control}
+                name="catatanTambahan"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">
+                      Catatan Tambahan
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        disabled={isPending}
+                        placeholder="Masukkan catatan atau permintaan khusus (opsional)"
+                        className="border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500 min-h-32"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {errorMessage && <FormError message={errorMessage} />}
 
@@ -393,7 +355,7 @@ const ReservasiMemberBuatReservasi = ({
                   disabled={isPending}
                   className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium px-8"
                 >
-                  {isPending ? "Memuat..." : "Simpan Destinasi"}
+                  {isPending ? "Memuat..." : "Buat Reservasi"}
                 </Button>
               </div>
             </form>

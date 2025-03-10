@@ -22,10 +22,11 @@ export default async function Page({ params }: PageProps) {
     return (
       <RoleGate accessRole={Role.MEMBER}>
         <ReservasiMemberBuatReservasi
-          id={id}
+          destinasiId={id}
+          userId={user.id || ""}
           namaDestinasi={destinasi?.namaDestinasi || ""}
           deskripsi={destinasi?.deskripsi || ""}
-          harga={destinasi?.harga || 0}
+          harga={destinasi?.harga.toString() || "0"}
           kategoriLokasi={destinasi?.kategoriLokasi || ""}
           nomorOwner={destinasi?.nomorOwner || ""}
           alamatDestinasi={destinasi?.alamat || ""}

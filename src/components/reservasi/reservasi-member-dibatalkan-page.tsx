@@ -74,7 +74,7 @@ const ReservasiMemberDibatalkanPage = () => {
                           </div>
                         </TableCell>
                       </TableRow>
-                    )
+                    ),
                 )
               ) : (
                 <TableRow>

@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/table";
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
-import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import ButtonDeleteTable from "@/components/utils/button-delete-table";
+import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import { tabelData } from "./dummy-data";
 import { Role } from "@prisma/client";
 
-const ReservasiMemberSelesaiPage = () => {
+const ReservasiMemberDiprosesPage = () => {
   const handleClickDetail = (id: string) => {
     console.log("Detail button clicked");
   };
@@ -32,7 +32,7 @@ const ReservasiMemberSelesaiPage = () => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Activity className="mr-2 h-5 w-5 text-blue-600" />
-            Tabel Reservasi Selesai
+            Tabel Reservasi Dibatalkan
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -50,7 +50,7 @@ const ReservasiMemberSelesaiPage = () => {
               {tabelData.length > 0 ? (
                 tabelData.map(
                   (activity) =>
-                    activity.status === "selesai" && (
+                    activity.status === "diproses" && (
                       <TableRow key={activity.id}>
                         <TableCell>{activity.name}</TableCell>
                         <TableCell>{activity.date}</TableCell>
@@ -94,4 +94,4 @@ const ReservasiMemberSelesaiPage = () => {
   );
 };
 
-export default ReservasiMemberSelesaiPage;
+export default ReservasiMemberDiprosesPage;

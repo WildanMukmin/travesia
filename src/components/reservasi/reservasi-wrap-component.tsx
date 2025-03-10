@@ -24,6 +24,11 @@ const ReservasiWrapComponent = ({
               Semua Reservasi
             </Button>
           </Link>
+          <Link href="/reservasi/reservasi-diproses">
+            <Button size={"sm"} variant={"default"}>
+              Reservasi Diproses
+            </Button>
+          </Link>
           <Link href="/reservasi/reservasi-selesai">
             <Button size={"sm"} variant={"default"}>
               Reservasi Selesai
