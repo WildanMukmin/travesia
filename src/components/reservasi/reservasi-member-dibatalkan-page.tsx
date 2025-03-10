@@ -12,9 +12,8 @@ import {
 } from "@/components/ui/table";
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
-import ButtonDeleteTable from "@/components/utils/button-delete-table";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
-import { tabelData } from "./dummy-data";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan-table";
 import { Role } from "@prisma/client";
 import { ReservasiWithMemberAll } from "@/actions/reservasi";
 
@@ -25,7 +24,7 @@ interface ReservasiMemberDibatalkanPageProps {
 const ReservasiMemberDibatalkanPage = ({
   reservasiData,
 }: ReservasiMemberDibatalkanPageProps) => {
-  const handleClickDelete = (id: string) => {
+  const handleClickPengajuanPembatalan = (id: string) => {
     console.log("Delete button clicked");
   };
 
@@ -53,7 +52,7 @@ const ReservasiMemberDibatalkanPage = ({
               {reservasiData && reservasiData.length > 0 ? (
                 (() => {
                   const selesaiReservasi = reservasiData.filter(
-                    (data) => data.status === "dibatalkan",
+                    (data) => data.status === "dibatalkan"
                   );
 
                   return selesaiReservasi.length > 0 ? (
@@ -75,10 +74,12 @@ const ReservasiMemberDibatalkanPage = ({
                               reservasiId={data.id}
                               content="Detail"
                             />
-                            <ButtonDeleteTable
+                            <ButtonPengajuanPembatalanTable
                               name=""
-                              aksi={() => handleClickDelete(data.id)}
-                              content="Hapus"
+                              aksi={() =>
+                                handleClickPengajuanPembatalan(data.id)
+                              }
+                              content="Ajukan Pembatalan"
                             />
                           </div>
                         </TableCell>

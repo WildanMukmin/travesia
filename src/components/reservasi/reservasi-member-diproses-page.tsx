@@ -12,11 +12,10 @@ import {
 } from "@/components/ui/table";
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
-import ButtonDeleteTable from "@/components/utils/button-delete-table";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
-import { tabelData } from "./dummy-data";
 import { Role } from "@prisma/client";
 import { ReservasiWithMemberAll } from "@/actions/reservasi";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan-table";
 
 interface ReservasiMemberDiprosesPageProps {
   reservasiData: ReservasiWithMemberAll;
@@ -25,7 +24,7 @@ interface ReservasiMemberDiprosesPageProps {
 const ReservasiMemberDiprosesPage = ({
   reservasiData,
 }: ReservasiMemberDiprosesPageProps) => {
-  const handleClickDelete = (id: string) => {
+  const handleClickPengajuanPembatalan = (id: string) => {
     console.log("Delete button clicked");
   };
 
@@ -53,7 +52,7 @@ const ReservasiMemberDiprosesPage = ({
               {reservasiData && reservasiData.length > 0 ? (
                 (() => {
                   const selesaiReservasi = reservasiData.filter(
-                    (data) => data.status === "diproses",
+                    (data) => data.status === "diproses"
                   );
 
                   return selesaiReservasi.length > 0 ? (
@@ -75,10 +74,12 @@ const ReservasiMemberDiprosesPage = ({
                               reservasiId={data.id}
                               content="Detail"
                             />
-                            <ButtonDeleteTable
+                            <ButtonPengajuanPembatalanTable
                               name=""
-                              aksi={() => handleClickDelete(data.id)}
-                              content="Hapus"
+                              aksi={() =>
+                                handleClickPengajuanPembatalan(data.id)
+                              }
+                              content="Ajukan Pembatalan"
                             />
                           </div>
                         </TableCell>

@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/table";
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
-import ButtonDeleteTable from "@/components/utils/button-delete-table";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan-table";
 import { Role } from "@prisma/client";
 import { ReservasiWithMemberAll } from "@/actions/reservasi";
 
@@ -22,7 +22,7 @@ interface ReservasiMemberPageProps {
 }
 
 const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
-  const handleClickDelete = (id: string) => {
+  const handleClickPengajuanPembatalan = (id: string) => {
     console.log("Delete button clicked");
   };
 
@@ -66,10 +66,10 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
                           reservasiId={data.id}
                           content="Detail"
                         />
-                        <ButtonDeleteTable
+                        <ButtonPengajuanPembatalanTable
                           name=""
-                          aksi={() => handleClickDelete(data.id)}
-                          content="Hapus"
+                          aksi={() => handleClickPengajuanPembatalan(data.id)}
+                          content="Ajukan Pembatalan"
                         />
                       </div>
                     </TableCell>

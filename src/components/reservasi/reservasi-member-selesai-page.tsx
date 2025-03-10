@@ -13,9 +13,8 @@ import {
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
-import ButtonDeleteTable from "@/components/utils/button-delete-table";
-import { tabelData } from "./dummy-data";
 import { Role } from "@prisma/client";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan-table";
 import { ReservasiWithMemberAll } from "@/actions/reservasi";
 
 interface ReservasiMemberSelesaiPageProps {
@@ -25,8 +24,8 @@ interface ReservasiMemberSelesaiPageProps {
 const ReservasiMemberSelesaiPage = ({
   reservasiData,
 }: ReservasiMemberSelesaiPageProps) => {
-  const handleClickDelete = (id: string) => {
-    console.log("Delete button clicked");
+  const handleClickPengajuanPembatalan = (id: string) => {
+    console.log("Delete button clicked " + id);
   };
 
   return (
@@ -53,7 +52,7 @@ const ReservasiMemberSelesaiPage = ({
               {reservasiData && reservasiData.length > 0 ? (
                 (() => {
                   const selesaiReservasi = reservasiData.filter(
-                    (data) => data.status === "selesai",
+                    (data) => data.status === "selesai"
                   );
 
                   return selesaiReservasi.length > 0 ? (
@@ -75,10 +74,12 @@ const ReservasiMemberSelesaiPage = ({
                               reservasiId={data.id}
                               content="Detail"
                             />
-                            <ButtonDeleteTable
+                            <ButtonPengajuanPembatalanTable
                               name=""
-                              aksi={() => handleClickDelete(data.id)}
-                              content="Hapus"
+                              aksi={() =>
+                                handleClickPengajuanPembatalan(data.id)
+                              }
+                              content="Ajukan Pembatalan"
                             />
                           </div>
                         </TableCell>
