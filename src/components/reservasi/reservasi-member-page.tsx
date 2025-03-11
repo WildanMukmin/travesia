@@ -40,17 +40,22 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
           setSuccessMessage(res.success);
         }
         handleFilterAfterPengajuan(id);
+        if (posisi === "diproses") {
+          handleFilter("diproses");
+        }
+
         setIsLoading(false);
       });
     });
   };
 
   const handleFilter = (status: string) => {
+    const temp = reservasiData?.filter((item) => item.status === status);
     if (status === "all") {
       setPosisi("");
       setData(reservasiData);
     } else {
-      const filtered = data?.filter((item) => item.status === status);
+      const filtered = temp?.filter((item) => item.status === status);
       setData(filtered || []);
       setPosisi(status);
     }
@@ -108,7 +113,7 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
                           reservasiId={item.id}
                           content="Detail"
                         />
-                        {item.status !== "pengajuan" && (
+                        {item.status === "diproses" && (
                           <ButtonPengajuanPembatalanTable
                             name=""
                             aksi={() => handleClickPengajuanPembatalan(item.id)}
