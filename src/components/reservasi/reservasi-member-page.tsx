@@ -71,7 +71,7 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Activity className="mr-2 h-5 w-5 text-blue-600" />
-            Tabel Reservasi {posisi}
+            Tabel Reservasi {posisi.charAt(0).toUpperCase() + posisi.slice(1)}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -108,18 +108,20 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
                           reservasiId={item.id}
                           content="Detail"
                         />
-                        <ButtonPengajuanPembatalanTable
-                          name=""
-                          aksi={() => handleClickPengajuanPembatalan(item.id)}
-                          content="Ajukan Pembatalan"
-                        />
+                        {item.status !== "pengajuan" && (
+                          <ButtonPengajuanPembatalanTable
+                            name=""
+                            aksi={() => handleClickPengajuanPembatalan(item.id)}
+                            content="Ajukan Pembatalan"
+                          />
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4}>
+                  <TableCell colSpan={5}>
                     <AlertTable
                       detail="Belum ada reservasi"
                       title="Data Kosong"

@@ -45,13 +45,13 @@ const DashboardMemberPage = ({ name }: DashboardMemberPageProps) => {
     {
       title: "Perjalanan Selesai",
       value: "24",
-      link: "/reservasi/reservasi-selesai",
+      link: "/reservasi",
       icon: <MapPinCheck className="h-6 w-6 text-blue-500" />,
     },
     {
       title: "Perjalanan Dibatalkan",
       value: "11",
-      link: "/reservasi/reservasi-dibatalkan",
+      link: "/reservasi",
       icon: <MapPinX className="h-6 w-6 text-red-500" />,
     },
     {
