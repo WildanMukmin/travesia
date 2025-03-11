@@ -13,19 +13,31 @@ import {
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
-import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan-table";
 import { Role } from "@prisma/client";
-import { ReservasiWithMemberAll } from "@/actions/reservasi";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan-table";
+import {
+  pengajuanPembatalanReservasi,
+  ReservasiWithMemberAll,
+} from "@/actions/reservasi";
+import { startTransition, useState } from "react";
 
-interface ReservasiMemberDibatalkanPageProps {
+interface ReservasiMemberPengajuanPageProps {
   reservasiData: ReservasiWithMemberAll;
 }
 
-const ReservasiMemberDibatalkanPage = ({
+const ReservasiMemberPengajuanPage = ({
   reservasiData,
-}: ReservasiMemberDibatalkanPageProps) => {
+}: ReservasiMemberPengajuanPageProps) => {
+  const [successMessage, setSuccessMessage] = useState("");
   const handleClickPengajuanPembatalan = (id: string) => {
-    console.log("Delete button clicked");
+    startTransition(() => {
+      pengajuanPembatalanReservasi(id).then((res) => {
+        if (res) {
+          setSuccessMessage(res.success);
+        }
+      });
+    });
+    console.log("Delete button clicked " + id);
   };
 
   return (
@@ -34,10 +46,13 @@ const ReservasiMemberDibatalkanPage = ({
         <CardHeader>
           <CardTitle className="flex items-center">
             <Activity className="mr-2 h-5 w-5 text-blue-600" />
-            Tabel Reservasi Dibatalkan
+            Tabel Pengajuan Pembatalan
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {successMessage && (
+            <AlertTable detail={successMessage} title="Success!" />
+          )}
           <Table>
             <TableHeader>
               <TableRow>
@@ -52,7 +67,7 @@ const ReservasiMemberDibatalkanPage = ({
               {reservasiData && reservasiData.length > 0 ? (
                 (() => {
                   const selesaiReservasi = reservasiData.filter(
-                    (data) => data.status === "dibatalkan",
+                    (data) => data.status === "pengajuan",
                   );
 
                   return selesaiReservasi.length > 0 ? (
@@ -114,4 +129,4 @@ const ReservasiMemberDibatalkanPage = ({
   );
 };
 
-export default ReservasiMemberDibatalkanPage;
+export default ReservasiMemberPengajuanPage;

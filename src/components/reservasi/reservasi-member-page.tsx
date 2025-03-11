@@ -15,27 +15,69 @@ import ButtonDetailTable from "@/components/utils/button-detail-table";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan-table";
 import { Role } from "@prisma/client";
-import { ReservasiWithMemberAll } from "@/actions/reservasi";
+import {
+  pengajuanPembatalanReservasi,
+  ReservasiWithMemberAll,
+} from "@/actions/reservasi";
+import { startTransition, useState } from "react";
+import SuccessActionFeedbak from "../utils/success-action";
 
 interface ReservasiMemberPageProps {
   reservasiData: ReservasiWithMemberAll;
 }
 
 const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
+  const [data, setData] = useState(reservasiData);
+  const [posisi, setPosisi] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleClickPengajuanPembatalan = (id: string) => {
-    console.log("Delete button clicked");
+    startTransition(() => {
+      setIsLoading(true);
+      pengajuanPembatalanReservasi(id).then((res) => {
+        if (res) {
+          setSuccessMessage(res.success);
+        }
+        handleFilterAfterPengajuan(id);
+        setIsLoading(false);
+      });
+    });
   };
 
+  const handleFilter = (status: string) => {
+    if (status === "all") {
+      setPosisi("");
+      setData(reservasiData);
+    } else {
+      const filtered = data?.filter((item) => item.status === status);
+      setData(filtered || []);
+      setPosisi(status);
+    }
+  };
+
+  const handleFilterAfterPengajuan = (id: string) => {
+    const filtered = data?.map((item) => {
+      if (item.id === id) {
+        item.status = "pengajuan";
+      }
+      return item;
+    });
+    setData(filtered || []);
+  };
   return (
-    <ReservasiWrapComponent role={Role.MEMBER}>
+    <ReservasiWrapComponent handleFilter={handleFilter} role={Role.MEMBER}>
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
             <Activity className="mr-2 h-5 w-5 text-blue-600" />
-            Tabel Reservasi
+            Tabel Reservasi {posisi}
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {successMessage && (
+            <SuccessActionFeedbak detail={successMessage} title="Success!" />
+          )}
           <Table>
             <TableHeader>
               <TableRow>
@@ -47,28 +89,28 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {reservasiData && reservasiData.length > 0 ? (
-                reservasiData.map((data) => (
-                  <TableRow key={data.id}>
-                    <TableCell>{data.namaUser}</TableCell>
+              {data && data.length > 0 ? (
+                data.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.namaUser}</TableCell>
                     <TableCell>
-                      {data.tanggalReservasi.toLocaleDateString()}
+                      {item.tanggalReservasi.toLocaleDateString()}
                     </TableCell>
-                    <TableCell>{data.status}</TableCell>
+                    <TableCell>{item.destinasi.namaDestinasi}</TableCell>
                     <TableCell>
-                      {data.status.charAt(0).toUpperCase() +
-                        data.status.slice(1)}
+                      {item.status.charAt(0).toUpperCase() +
+                        item.status.slice(1)}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-2 flex-row-reverse">
                         <ButtonDetailTable
                           name=""
-                          reservasiId={data.id}
+                          reservasiId={item.id}
                           content="Detail"
                         />
                         <ButtonPengajuanPembatalanTable
                           name=""
-                          aksi={() => handleClickPengajuanPembatalan(data.id)}
+                          aksi={() => handleClickPengajuanPembatalan(item.id)}
                           content="Ajukan Pembatalan"
                         />
                       </div>

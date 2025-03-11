@@ -45,6 +45,7 @@ export const daftarDestinasiSchema = z.object({
 });
 
 export const buatReservasiSchema = z.object({
+  userOwnerId: z.string().optional(),
   userId: z.string().optional(),
   destinasiId: z.string().optional(),
   namaUser: z.string().min(1, "Silahkan isi nama anda"),

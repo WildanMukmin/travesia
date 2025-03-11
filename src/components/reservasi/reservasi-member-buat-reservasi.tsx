@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { buatReservasi } from "@/actions/reservasi";
 
 interface ReservasiMemberBuatReservasiProps {
+  userOwnerId: string;
   destinasiId: string;
   userId: string;
   namaDestinasi: string;
@@ -44,6 +45,7 @@ interface ReservasiMemberBuatReservasiProps {
 }
 
 const ReservasiMemberBuatReservasi = ({
+  userOwnerId,
   destinasiId,
   userId,
   namaDestinasi,
@@ -58,6 +60,7 @@ const ReservasiMemberBuatReservasi = ({
   const form = useForm<z.infer<typeof buatReservasiSchema>>({
     resolver: zodResolver(buatReservasiSchema),
     defaultValues: {
+      userOwnerId: userOwnerId,
       userId: userId,
       destinasiId: destinasiId,
       namaUser: "",

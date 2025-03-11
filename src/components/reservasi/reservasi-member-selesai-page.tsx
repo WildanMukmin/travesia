@@ -52,7 +52,7 @@ const ReservasiMemberSelesaiPage = ({
               {reservasiData && reservasiData.length > 0 ? (
                 (() => {
                   const selesaiReservasi = reservasiData.filter(
-                    (data) => data.status === "selesai"
+                    (data) => data.status === "selesai",
                   );
 
                   return selesaiReservasi.length > 0 ? (
@@ -62,7 +62,7 @@ const ReservasiMemberSelesaiPage = ({
                         <TableCell>
                           {new Date(data.tanggalReservasi).toLocaleDateString()}
                         </TableCell>
-                        <TableCell>{data.status}</TableCell>
+                        <TableCell>{data.destinasi.namaDestinasi}</TableCell>
                         <TableCell>
                           {data.status.charAt(0).toUpperCase() +
                             data.status.slice(1)}

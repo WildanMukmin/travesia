@@ -162,7 +162,9 @@ model Comment {
 model Notifikasi {
   id        String   @id @default(uuid())
   userId    String   @unique
+  link      String
   pesan     String   @default("Ada Pesan Baru!")
+  status    String   @default("belum-dibaca")
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

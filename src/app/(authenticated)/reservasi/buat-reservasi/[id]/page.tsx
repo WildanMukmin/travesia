@@ -22,6 +22,7 @@ export default async function Page({ params }: PageProps) {
     return (
       <RoleGate accessRole={Role.MEMBER}>
         <ReservasiMemberBuatReservasi
+          userOwnerId={destinasi?.owner?.user?.id || ""}
           destinasiId={id}
           userId={user.id || ""}
           namaDestinasi={destinasi?.namaDestinasi || ""}

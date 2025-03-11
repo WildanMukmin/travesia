@@ -23,6 +23,7 @@ export const buatReservasi = async (
     return { error: "Mohon isi form dengan benar!" };
   }
   const {
+    userOwnerId,
     userId,
     namaUser,
     telponUser,
@@ -79,6 +80,19 @@ export const buatReservasi = async (
     });
 
     idReservasi = reservasi.id;
+
+    if (!userOwnerId) {
+      return { error: "Terjadi kesalahan, silahkan login kembali 3" };
+    }
+
+    await prisma.notifikasi.create({
+      data: {
+        userId: userOwnerId,
+        pesan: "Reservasi Baru",
+        link: `/reservasi/detail-reservasi/${idReservasi}`,
+        status: "belum-dibaca",
+      },
+    });
   } catch (e) {
     console.error(e);
     return { error: "Terjadi kesalahan, silahkan login kembali 4" };
@@ -146,6 +160,23 @@ export const getReservasiById = async (id: string) => {
     });
 
     return reservasi;
+  } catch (error) {
+    console.error("Error fetching destinasi:", error);
+    return null;
+  }
+};
+
+export const pengajuanPembatalanReservasi = async (id: string) => {
+  try {
+    await prisma.reservasi.update({
+      where: {
+        id,
+      },
+      data: {
+        status: "pengajuan",
+      },
+    });
+    return { success: "Pengajuan Pembatalan Reservasi Berhasil Dikirim" };
   } catch (error) {
     console.error("Error fetching destinasi:", error);
     return null;

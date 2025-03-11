@@ -39,13 +39,15 @@ const ReservasiMemberDetailPage = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const statusColors = {
-    diproses: "bg-yellow-100 text-yellow-700 hover:bg-yellow-200",
+    diproses: "bg-blue-100 text-blue-700 hover:bg-blue-200",
+    pengajuan: "bg-yellow-100 text-yellow-700 hover:bg-yellow-200",
     selesai: "bg-green-100 text-green-700 hover:bg-green-200",
     dibatalkan: "bg-red-100 text-red-700 hover:bg-red-200",
   };
 
   const statusIcons = {
     diproses: <ClockIcon className="w-4 h-4 mr-1" />,
+    pengajuan: <ClockIcon className="w-4 h-4 mr-1" />,
     selesai: <CheckCircleIcon className="w-4 h-4 mr-1" />,
     dibatalkan: <XCircleIcon className="w-4 h-4 mr-1" />,
   };

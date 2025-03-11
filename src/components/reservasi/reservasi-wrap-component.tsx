@@ -5,11 +5,13 @@ import { Role } from "@prisma/client";
 interface ReservasiWrapComponentProps {
   children: React.ReactNode;
   role: Role;
+  handleFilter: (status: string) => void;
 }
 
 const ReservasiWrapComponent = ({
   children,
   role,
+  handleFilter,
 }: ReservasiWrapComponentProps) => {
   return (
     <main className="flex min-h-screen bg-gray-50">
@@ -19,26 +21,41 @@ const ReservasiWrapComponent = ({
           Halaman Reservasi
         </h2>
         <div className="flex space-x-4 mb-6">
-          <Link href="/reservasi">
-            <Button size={"sm"} variant={"default"}>
-              Semua Reservasi
-            </Button>
-          </Link>
-          <Link href="/reservasi/reservasi-diproses">
-            <Button size={"sm"} variant={"default"}>
-              Reservasi Diproses
-            </Button>
-          </Link>
-          <Link href="/reservasi/reservasi-selesai">
-            <Button size={"sm"} variant={"default"}>
-              Reservasi Selesai
-            </Button>
-          </Link>
-          <Link href="/reservasi/reservasi-dibatalkan">
-            <Button size={"sm"} variant={"default"}>
-              Reservasi Dibatalkan
-            </Button>
-          </Link>
+          <Button
+            onClick={() => handleFilter && handleFilter("all")}
+            size={"sm"}
+            variant={"default"}
+          >
+            Semua Reservasi
+          </Button>
+          <Button
+            onClick={() => handleFilter && handleFilter("diproses")}
+            size={"sm"}
+            variant={"default"}
+          >
+            Reservasi Diproses
+          </Button>
+          <Button
+            onClick={() => handleFilter && handleFilter("selesai")}
+            size={"sm"}
+            variant={"default"}
+          >
+            Reservasi Selesai
+          </Button>
+          <Button
+            onClick={() => handleFilter && handleFilter("dibatalkan")}
+            size={"sm"}
+            variant={"default"}
+          >
+            Reservasi Dibatalkan
+          </Button>
+          <Button
+            onClick={() => handleFilter && handleFilter("pengajuan")}
+            size={"sm"}
+            variant={"default"}
+          >
+            Pengajuan Pembatalan
+          </Button>
           {role === Role.MEMBER && (
             <Link href="/destinasi">
               <Button size={"sm"} variant={"default"}>
