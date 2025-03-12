@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Card,
@@ -17,43 +19,184 @@ import {
   DollarSign,
   ArrowRight,
   Sparkles,
+  Bell,
+  X,
 } from "lucide-react";
 import Image from "next/image";
+import AlertTable from "@/components/utils/alert-table";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ScrollArea } from "../ui/scroll-area";
+import { OwnerWithDestinasi } from "@/actions/owner";
+import {
+  deleteNotifikasi,
+  NotifikasiType,
+  updateReadNotifikasi,
+} from "@/lib/notifikasi";
+import { useState } from "react";
 
 interface DashboardOwnerPageProps {
-  data: any;
+  name: string;
+  ownerDestinasiData: OwnerWithDestinasi;
+  notifikasi: NotifikasiType;
 }
 
-const DashboardOwnerPage = ({ data }: DashboardOwnerPageProps) => {
-  const formatPrice = (price: bigint) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(Number(price));
+const DashboardOwnerPage = ({
+  name,
+  ownerDestinasiData,
+  notifikasi,
+}: DashboardOwnerPageProps) => {
+  const [notifikasiData, setNotifikasiData] = useState(notifikasi || []);
+  const [unreadCount, setUnreadCount] = useState(
+    notifikasiData?.filter((notif) => notif.status === "belum-dibaca").length ||
+      0,
+  );
+
+  const handleReadNotifikasi = async (id: string) => {
+    try {
+      const result = await updateReadNotifikasi(id);
+
+      if (result) {
+        // Update the notification status in state
+        const updatedNotifikasi = notifikasiData.map((item) => {
+          if (item.id === id) {
+            return { ...item, status: "sudah-dibaca" };
+          }
+          return item;
+        });
+        setNotifikasiData(updatedNotifikasi);
+        setUnreadCount((prevCount) => Math.max(0, prevCount - 1));
+      }
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
+
+  const handleDeleteNotifikasi = async (id: string) => {
+    try {
+      const result = await deleteNotifikasi(id);
+
+      if (result) {
+        const updatedNotifikasi = notifikasiData.filter(
+          (notif) => notif.id !== id,
+        );
+        setNotifikasiData(updatedNotifikasi);
+        setUnreadCount((prevCount) => Math.max(0, prevCount - 1));
+      }
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
   };
 
   return (
     <main className="flex flex-col bg-gray-50">
-      <section className="flex p-8">
-        <h2 className="text-3xl font-semibold mb-6 text-gray-800">
-          Welcome Back,{" "}
-          {data?.name && data.name.charAt(0).toUpperCase() + data.name.slice(1)}
+      <div className="flex justify-between items-center p-8 pb-0">
+        <h2 className="text-3xl font-semibold text-gray-800">
+          Welcome Back, {name.charAt(0).toUpperCase() + name.slice(1)}
         </h2>
-      </section>
+        <div className="relative">
+          <Sheet>
+            <SheetTrigger className="p-2 rounded-full shadow hover:shadow-md transition-all cursor-pointer">
+              <Bell className="h-6 w-6" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {unreadCount}
+                </span>
+              )}
+            </SheetTrigger>
+            <SheetContent className="w-[400px] sm:w-[700px]">
+              <SheetHeader>
+                <SheetTitle className="flex items-center">
+                  <Bell className="mr-2 h-5 w-5 text-blue-600" />
+                  Notifikasi
+                </SheetTitle>
+                <SheetDescription asChild>
+                  <CardContent>
+                    {notifikasiData.length > 0 ? (
+                      <ScrollArea className="h-[500px] w-full rounded-md">
+                        <div className="space-y-3">
+                          {notifikasiData.map((notif) => (
+                            <div
+                              key={notif.id}
+                              className={`p-4 border rounded-lg transition-all ${
+                                notif.status === "belum-dibaca"
+                                  ? "bg-blue-50 border-blue-300"
+                                  : "bg-white border-gray-200"
+                              } hover:shadow-md`}
+                            >
+                              <Button
+                                className="relative p-0 -top-3 -right-60 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center z-10"
+                                onClick={() => handleDeleteNotifikasi(notif.id)}
+                              >
+                                <X size={14} />
+                              </Button>
+                              <Link href={notif.link} className="block">
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <h4 className="font-semibold text-gray-900">
+                                      {notif.type.charAt(0).toUpperCase() +
+                                        notif.type.slice(1)}
+                                    </h4>
+                                    <p className="text-gray-600 mt-1 text-sm">
+                                      {notif.pesan}
+                                    </p>
+                                  </div>
+                                  <span className="text-xs text-gray-500">
+                                    {notif.createdAt.toLocaleDateString()}
+                                  </span>
+                                </div>
+                              </Link>
+                              {notif.status === "belum-dibaca" && (
+                                <div className="mt-2 flex justify-end">
+                                  <Button
+                                    className="text-sm text-blue-600 hover:text-blue-800"
+                                    variant="ghost"
+                                    onClick={() =>
+                                      handleReadNotifikasi(notif.id)
+                                    }
+                                  >
+                                    Tandai Sudah Dibaca
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    ) : (
+                      <div className="mt-4">
+                        <AlertTable
+                          detail="Anda belum memiliki notifikasi baru"
+                          title="Tidak ada notifikasi"
+                        />
+                      </div>
+                    )}
+                  </CardContent>
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
 
       <section className="p-8">
-        {data?.owner?.destinasi ? (
+        {ownerDestinasiData?.owner?.destinasi ? (
           <Card className="w-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
             <div className="relative w-full h-96 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
               <Image
                 src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fHww"
-                alt={data?.owner?.destinasi?.namaDestinasi}
+                alt={ownerDestinasiData?.owner?.destinasi?.namaDestinasi}
                 fill
                 className="w-full h-full object-cover"
               />
-              {data?.owner?.destinasi?.buka ? (
+              {ownerDestinasiData?.owner?.destinasi?.buka ? (
                 <Badge className="absolute top-4 right-4 z-20 bg-green-500 hover:bg-green-600">
                   Buka
                 </Badge>
@@ -67,13 +210,13 @@ const DashboardOwnerPage = ({ data }: DashboardOwnerPageProps) => {
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  {data?.owner?.destinasi?.namaDestinasi}
+                  {ownerDestinasiData?.owner?.destinasi?.namaDestinasi}
                 </h2>
                 <Badge
                   variant="outline"
                   className="bg-blue-20 text-xl text-blue-700 border-blue-200"
                 >
-                  {data?.owner?.destinasi?.kategoriLokasi}
+                  {ownerDestinasiData?.owner?.destinasi?.kategoriLokasi}
                 </Badge>
               </div>
             </CardHeader>
@@ -83,14 +226,14 @@ const DashboardOwnerPage = ({ data }: DashboardOwnerPageProps) => {
                 <div className="md:col-span-2">
                   <div className="prose max-w-none">
                     <p className="text-gray-600 mb-6">
-                      {data?.owner?.destinasi?.deskripsi}
+                      {ownerDestinasiData?.owner?.destinasi?.deskripsi}
                     </p>
 
                     <h2 className="text-2xl font-bold text-gray-800 mb-4">
                       Fasilitas
                     </h2>
                     <div className="grid grid-cols-2 gap-4 mb-6">
-                      {data?.owner?.destinasi?.fasilitas?.map(
+                      {ownerDestinasiData?.owner?.destinasi?.fasilitas?.map(
                         (fasilitas: string, index: number) => (
                           <div className="flex items-center" key={index}>
                             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
@@ -117,7 +260,9 @@ const DashboardOwnerPage = ({ data }: DashboardOwnerPageProps) => {
                           <h4 className="font-medium text-gray-900">
                             Pengelola
                           </h4>
-                          <p className="text-gray-600">{data?.name}</p>
+                          <p className="text-gray-600">
+                            {ownerDestinasiData?.name}
+                          </p>
                         </div>
                       </div>
 
@@ -126,7 +271,7 @@ const DashboardOwnerPage = ({ data }: DashboardOwnerPageProps) => {
                         <div>
                           <h4 className="font-medium text-gray-900">Lokasi</h4>
                           <p className="text-gray-600">
-                            {data?.owner?.destinasi?.alamat}
+                            {ownerDestinasiData?.owner?.destinasi?.alamat}
                           </p>
                         </div>
                       </div>
@@ -138,7 +283,7 @@ const DashboardOwnerPage = ({ data }: DashboardOwnerPageProps) => {
                             Jam Operasional
                           </h4>
                           <p className="text-gray-600">
-                            {data?.owner?.destinasi.jamOprasional}
+                            {ownerDestinasiData?.owner?.destinasi.jamOprasional}
                           </p>
                         </div>
                       </div>
@@ -154,7 +299,11 @@ const DashboardOwnerPage = ({ data }: DashboardOwnerPageProps) => {
                               style: "currency",
                               currency: "IDR",
                               minimumFractionDigits: 2,
-                            }).format(Number(data?.owner?.destinasi?.harga))}
+                            }).format(
+                              Number(
+                                ownerDestinasiData?.owner?.destinasi?.harga,
+                              ),
+                            )}
                           </p>
                         </div>
                       </div>
@@ -167,13 +316,14 @@ const DashboardOwnerPage = ({ data }: DashboardOwnerPageProps) => {
             <CardFooter className="flex justify-between pt-2 border-t">
               <div className="text-sm text-gray-500 flex items-center">
                 <Info className="w-4 h-4 mr-1" />
-                ID: {data?.owner?.destinasi?.id.substring(0, 8)}...
+                ID: {ownerDestinasiData?.owner?.destinasi?.id.substring(0, 8)}
+                ...
               </div>
               <Link
-                href={`/destinasi/edit-destinasi?id=${data?.owner?.destinasi?.id}`}
+                href={`/destinasi/edit-destinasi?id=${ownerDestinasiData?.owner?.destinasi?.id}`}
               >
                 <Button size={"sm"}>
-                  <SquarePen />
+                  <SquarePen className="mr-2 h-4 w-4" />
                   Edit Destinasi
                 </Button>
               </Link>

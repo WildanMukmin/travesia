@@ -94,7 +94,7 @@ const DashboardMemberPage = ({
                   <Bell className="mr-2 h-5 w-5 text-blue-600" />
                   Notifikasi
                 </SheetTitle>
-                <SheetDescription>
+                <SheetDescription asChild>
                   <CardContent>
                     {notifications.length > 0 ? (
                       <ScrollArea className="h-[500px] w-full rounded-md border">

@@ -8,6 +8,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { getOwnerDestinasi } from "@/actions/owner";
 import { getAllReservasiByUserId } from "@/actions/reservasi";
+import { getNotificationByUserId } from "@/lib/notifikasi";
 
 export default async function Page() {
   const user = await currentUser();
@@ -31,9 +32,14 @@ export default async function Page() {
   }
   if (user?.role === Role.OWNER) {
     const data = await getOwnerDestinasi(user.id || "");
+    const notifikasi = await getNotificationByUserId(user.id || "");
     return (
       <RoleGate accessRole={Role.OWNER}>
-        <DashboardOwnerPage data={data} />
+        <DashboardOwnerPage
+          ownerDestinasiData={data}
+          name={user.name || "Owner"}
+          notifikasi={notifikasi}
+        />
       </RoleGate>
     );
   }

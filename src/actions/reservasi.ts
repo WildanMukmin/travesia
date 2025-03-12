@@ -88,7 +88,8 @@ export const buatReservasi = async (
     await prisma.notifikasi.create({
       data: {
         userId: userOwnerId,
-        pesan: "Reservasi Baru",
+        type: "reservasi",
+        pesan: "Reservasi Baru Masuk Silahkan Check Daftar Reservasi!",
         link: `/reservasi/detail-reservasi/${idReservasi}`,
         status: "belum-dibaca",
       },

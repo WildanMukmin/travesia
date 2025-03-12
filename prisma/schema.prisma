@@ -161,8 +161,9 @@ model Comment {
 
 model Notifikasi {
   id        String   @id @default(uuid())
-  userId    String   @unique
+  userId    String
   link      String
+  type      String
   pesan     String   @default("Ada Pesan Baru!")
   status    String   @default("belum-dibaca")
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
