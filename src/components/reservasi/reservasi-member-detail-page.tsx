@@ -183,7 +183,7 @@ const ReservasiMemberDetailPage = ({
                       <span className="block">
                         {reservasiData.tanggalReservasi.toLocaleDateString(
                           "id-ID",
-                          options
+                          options,
                         )}
                       </span>
                       <span className="text-xs text-gray-500">
