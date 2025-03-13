@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -24,23 +23,22 @@ import {
   Backpack,
 } from "lucide-react";
 import AlertPage from "@/components/utils/alert-page";
-import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import { startTransition, useState } from "react";
-import { Role } from "@prisma/client";
 import {
-  pengajuanPembatalanReservasi,
+  penerimaanPengajuanPembatalanReservasi,
   ReservasiWithMember,
 } from "@/actions/reservasi";
 import ButtonPengajuanPembatalanTable from "../utils/button-pengajuan-pembatalan";
+import { Role } from "@prisma/client";
 import SuccessActionFeedbak from "../utils/success-action";
 
-interface ReservasiMemberDetailPageProps {
+interface ReservasiOwnerDetailPageProps {
   reservasiData: ReservasiWithMember;
 }
 
-const ReservasiMemberDetailPage = ({
+const ReservasiOwnerDetailPage = ({
   reservasiData,
-}: ReservasiMemberDetailPageProps) => {
+}: ReservasiOwnerDetailPageProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState(reservasiData);
   const [successMessage, setSuccessMessage] = useState("");
@@ -59,6 +57,22 @@ const ReservasiMemberDetailPage = ({
     dibatalkan: <XCircleIcon className="w-4 h-4 mr-1" />,
   };
 
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  if (!reservasiData || !data) {
+    return (
+      <AlertPage detail="Reservasi tidak ditemukan" title="Terjadi Kesalahan" />
+    );
+  }
+  // console.log(
+  //   `id reservasi : ${data.id}  id owner : ${data.destinasi.ownerId},  id member : ${data.member?.userId || ""}`
+  // );
+
   const handleClickPengajuanPembatalan = (
     id: string,
     userOwnerId: string,
@@ -67,7 +81,7 @@ const ReservasiMemberDetailPage = ({
     startTransition(() => {
       setIsLoading(true);
 
-      pengajuanPembatalanReservasi(id, userOwnerId, userMemberId)
+      penerimaanPengajuanPembatalanReservasi(id, userOwnerId, userMemberId)
         .then((res) => {
           if (res?.success) {
             setSuccessMessage(res.success);
@@ -77,7 +91,7 @@ const ReservasiMemberDetailPage = ({
               prevData
                 ? {
                     ...prevData,
-                    status: "pengajuan",
+                    status: "dibatalkan",
                     member: prevData.member ?? null,
                     destinasi: prevData.destinasi ?? null, // Pastikan properti penting tetap ada
                   }
@@ -93,22 +107,6 @@ const ReservasiMemberDetailPage = ({
         });
     });
   };
-  const handleComplete = async () => {
-    console.log("Cancel button clicked");
-  };
-
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-
-  if (!reservasiData) {
-    return (
-      <AlertPage detail="Reservasi tidak ditemukan" title="Terjadi Kesalahan" />
-    );
-  }
 
   return (
     <main className="flex min-h-screen bg-gray-50">
@@ -127,15 +125,15 @@ const ReservasiMemberDetailPage = ({
               </CardTitle>
               <Badge
                 className={`${
-                  statusColors[data?.status as keyof typeof statusColors] ||
+                  statusColors[data.status as keyof typeof statusColors] ||
                   "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 } px-3 py-1 flex items-center`}
               >
-                {statusIcons[data?.status as keyof typeof statusIcons]}
-                {data?.status}
+                {statusIcons[data.status as keyof typeof statusIcons]}
+                {data.status}
               </Badge>
             </div>
-            <p className="text-sm text-gray-500">ID: {data?.id}</p>
+            <p className="text-sm text-gray-500">ID: {data.id}</p>
           </CardHeader>
 
           <CardContent className="space-y-6 pt-4">
@@ -148,9 +146,7 @@ const ReservasiMemberDetailPage = ({
                   <div className="flex items-center gap-3">
                     <UserIcon className="w-5 h-5 text-blue-600 flex-shrink-0" />
                     <div>
-                      <span className="font-medium block">
-                        {data?.namaUser}
-                      </span>
+                      <span className="font-medium block">{data.namaUser}</span>
                       <span className="text-xs text-gray-500">
                         Nama Pengunjung
                       </span>
@@ -159,19 +155,17 @@ const ReservasiMemberDetailPage = ({
                   <div className="flex items-center gap-3">
                     <PhoneIcon className="w-5 h-5 text-green-600 flex-shrink-0" />
                     <div>
-                      <span className="block">{data?.nomorTelfon}</span>
+                      <span className="block">{data.nomorTelfon}</span>
                       <span className="text-xs text-gray-500">
                         Nomor Telepon
                       </span>
                     </div>
                   </div>
-                  {data?.id && (
+                  {data.id && (
                     <div className="flex items-center gap-3">
                       <MailIcon className="w-5 h-5 text-orange-600 flex-shrink-0" />
                       <div>
-                        <span className="block">
-                          {data?.member?.user.email}
-                        </span>
+                        <span className="block">{data.member?.user.email}</span>
                         <span className="text-xs text-gray-500">Email</span>
                       </div>
                     </div>
@@ -188,7 +182,7 @@ const ReservasiMemberDetailPage = ({
                     <UserIcon className="w-5 h-5 text-purple-600 flex-shrink-0" />
                     <div>
                       <span className="font-medium block">
-                        {data?.destinasi.owner.user.name}
+                        {data.destinasi.owner.user.name}
                       </span>
                       <span className="text-xs text-gray-500">Pemilik</span>
                     </div>
@@ -197,10 +191,10 @@ const ReservasiMemberDetailPage = ({
                     <MapPinIcon className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="block font-medium">
-                        {data?.destinasi.namaDestinasi}
+                        {data.destinasi.namaDestinasi}
                       </span>
                       <span className="text-sm text-gray-600 block">
-                        {data?.destinasi.alamat}
+                        {data.destinasi.alamat}
                       </span>
                       <span className="text-xs text-gray-500">Lokasi</span>
                     </div>
@@ -220,7 +214,7 @@ const ReservasiMemberDetailPage = ({
                     <CalendarIcon className="w-5 h-5 text-indigo-600 flex-shrink-0" />
                     <div>
                       <span className="block">
-                        {data?.tanggalReservasi.toLocaleDateString(
+                        {data.tanggalReservasi.toLocaleDateString(
                           "id-ID",
                           options
                         )}
@@ -232,12 +226,12 @@ const ReservasiMemberDetailPage = ({
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {data?.createdAt && (
+                  {data.createdAt && (
                     <div className="flex items-center gap-3">
                       <Clock className="w-5 h-5 text-teal-600 flex-shrink-0" />
                       <div>
                         <span className="block">
-                          {data?.createdAt.toLocaleTimeString()}
+                          {data.createdAt.toLocaleTimeString()}
                         </span>
                         <span className="text-xs text-gray-500">
                           Jam Reservasi dibuat
@@ -251,7 +245,7 @@ const ReservasiMemberDetailPage = ({
                   <div className="flex items-center gap-3">
                     <UserIcon className="w-5 h-5 text-teal-600 flex-shrink-0" />
                     <div>
-                      <span className="block">{data?.jumlahOrang} orang</span>
+                      <span className="block">{data.jumlahOrang} orang</span>
                       <span className="text-xs text-gray-500">
                         Jumlah Pengunjung
                       </span>
@@ -259,13 +253,13 @@ const ReservasiMemberDetailPage = ({
                   </div>
                 </div>
 
-                {data?.catatanTambahan && (
+                {data.catatanTambahan && (
                   <div className="bg-gray-50 p-3 rounded-md">
                     <h4 className="text-sm font-medium mb-1">
                       Catatan Tambahan:
                     </h4>
                     <p className="text-sm text-gray-700">
-                      {data?.catatanTambahan}
+                      {data.catatanTambahan}
                     </p>
                   </div>
                 )}
@@ -284,7 +278,7 @@ const ReservasiMemberDetailPage = ({
                           style: "currency",
                           currency: "IDR",
                           minimumFractionDigits: 2, // Menghapus desimal jika tidak diperlukan
-                        }).format(data?.totalHarga || 0)}
+                        }).format(data.totalHarga)}
                       </span>
                       <span className="text-xs text-gray-500">Pembayaran</span>
                     </div>
@@ -296,30 +290,22 @@ const ReservasiMemberDetailPage = ({
             <div className="space-y-4 "></div>
           </CardContent>
 
-          {data?.status === "diproses" && (
+          {data.status === "pengajuan" && (
             <CardFooter className="flex gap-3 justify-end pt-0">
               <ButtonPengajuanPembatalanTable
-                role={Role.MEMBER}
+                role={Role.OWNER}
                 isLoading={isLoading}
                 typeButton="button"
-                name="Ajukan Pembatalan"
+                name="Terima Pengajuan Pembatalan Reservasi"
                 aksi={() =>
                   handleClickPengajuanPembatalan(
-                    data?.id || "",
-                    data?.destinasi.owner.userId || "",
-                    data?.member?.userId || ""
+                    data.id,
+                    data.destinasi.owner.userId || "",
+                    data.member?.userId || ""
                   )
                 }
-                content="Ajukan Pembatalan"
+                content="Terima Pengajuan"
               />
-              <Button
-                onClick={handleComplete}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-                disabled={isLoading}
-              >
-                <Backpack className="w-4 h-4 mr-2" />
-                Bayar
-              </Button>
             </CardFooter>
           )}
         </Card>
@@ -328,4 +314,4 @@ const ReservasiMemberDetailPage = ({
   );
 };
 
-export default ReservasiMemberDetailPage;
+export default ReservasiOwnerDetailPage;

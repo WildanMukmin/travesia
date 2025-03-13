@@ -16,7 +16,7 @@ export type ReservasiWithMember = Prisma.PromiseReturnType<
 >;
 
 export const buatReservasi = async (
-  data: z.infer<typeof buatReservasiSchema>,
+  data: z.infer<typeof buatReservasiSchema>
 ) => {
   const validatedFields = buatReservasiSchema.safeParse(data);
   if (!validatedFields.success) {
@@ -40,7 +40,7 @@ export const buatReservasi = async (
   }
   const validJumlahTiket = parseInt(
     jumlahPengunjung.replace(/[^0-9]/g, ""),
-    10,
+    10
   );
   if (isNaN(validJumlahTiket) || validJumlahTiket <= 0) {
     return { error: "Jumlah Pengunjung Tidak Valid, Minimal isi 1" };
@@ -94,6 +94,16 @@ export const buatReservasi = async (
         status: "belum-dibaca",
       },
     });
+
+    await prisma.notifikasi.create({
+      data: {
+        userId: userId,
+        type: "reservasi",
+        pesan: "Reservasi Berhasil Dibuat!",
+        link: `/reservasi/detail-reservasi/${idReservasi}`,
+        status: "belum-dibaca",
+      },
+    });
   } catch (e) {
     console.error(e);
     return { error: "Terjadi kesalahan, silahkan login kembali 4" };
@@ -121,7 +131,11 @@ export const getAllReservasiByUserId = async (id: string) => {
         memberId: user.member.id,
       },
       include: {
-        destinasi: true,
+        destinasi: {
+          include: {
+            owner: true,
+          },
+        },
         member: true,
       },
       orderBy: {
@@ -166,20 +180,83 @@ export const getReservasiById = async (id: string) => {
     return null;
   }
 };
-
-export const pengajuanPembatalanReservasi = async (id: string) => {
+export const pengajuanPembatalanReservasi = async (
+  id: string,
+  userOwnerId: string,
+  userMemberId: string
+) => {
   try {
-    await prisma.reservasi.update({
-      where: {
-        id,
-      },
-      data: {
-        status: "pengajuan",
-      },
-    });
+    await prisma.$transaction([
+      prisma.reservasi.update({
+        where: {
+          id,
+        },
+        data: {
+          status: "pengajuan",
+        },
+      }),
+      prisma.notifikasi.create({
+        data: {
+          userId: userOwnerId,
+          type: "pengajuan",
+          pesan: "Pengajuan Pembatalan Reservasi",
+          link: `/reservasi/detail-reservasi/${id}`,
+          status: "belum-dibaca",
+        },
+      }),
+      prisma.notifikasi.create({
+        data: {
+          userId: userMemberId,
+          type: "pengajuan",
+          pesan: "Pengajuan Pembatalan Reservasi Berhasil Dikirim",
+          link: `/reservasi/detail-reservasi/${id}`,
+          status: "belum-dibaca",
+        },
+      }),
+    ]);
+
     return { success: "Pengajuan Pembatalan Reservasi Berhasil Dikirim" };
   } catch (error) {
-    console.error("Error fetching destinasi:", error);
-    return null;
+    console.error("Error pengajuan pembatalan reservasi:", error);
+    return { error: "Terjadi kesalahan dalam pengajuan pembatalan reservasi" };
+  }
+};
+
+export const penerimaanPengajuanPembatalanReservasi = async (
+  id: string,
+  userOwnerId: string,
+  userMemberId: string
+) => {
+  try {
+    // Gunakan Prisma Transaction agar semua operasi berhasil atau gagal sekaligus
+    await prisma.$transaction([
+      prisma.reservasi.update({
+        where: { id },
+        data: { status: "dibatalkan" },
+      }),
+      prisma.notifikasi.create({
+        data: {
+          userId: userOwnerId,
+          type: "pengajuan",
+          pesan: "Pengajuan Pembatalan Reservasi Berhasil Dibatalkan",
+          link: `/reservasi/detail-reservasi/${id}`,
+          status: "belum-dibaca",
+        },
+      }),
+      prisma.notifikasi.create({
+        data: {
+          userId: userMemberId,
+          type: "pengajuan",
+          pesan: "Pengajuan Pembatalan Reservasi Diterima",
+          link: `/reservasi/detail-reservasi/${id}`,
+          status: "belum-dibaca",
+        },
+      }),
+    ]);
+
+    return { success: "Pengajuan Pembatalan Reservasi Sukses" };
+  } catch (error) {
+    console.error("Error dalam pembatalan reservasi:", error);
+    return { error: "Gagal membatalkan reservasi" };
   }
 };

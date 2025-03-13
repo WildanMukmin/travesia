@@ -21,11 +21,13 @@ export default async function Page() {
   }
   if (user?.role === Role.MEMBER && user.id) {
     const reservasiData = await getAllReservasiByUserId(user.id);
+    const notifikasi = await getNotificationByUserId(user.id || "");
     return (
       <RoleGate accessRole={Role.MEMBER}>
         <DashboardMemberPage
           name={user.name || "Member"}
           reservasiData={reservasiData}
+          notifikasi={notifikasi}
         />
       </RoleGate>
     );

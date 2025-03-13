@@ -1,4 +1,6 @@
-import { Activity, MapPinCheck, MapPinX, Plane, Bell } from "lucide-react";
+"use client";
+
+import { Activity, MapPinCheck, MapPinX, Plane, Bell, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -19,36 +21,74 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  deleteNotifikasi,
+  NotifikasiType,
+  updateReadNotifikasi,
+} from "@/lib/notifikasi";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface DashboardMemberPageProps {
   name: string;
   reservasiData: ReservasiWithMemberAll;
-}
-
-// Add a sample notification interface
-interface Notification {
-  id: string;
-  title: string;
-  message: string;
-  date: Date;
-  read: boolean;
+  notifikasi: NotifikasiType;
 }
 
 const DashboardMemberPage = ({
   name,
   reservasiData,
+  notifikasi,
 }: DashboardMemberPageProps) => {
   const perjalananSelesaiCount = reservasiData?.filter(
-    (item) => item.status === "selesai",
+    (item) => item.status === "selesai"
   ).length;
   const perjalananDibatalkanCount = reservasiData?.filter(
-    (item) => item.status === "dibatalkan",
+    (item) => item.status === "dibatalkan"
   ).length;
 
-  const notifications: Notification[] = [];
+  const [notifikasiData, setNotifikasiData] = useState(notifikasi || []);
+  const [unreadCount, setUnreadCount] = useState(
+    notifikasiData?.filter((notif) => notif.status === "belum-dibaca").length ||
+      0
+  );
 
-  const unreadCount = notifications.filter((notif) => !notif.read).length;
+  const handleReadNotifikasi = async (id: string) => {
+    try {
+      const result = await updateReadNotifikasi(id);
+
+      if (result) {
+        // Update the notif status in state
+        const updatedNotifikasi = notifikasiData.map((item) => {
+          if (item.id === id) {
+            return { ...item, status: "sudah-dibaca" };
+          }
+          return item;
+        });
+        setNotifikasiData(updatedNotifikasi);
+        setUnreadCount((prevCount) => Math.max(0, prevCount - 1));
+      }
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
+
+  const handleDeleteNotifikasi = async (id: string) => {
+    try {
+      const result = await deleteNotifikasi(id);
+
+      if (result) {
+        const updatedNotifikasi = notifikasiData.filter(
+          (notif) => notif.id !== id
+        );
+        setNotifikasiData(updatedNotifikasi);
+        setUnreadCount((prevCount) => Math.max(0, prevCount - 1));
+      }
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
 
   const statsCards = [
     {
@@ -80,10 +120,10 @@ const DashboardMemberPage = ({
         </h2>
         <div className="relative">
           <Sheet>
-            <SheetTrigger className="rounded-full shadow hover:shadow-md transition-all cursor-pointer">
+            <SheetTrigger className="p-2 rounded-full shadow hover:shadow-md transition-all cursor-pointer">
               <Bell className="h-6 w-6" />
               {unreadCount > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {unreadCount}
                 </span>
               )}
@@ -96,36 +136,51 @@ const DashboardMemberPage = ({
                 </SheetTitle>
                 <SheetDescription asChild>
                   <CardContent>
-                    {notifications.length > 0 ? (
-                      <ScrollArea className="h-[500px] w-full rounded-md border">
-                        <div className="space-y-4">
-                          {notifications.map((notification: Notification) => (
+                    {notifikasiData.length > 0 ? (
+                      <ScrollArea className="h-[500px] w-full rounded-md">
+                        <div className="space-y-3">
+                          {notifikasiData.map((notif) => (
                             <div
-                              key={notification.id}
-                              className={`p-4 border rounded-lg ${
-                                !notification.read
-                                  ? "bg-blue-50 border-blue-100"
-                                  : "bg-white"
-                              }`}
+                              key={notif.id}
+                              className={`p-4 border rounded-lg transition-all ${
+                                notif.status === "belum-dibaca"
+                                  ? "bg-blue-50 border-blue-300"
+                                  : "bg-white border-gray-200"
+                              } hover:shadow-md`}
                             >
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <h4 className="font-medium text-gray-900">
-                                    {notification.title}
-                                  </h4>
-                                  <p className="text-gray-600 mt-1">
-                                    {notification.message}
-                                  </p>
+                              <Button
+                                className="relative p-0 -top-3 -right-60 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center z-10"
+                                onClick={() => handleDeleteNotifikasi(notif.id)}
+                              >
+                                <X size={14} />
+                              </Button>
+                              <Link href={notif.link} className="block">
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <h4 className="font-semibold text-gray-900">
+                                      {notif.type.charAt(0).toUpperCase() +
+                                        notif.type.slice(1)}
+                                    </h4>
+                                    <p className="text-gray-600 mt-1 text-sm">
+                                      {notif.pesan}
+                                    </p>
+                                  </div>
+                                  <span className="text-xs text-gray-500">
+                                    {notif.createdAt.toLocaleDateString()}
+                                  </span>
                                 </div>
-                                <span className="text-xs text-gray-500">
-                                  {notification.date.toLocaleDateString()}
-                                </span>
-                              </div>
-                              {!notification.read && (
+                              </Link>
+                              {notif.status === "belum-dibaca" && (
                                 <div className="mt-2 flex justify-end">
-                                  <button className="text-xs text-blue-600 hover:text-blue-800">
+                                  <Button
+                                    className="text-sm text-blue-600 hover:text-blue-800"
+                                    variant="ghost"
+                                    onClick={() =>
+                                      handleReadNotifikasi(notif.id)
+                                    }
+                                  >
                                     Tandai Sudah Dibaca
-                                  </button>
+                                  </Button>
                                 </div>
                               )}
                             </div>

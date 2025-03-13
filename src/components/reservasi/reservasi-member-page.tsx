@@ -13,7 +13,7 @@ import {
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
 import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
-import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan-table";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan";
 import { Role } from "@prisma/client";
 import {
   pengajuanPembatalanReservasi,
@@ -32,20 +32,27 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleClickPengajuanPembatalan = (id: string) => {
+  const handleClickPengajuanPembatalan = (
+    id: string,
+    userOwnerId: string,
+    userMemberId: string
+  ) => {
     startTransition(() => {
       setIsLoading(true);
-      pengajuanPembatalanReservasi(id).then((res) => {
-        if (res) {
-          setSuccessMessage(res.success);
-        }
-        handleFilterAfterPengajuan(id);
-        if (posisi === "diproses") {
-          handleFilter("diproses");
-        }
 
-        setIsLoading(false);
-      });
+      pengajuanPembatalanReservasi(id, userOwnerId, userMemberId).then(
+        (res) => {
+          if (res.success) {
+            setSuccessMessage(res.success);
+          }
+          handleFilterAfterPengajuan(id);
+          if (posisi === "diproses") {
+            handleFilter("diproses");
+          }
+
+          setIsLoading(false);
+        }
+      );
     });
   };
 
@@ -115,8 +122,15 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
                         />
                         {item.status === "diproses" && (
                           <ButtonPengajuanPembatalanTable
+                            isLoading={isLoading}
                             name=""
-                            aksi={() => handleClickPengajuanPembatalan(item.id)}
+                            aksi={() =>
+                              handleClickPengajuanPembatalan(
+                                item.id,
+                                item.destinasi.owner.userId,
+                                item.member?.userId || ""
+                              )
+                            }
                             content="Ajukan Pembatalan"
                           />
                         )}

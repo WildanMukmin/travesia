@@ -2,6 +2,7 @@ import { getDestinasiById } from "@/actions/destinasi";
 import { getReservasiById } from "@/actions/reservasi";
 import RoleGate from "@/components/auth/role-gate";
 import ReservasiMemberDetailPage from "@/components/reservasi/reservasi-member-detail-page";
+import ReservasiOwnerDetailPage from "@/components/reservasi/reservasi-owner-detail-page";
 import { currentUser } from "@/lib/authenticate";
 import { Role } from "@prisma/client";
 
@@ -26,9 +27,10 @@ export default async function Page({ params }: PageProps) {
     );
   }
   if (user?.role === Role.OWNER) {
+    const reservasi = await getReservasiById(id);
     return (
       <RoleGate accessRole={Role.OWNER}>
-        <h1>Reservasi Detail Owner</h1>
+        <ReservasiOwnerDetailPage reservasiData={reservasi} />
       </RoleGate>
     );
   }
