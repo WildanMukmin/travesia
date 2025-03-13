@@ -16,7 +16,7 @@ export type ReservasiWithMember = Prisma.PromiseReturnType<
 >;
 
 export const buatReservasi = async (
-  data: z.infer<typeof buatReservasiSchema>
+  data: z.infer<typeof buatReservasiSchema>,
 ) => {
   const validatedFields = buatReservasiSchema.safeParse(data);
   if (!validatedFields.success) {
@@ -40,7 +40,7 @@ export const buatReservasi = async (
   }
   const validJumlahTiket = parseInt(
     jumlahPengunjung.replace(/[^0-9]/g, ""),
-    10
+    10,
   );
   if (isNaN(validJumlahTiket) || validJumlahTiket <= 0) {
     return { error: "Jumlah Pengunjung Tidak Valid, Minimal isi 1" };
@@ -63,6 +63,7 @@ export const buatReservasi = async (
     return { error: "Terjadi kesalahan, silahkan login kembali 3" };
   }
   let idReservasi = "";
+  const expired = new Date(new Date().getTime() + 24 * 3600 * 1000);
   try {
     const reservasi = await prisma.reservasi.create({
       data: {
@@ -73,6 +74,7 @@ export const buatReservasi = async (
         catatanTambahan: catatanTambahan,
         jumlahOrang: validJumlahTiket,
         status: "diproses",
+        expired: expired,
         tanggalReservasi: new Date(tanggalReservasi),
         waktuPemesanan: new Date(),
         totalHarga: validHarga * validJumlahTiket,
@@ -180,10 +182,11 @@ export const getReservasiById = async (id: string) => {
     return null;
   }
 };
+
 export const pengajuanPembatalanReservasi = async (
   id: string,
   userOwnerId: string,
-  userMemberId: string
+  userMemberId: string,
 ) => {
   try {
     await prisma.$transaction([
@@ -225,7 +228,7 @@ export const pengajuanPembatalanReservasi = async (
 export const penerimaanPengajuanPembatalanReservasi = async (
   id: string,
   userOwnerId: string,
-  userMemberId: string
+  userMemberId: string,
 ) => {
   try {
     // Gunakan Prisma Transaction agar semua operasi berhasil atau gagal sekaligus
@@ -255,6 +258,19 @@ export const penerimaanPengajuanPembatalanReservasi = async (
     ]);
 
     return { success: "Pengajuan Pembatalan Reservasi Sukses" };
+  } catch (error) {
+    console.error("Error dalam pembatalan reservasi:", error);
+    return { error: "Gagal membatalkan reservasi" };
+  }
+};
+
+export const batalReservasi = async (id: string) => {
+  try {
+    await prisma.reservasi.update({
+      where: { id },
+      data: { status: "dibatalkan" },
+    });
+    return { success: "Reservasi Berhasil Dibatalkan" };
   } catch (error) {
     console.error("Error dalam pembatalan reservasi:", error);
     return { error: "Gagal membatalkan reservasi" };

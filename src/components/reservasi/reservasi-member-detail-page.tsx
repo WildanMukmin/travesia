@@ -24,7 +24,6 @@ import {
   Backpack,
 } from "lucide-react";
 import AlertPage from "@/components/utils/alert-page";
-import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import { startTransition, useState } from "react";
 import { Role } from "@prisma/client";
 import {
@@ -33,6 +32,7 @@ import {
 } from "@/actions/reservasi";
 import ButtonPengajuanPembatalanTable from "../utils/button-pengajuan-pembatalan";
 import SuccessActionFeedbak from "../utils/success-action";
+import Link from "next/link";
 
 interface ReservasiMemberDetailPageProps {
   reservasiData: ReservasiWithMember;
@@ -62,7 +62,7 @@ const ReservasiMemberDetailPage = ({
   const handleClickPengajuanPembatalan = (
     id: string,
     userOwnerId: string,
-    userMemberId: string
+    userMemberId: string,
   ) => {
     startTransition(() => {
       setIsLoading(true);
@@ -81,7 +81,7 @@ const ReservasiMemberDetailPage = ({
                     member: prevData.member ?? null,
                     destinasi: prevData.destinasi ?? null, // Pastikan properti penting tetap ada
                   }
-                : prevData
+                : prevData,
             );
           }
         })
@@ -92,9 +92,6 @@ const ReservasiMemberDetailPage = ({
           setIsLoading(false);
         });
     });
-  };
-  const handleComplete = async () => {
-    console.log("Cancel button clicked");
   };
 
   const options: Intl.DateTimeFormatOptions = {
@@ -222,7 +219,7 @@ const ReservasiMemberDetailPage = ({
                       <span className="block">
                         {data?.tanggalReservasi.toLocaleDateString(
                           "id-ID",
-                          options
+                          options,
                         )}
                       </span>
                       <span className="text-xs text-gray-500">
@@ -307,19 +304,20 @@ const ReservasiMemberDetailPage = ({
                   handleClickPengajuanPembatalan(
                     data?.id || "",
                     data?.destinasi.owner.userId || "",
-                    data?.member?.userId || ""
+                    data?.member?.userId || "",
                   )
                 }
                 content="Ajukan Pembatalan"
               />
-              <Button
-                onClick={handleComplete}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-                disabled={isLoading}
-              >
-                <Backpack className="w-4 h-4 mr-2" />
-                Bayar
-              </Button>
+              <Link href={`/reservasi/bayar-reservasi/${data?.id}`}>
+                <Button
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  disabled={isLoading}
+                >
+                  <Backpack className="w-4 h-4 mr-2" />
+                  Bayar
+                </Button>
+              </Link>
             </CardFooter>
           )}
         </Card>

@@ -35,7 +35,7 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
   const handleClickPengajuanPembatalan = (
     id: string,
     userOwnerId: string,
-    userMemberId: string
+    userMemberId: string,
   ) => {
     startTransition(() => {
       setIsLoading(true);
@@ -51,7 +51,7 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
           }
 
           setIsLoading(false);
-        }
+        },
       );
     });
   };
@@ -128,7 +128,7 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
                               handleClickPengajuanPembatalan(
                                 item.id,
                                 item.destinasi.owner.userId,
-                                item.member?.userId || ""
+                                item.member?.userId || "",
                               )
                             }
                             content="Ajukan Pembatalan"
