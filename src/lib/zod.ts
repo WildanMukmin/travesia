@@ -60,3 +60,12 @@ export const buatReservasiSchema = z.object({
   tanggalReservasi: z.date(),
   catatanTambahan: z.string().optional(),
 });
+
+export const simulasiPembayaranSchema = z.object({
+  reservasiId: z.string(),
+  userMemberId: z.string().optional(),
+  userOwnerId: z.string().optional(),
+  harga: z.string(),
+  namaPengirim: z.string().min(1, "Silahkan isi nama anda"),
+  pesan: z.string().optional(),
+});

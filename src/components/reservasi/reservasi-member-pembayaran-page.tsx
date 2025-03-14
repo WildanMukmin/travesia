@@ -14,8 +14,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Copy, Download } from "lucide-react";
+import { Loader2, Copy, RefreshCw } from "lucide-react";
 import { ReservasiWithMember } from "@/actions/reservasi";
+import Link from "next/link";
 
 interface ReservasiMemberPembayaranPageProps {
   id: string;
@@ -31,7 +32,7 @@ const ReservasiMemberPembayaranPage = ({
 
   useEffect(() => {
     const generateQRCode = async () => {
-      const url = `https://travesia-red.vercel.app/reservasi/bayar-reservasi?id=${id}&harga=${reservasi?.totalHarga}`;
+      const url = `https://travesia-red.vercel.app/simulasi-bayar?reservasiId=${id}&userMemberId=${reservasi?.member?.userId}&userOwnerId=${reservasi?.destinasi?.owner?.userId}&harga=${reservasi?.totalHarga}`;
       const qrCodeDataURL = await QRCode.toDataURL(url);
       setQrCode(qrCodeDataURL);
     };
@@ -85,22 +86,24 @@ const ReservasiMemberPembayaranPage = ({
         </CardHeader>
 
         <CardContent className="pt-6 space-y-6">
-          <div className="flex flex-col items-center">
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              {qrCode && (
-                <Image
-                  src={qrCode}
-                  width={200}
-                  height={200}
-                  alt="QR Code Pembayaran"
-                  className="mx-auto"
-                />
-              )}
+          {timeRemaining !== "Waktu pembayaran telah habis" && (
+            <div className="flex flex-col items-center">
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                {qrCode && (
+                  <Image
+                    src={qrCode}
+                    width={200}
+                    height={200}
+                    alt="QR Code Pembayaran"
+                    className="mx-auto"
+                  />
+                )}
+              </div>
+              <p className="text-sm text-muted-foreground mt-2">
+                Scan QR code untuk melakukan pembayaran
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground mt-2">
-              Scan QR code untuk melakukan pembayaran
-            </p>
-          </div>
+          )}
 
           <Separator />
 
@@ -145,27 +148,43 @@ const ReservasiMemberPembayaranPage = ({
                 </div>
               </div>
             </Alert>
-
-            <div className="flex items-center justify-between bg-yellow-50 p-3 rounded-md border border-yellow-200">
-              <div className="flex items-center">
-                <Loader2 className="h-4 w-4 text-yellow-500 mr-2 animate-spin" />
-                <p className="text-sm text-yellow-700">Menunggu Pembayaran</p>
+            {timeRemaining !== "Waktu pembayaran telah habis" ? (
+              <div className="flex items-center justify-between bg-yellow-50 p-3 rounded-md border border-yellow-200">
+                <div className="flex items-center">
+                  <Loader2 className="h-4 w-4 text-yellow-500 mr-2 animate-spin" />
+                  <p className="text-sm text-yellow-700">Menunggu Pembayaran</p>
+                </div>
+                <p className="text-sm font-medium text-yellow-700">
+                  Expired dalam: {timeRemaining}
+                </p>
               </div>
-              <p className="text-sm font-medium text-yellow-700">
-                Expired dalam: {timeRemaining}
-              </p>
-            </div>
+            ) : (
+              <div className="flex items-center justify-between bg-red-50 p-3 rounded-md border border-red-200">
+                <div className="flex items-center">
+                  <p className="text-sm text-red-700">Pembayaran Dibatalkan</p>
+                </div>
+                <p className="text-sm font-medium text-red-700">
+                  {timeRemaining}
+                </p>
+              </div>
+            )}
           </div>
         </CardContent>
 
         <CardFooter className="flex flex-col gap-3">
-          <Button className="w-full">
-            <Download className="h-4 w-4 mr-2" />
-            Unduh Instruksi Pembayaran
-          </Button>
-          <Button variant="outline" className="w-full">
-            Kembali ke Beranda
-          </Button>
+          {timeRemaining !== "Waktu pembayaran telah habis" && (
+            <Link href={`/reservasi/bayar-reservasi/${id}`} className="w-full">
+              <Button className="w-full">
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Check Status Pembayaran
+              </Button>
+            </Link>
+          )}
+          <Link href="/reservasi">
+            <Button variant="outline" className="w-full">
+              Kembali ke Beranda
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     </div>

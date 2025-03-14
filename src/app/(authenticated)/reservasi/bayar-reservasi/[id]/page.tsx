@@ -25,16 +25,20 @@ export default async function Page({ params }: PageProps) {
       return <p>Reservasi tidak ditemukan.</p>;
     }
 
+    if (reservasi.status === "selesai") {
+      return <p>Reservasi telah selesai.</p>;
+    }
+
     const hasExpired =
       reservasi.expired !== undefined
         ? new Date(reservasi.expired) < new Date()
         : false;
 
-    let updatedReservasi = { ...reservasi }; // Copy object agar tidak memodifikasi langsung
+    let updatedReservasi = { ...reservasi };
 
-    if (hasExpired) {
-      await batalReservasi(id);
-      updatedReservasi.status = "dibatalkan"; // Update status sebelum dikirim ke props
+    if (hasExpired && reservasi.status !== "dibatalkan" && user.id) {
+      await batalReservasi(id, user.id);
+      updatedReservasi.status = "dibatalkan";
     }
 
     return (

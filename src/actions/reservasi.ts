@@ -264,11 +264,20 @@ export const penerimaanPengajuanPembatalanReservasi = async (
   }
 };
 
-export const batalReservasi = async (id: string) => {
+export const batalReservasi = async (id: string, userId: string) => {
   try {
     await prisma.reservasi.update({
       where: { id },
       data: { status: "dibatalkan" },
+    });
+    await prisma.notifikasi.create({
+      data: {
+        userId,
+        type: "Expired Reservasi",
+        pesan: "Reservasi Anda Telah Expired",
+        link: `/reservasi/detail-reservasi/${id}`,
+        status: "belum-dibaca",
+      },
     });
     return { success: "Reservasi Berhasil Dibatalkan" };
   } catch (error) {
