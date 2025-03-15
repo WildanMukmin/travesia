@@ -43,6 +43,18 @@ export const daftarDestinasiSchema = z.object({
     .array(z.string())
     .min(1, "Setidaknya berikan 1 fasilitas utama anda"),
 });
+export const editDestinasiSchema = z.object({
+  namaDestinasi: z.string().min(1, "Nama Destinasi Wajib di isi"),
+  harga: z.string().min(1, "Nama Destinasi Wajib di isi"),
+  deskripsi: z.string().min(1, "Deskripsi Wajib di isi"),
+  alamat: z.string().min(1, "Alamat Destinasi Wajib di isi"),
+  nomorOwner: z.string().min(1, "Nomor Owner Destinasi Wajib di isi"),
+  kategoriLokasi: z.string().min(1, "Lokasi Destinasi Wajib di isi"),
+  jamOprasional: z.string().min(1, "Jam Oprasional Wajib di isi"),
+  fasilitas: z
+    .array(z.string())
+    .min(1, "Setidaknya berikan 1 fasilitas utama anda"),
+});
 
 export const buatReservasiSchema = z.object({
   userOwnerId: z.string().optional(),

@@ -14,9 +14,9 @@ import Image from "next/image";
 
 export default async function Layout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const user = await currentUser();
   const isLogin = !!user;
   return (

@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   title: "Travesia | Travels Indonesia",
   description:
     "Travesia adalah sistem digital yang dirancang untuk menghubungkan para pecinta petualangan ekstrem dengan destinasi, komunitas, event, dan perlengkapan terbaik, sekaligus menyediakan platform untuk berbagi pengalaman, tips, serta tantangan yang menguji batas kemampuan fisik dan mental.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default async function RootLayout({

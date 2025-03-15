@@ -1,13 +1,16 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { daftarDestinasiSchema } from "@/lib/zod";
+import { daftarDestinasiSchema, editDestinasiSchema } from "@/lib/zod";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import * as z from "zod";
 
 export type DestinasiWithOwner = Prisma.PromiseReturnType<typeof getDestinasi>;
+export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
+  typeof getDestinasiById
+>;
 
 export const daftarDestinasi = async (
   data: z.infer<typeof daftarDestinasiSchema>,
@@ -112,6 +115,107 @@ export const daftarDestinasi = async (
     await prisma.destinasi.create({
       data: {
         ownerId: owner.id,
+        namaDestinasi,
+        harga: validHarga,
+        deskripsi,
+        alamat,
+        nomorOwner,
+        kategoriLokasi,
+        jamOprasional,
+        fasilitas,
+      },
+    });
+
+    return { success: "Destinasi berhasil didaftarkan" };
+  } catch (e) {
+    return { error: "Terjadi kesalahan, silahkan coba lagi" };
+  } finally {
+    revalidatePath("/dashboard");
+    redirect("/dashboard");
+  }
+};
+
+export const editDestinasi = async (
+  destinasiId: string,
+  data: z.infer<typeof editDestinasiSchema>,
+) => {
+  const validatedFields = editDestinasiSchema.safeParse(data);
+  const kategoriLokasiData = [
+    "Aceh",
+    "Bali",
+    "Banten",
+    "Bengkulu",
+    "DI Yogyakarta",
+    "DKI Jakarta",
+    "Gorontalo",
+    "Jambi",
+    "Jawa Barat",
+    "Jawa Tengah",
+    "Jawa Timur",
+    "Kalimantan Barat",
+    "Kalimantan Selatan",
+    "Kalimantan Tengah",
+    "Kalimantan Timur",
+    "Kalimantan Utara",
+    "Kepulauan Bangka Belitung",
+    "Kepulauan Riau",
+    "Lampung",
+    "Maluku",
+    "Maluku Utara",
+    "Nusa Tenggara Barat",
+    "Nusa Tenggara Timur",
+    "Papua",
+    "Papua Barat",
+    "Papua Barat Daya",
+    "Papua Pegunungan",
+    "Papua Selatan",
+    "Papua Tengah",
+    "Riau",
+    "Sulawesi Barat",
+    "Sulawesi Selatan",
+    "Sulawesi Tengah",
+    "Sulawesi Tenggara",
+    "Sulawesi Utara",
+    "Sumatera Barat",
+    "Sumatera Selatan",
+    "Sumatera Utara",
+  ];
+
+  if (!validatedFields.success) {
+    return { error: "Mohon isi form dengan benar!" };
+  }
+
+  const {
+    namaDestinasi,
+    harga,
+    deskripsi,
+    alamat,
+    nomorOwner,
+    kategoriLokasi,
+    jamOprasional,
+    fasilitas,
+  } = validatedFields.data;
+
+  const validHarga = parseInt(harga.replace(/[^0-9]/g, ""), 10);
+
+  if (isNaN(validHarga) || validHarga <= 0) {
+    return { error: "Harga Tidak Valid" };
+  }
+
+  if (fasilitas.length < 1) {
+    return { error: "Setidaknya berikan 1 fasilitas utama anda" };
+  }
+
+  if (!kategoriLokasiData.includes(kategoriLokasi)) {
+    return { error: "Kategori lokasi tidak valid" };
+  }
+
+  try {
+    await prisma.destinasi.update({
+      where: {
+        id: destinasiId,
+      },
+      data: {
         namaDestinasi,
         harga: validHarga,
         deskripsi,
