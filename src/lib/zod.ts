@@ -81,3 +81,25 @@ export const simulasiPembayaranSchema = z.object({
   namaPengirim: z.string().min(1, "Silahkan isi nama anda"),
   pesan: z.string().optional(),
 });
+
+// export const editProfileMemberSchema = z.object({
+//   name: z.string().min(3),
+//   gender: z.nativeEnum(Gender),
+//   image: z
+//     .instanceof(File)
+//     .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
+//       message: "Logo harus sebuah file",
+//     })
+//     .optional(),
+// });
+
+// export const editOwnerMemberSchema = z.object({
+//   name: z.string().min(3),
+//   gender: z.nativeEnum(Gender),
+//   image: z
+//     .instanceof(File)
+//     .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
+//       message: "Logo harus sebuah file",
+//     })
+//     .optional(),
+// });
