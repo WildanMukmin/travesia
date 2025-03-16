@@ -1,5 +1,6 @@
-import React from "react";
-import { Activity, MapPinCheck, MapPinX, Plane } from "lucide-react";
+"use client";
+
+import { Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -9,105 +10,103 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import AlertTable from "@/components/utils/alert-table";
+import ButtonDetailTable from "@/components/utils/button-detail-table";
+import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan";
+import { Role } from "@prisma/client";
+import {
+  pengajuanPembatalanReservasi,
+  ReservasiWithMemberAll,
+} from "@/actions/reservasi";
+import { startTransition, useState } from "react";
+import SuccessActionFeedbak from "../utils/success-action";
 
-const ReservasiOwnerPage = () => {
-  const memberData = {
-    name: "Wildan Mukmin",
-    memberSince: "January 2024",
-    recentActivities: [
-      {
-        id: 1,
-        date: "2024-03-01",
-        action: "Booked Trip to Bali",
-        amount: "Diproses",
-      },
-      {
-        id: 2,
-        date: "2024-02-15",
-        action: "Hotel Reservation",
-        amount: "Dibatalkan",
-      },
-      {
-        id: 3,
-        date: "2024-02-01",
-        action: "Flight Booking",
-        amount: "Selesai",
-      },
-    ],
+interface ReservasiMemberPageProps {
+  reservasiData: ReservasiWithMemberAll;
+}
+
+const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
+  const [data, setData] = useState(reservasiData);
+  const [posisi, setPosisi] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleFilter = (status: string) => {
+    const temp = reservasiData?.filter((item) => item.status === status);
+    if (status === "all") {
+      setPosisi("");
+      setData(reservasiData);
+    } else {
+      const filtered = temp?.filter((item) => item.status === status);
+      setData(filtered || []);
+      setPosisi(status);
+    }
   };
 
-  const statsCards = [
-    {
-      title: "Perjalanan Selesai",
-      value: "24",
-      icon: <MapPinCheck className="h-6 w-6 text-blue-500" />,
-    },
-    {
-      title: "Perjalanan Dibatalkan",
-      value: "11",
-      icon: <MapPinX className="h-6 w-6 text-red-500" />,
-    },
-    {
-      title: "Total Reservasi",
-      value: "35",
-      icon: <Plane className="h-6 w-6 text-purple-500" />,
-    },
-  ];
   return (
-    <main className="flex min-h-screen bg-gray-50">
-      {/* Main Content */}
-      <section className="flex-1 p-8">
-        <h2 className="text-3xl font-semibold mb-6 text-gray-800">
-          Reservasi Anda Owner
-        </h2>
-        <div className="flex space-x-4 mb-6">
-          <Link href="/reservasi">
-            <Button>Semua Perjalanan</Button>
-          </Link>
-          <Link href="/reservasi/reservasi-selesai">
-            <Button>Perjalanan Selesai</Button>
-          </Link>
-          <Link href="/reservasi/reservasi-dibatalkan">
-            <Button>Perjalanan Dibatalkan</Button>
-          </Link>
-        </div>
-
-        {/* Recent Activities */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Activity className="mr-2 h-5 w-5 text-blue-600" />
-              Tabel Reservasi
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Tanggal</TableHead>
-                  <TableHead>Aktivitas</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {memberData.recentActivities.map((activity) => (
-                  <TableRow key={activity.id}>
-                    <TableCell>{activity.date}</TableCell>
-                    <TableCell>{activity.action}</TableCell>
+    <ReservasiWrapComponent handleFilter={handleFilter} role={Role.OWNER}>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Activity className="mr-2 h-5 w-5 text-blue-600" />
+            Tabel Reservasi {posisi.charAt(0).toUpperCase() + posisi.slice(1)}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {successMessage && (
+            <SuccessActionFeedbak detail={successMessage} title="Success!" />
+          )}
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nama</TableHead>
+                <TableHead>Tanggal</TableHead>
+                <TableHead>Aktivitas</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data && data.length > 0 ? (
+                data.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.namaUser}</TableCell>
+                    <TableCell>
+                      {item.tanggalReservasi.toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>{item.destinasi.namaDestinasi}</TableCell>
+                    <TableCell>
+                      {item.status.charAt(0).toUpperCase() +
+                        item.status.slice(1)}
+                    </TableCell>
                     <TableCell className="text-right">
-                      {activity.amount}
+                      <div className="flex gap-2 flex-row-reverse">
+                        <ButtonDetailTable
+                          name=""
+                          reservasiId={item.id}
+                          content="Detail"
+                        />
+                      </div>
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </section>
-    </main>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <AlertTable
+                      detail="Belum ada reservasi"
+                      title="Data Kosong"
+                    />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </ReservasiWrapComponent>
   );
 };
 
-export default ReservasiOwnerPage;
+export default ReservasiMemberPage;

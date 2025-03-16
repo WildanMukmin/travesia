@@ -20,7 +20,7 @@ export default async function Page() {
     );
   }
   if (user?.role === Role.MEMBER && user.id) {
-    const reservasiData = await getAllReservasiByUserId(user.id);
+    const reservasiData = await getAllReservasiByUserId(user.id, user.role);
     const notifikasi = await getNotificationByUserId(user.id || "");
     return (
       <RoleGate accessRole={Role.MEMBER}>

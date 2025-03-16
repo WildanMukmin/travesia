@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { buatReservasiSchema } from "@/lib/zod";
-import { Prisma } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import * as z from "zod";
@@ -115,40 +115,81 @@ export const buatReservasi = async (
   }
 };
 
-export const getAllReservasiByUserId = async (id: string) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: { id },
-      include: {
-        member: true,
-      },
-    });
+export const getAllReservasiByUserId = async (id: string, role: Role) => {
+  if (role === Role.MEMBER) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id },
+        include: {
+          member: true,
+        },
+      });
 
-    if (!user || !user.member) {
+      if (!user || !user.member) {
+        return null;
+      }
+
+      const reservasi = await prisma.reservasi.findMany({
+        where: {
+          memberId: user.member.id,
+        },
+        include: {
+          destinasi: {
+            include: {
+              owner: true,
+            },
+          },
+          member: true,
+        },
+        orderBy: {
+          waktuPemesanan: "desc",
+        },
+      });
+
+      return reservasi;
+    } catch (error) {
+      console.error("Error fetching destinasi:", error);
       return null;
     }
-
-    const reservasi = await prisma.reservasi.findMany({
-      where: {
-        memberId: user.member.id,
-      },
-      include: {
-        destinasi: {
-          include: {
-            owner: true,
+  }
+  if (role === Role.OWNER) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id },
+        include: {
+          owner: {
+            include: {
+              destinasi: true,
+            },
           },
         },
-        member: true,
-      },
-      orderBy: {
-        waktuPemesanan: "desc",
-      },
-    });
+      });
 
-    return reservasi;
-  } catch (error) {
-    console.error("Error fetching destinasi:", error);
-    return null;
+      if (!user || !user.owner) {
+        return null;
+      }
+
+      const reservasi = await prisma.reservasi.findMany({
+        where: {
+          destinasiId: user.owner.destinasi?.id,
+        },
+        include: {
+          destinasi: {
+            include: {
+              owner: true,
+            },
+          },
+          member: true,
+        },
+        orderBy: {
+          waktuPemesanan: "desc",
+        },
+      });
+      return reservasi;
+    } catch (error) {
+      console.error("Error fetching destinasi:", error);
+      return null;
+    }
   }
 };
 

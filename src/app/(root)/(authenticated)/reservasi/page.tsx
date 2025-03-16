@@ -8,7 +8,7 @@ import { Role } from "@prisma/client";
 export default async function Page() {
   const user = await currentUser();
   if (user?.role === Role.MEMBER) {
-    const reservasi = await getAllReservasiByUserId(user?.id || "");
+    const reservasi = await getAllReservasiByUserId(user?.id || "", user.role);
     return (
       <RoleGate accessRole={Role.MEMBER}>
         <ReservasiMemberPage reservasiData={reservasi} />
@@ -16,9 +16,10 @@ export default async function Page() {
     );
   }
   if (user?.role === Role.OWNER) {
+    const reservasi = await getAllReservasiByUserId(user?.id || "", user.role);
     return (
       <RoleGate accessRole={Role.OWNER}>
-        <ReservasiOwnerPage />
+        <ReservasiOwnerPage reservasiData={reservasi} />
       </RoleGate>
     );
   }
