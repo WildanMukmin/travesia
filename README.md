@@ -1,21 +1,33 @@
 # Travesia
 
-## Deskripsi Proyek
-Travesia adalah sebuah platform yang menghubungkan relawan dengan korban bencana. Sistem ini dirancang untuk memudahkan koordinasi bantuan, pencatatan relawan, serta distribusi kebutuhan bagi korban.
+## Tentang Kami
+Travesia adalah platform komunitas petualangan yang dirancang untuk menghubungkan para pecinta alam dan traveler di seluruh Indonesia. Kami menyediakan forum diskusi, informasi destinasi, sistem reservasi aktivitas outdoor, serta blog rekomendasi perlengkapan petualangan, forum sebagai media informasi, dan masih banyak lainnya. Dengan Travesia, petualanganmu jadi lebih terencana, seru, dan aman!
 
-## Fitur Utama
-- **Registrasi dan Autentikasi**: Pengguna dapat mendaftar sebagai relawan atau korban dan masuk ke sistem dengan akun yang telah dibuat.
-- **Pemetaan Lokasi**: Menampilkan lokasi bencana dan daerah yang membutuhkan bantuan.
-- **Manajemen Relawan**: Relawan dapat mendaftar ke lokasi tertentu dan menawarkan bantuan sesuai dengan keahliannya.
-- **Manajemen Bantuan**: Pencatatan dan pelacakan bantuan yang masuk serta distribusinya kepada korban.
-- **Laporan & Notifikasi**: Korban dapat melaporkan kebutuhan mendesak dan menerima update terkait bantuan.
+## Visi
+Menjadi platform komunitas petualangan terdepan yang menghubungkan para traveler, mendukung eksplorasi wisata alam, dan memperkenalkan destinasi tersembunyi yang menarik.
+
+## Misi
+- Membantu para petualang menemukan dan berbagi informasi destinasi terbaik.
+- Menyediakan forum interaktif bagi komunitas traveler dan pecinta outdoor.
+- Menghadirkan fitur reservasi aktivitas petualangan dengan sistem yang aman.
+- Mendorong ekowisata lokal dan petualangan yang bertanggung jawab terhadap lingkungan.
+
+## Anggota Kelompok
+Kami bangga dengan tim kami yang antusias terhadap solusi dan selalu mencari lebih banyak orang dengan hasrat & pengalaman serupa di dunia teknologi.
+
+- **Wildan Mukmin** - Founder and Developer
+- **Febrina Aulia Azahra** - Sistem Analyst
+- **Bungaran Natanael** - Designer
+- **Napis Rizqullah** - QA Tester
 
 ## Teknologi yang Digunakan
-- **Frontend**: Next.js, TypeScript, Redux Toolkit
-- **Backend**: Node.js, Express.js, Prisma ORM
-- **Database**: PostgreSQL
-- **Autentikasi**: NextAuth
-- **Hosting**: Vercel (Frontend), Railway (Backend & Database)
+Tools dan teknologi yang kami gunakan untuk membangun Travesia:
+- **Next.js** - React framework for production
+- **React** - UI component library
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn UI** - Re-usable UI components
+- **Node.js** - JavaScript runtime
+- **PostgreSQL** - SQL database
 
 ## Cara Menjalankan Proyek
 ### 1. Clone Repository
