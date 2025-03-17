@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Travesia
 
-## Getting Started
+## Deskripsi Proyek
+Travesia adalah sebuah platform yang menghubungkan relawan dengan korban bencana. Sistem ini dirancang untuk memudahkan koordinasi bantuan, pencatatan relawan, serta distribusi kebutuhan bagi korban.
 
-First, run the development server:
+## Fitur Utama
+- **Registrasi dan Autentikasi**: Pengguna dapat mendaftar sebagai relawan atau korban dan masuk ke sistem dengan akun yang telah dibuat.
+- **Pemetaan Lokasi**: Menampilkan lokasi bencana dan daerah yang membutuhkan bantuan.
+- **Manajemen Relawan**: Relawan dapat mendaftar ke lokasi tertentu dan menawarkan bantuan sesuai dengan keahliannya.
+- **Manajemen Bantuan**: Pencatatan dan pelacakan bantuan yang masuk serta distribusinya kepada korban.
+- **Laporan & Notifikasi**: Korban dapat melaporkan kebutuhan mendesak dan menerima update terkait bantuan.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Teknologi yang Digunakan
+- **Frontend**: Next.js, TypeScript, Redux Toolkit
+- **Backend**: Node.js, Express.js, Prisma ORM
+- **Database**: PostgreSQL
+- **Autentikasi**: NextAuth
+- **Hosting**: Vercel (Frontend), Railway (Backend & Database)
+
+## Cara Menjalankan Proyek
+### 1. Clone Repository
+```sh
+ git clone https://github.com/username/travesia.git
+ cd travesia
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Instalasi Dependensi
+```sh
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Konfigurasi Environment Variables
+Buat file `.env` di root proyek dan tambahkan konfigurasi berikut:
+```env
+DATABASE_URL="postgresql://user:password@host:port/database"
+NEXTAUTH_SECRET="your-secret"
+NEXTAUTH_URL="http://localhost:3000"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Migrasi Database
+```sh
+npx prisma migrate dev --name init
+```
 
-## Learn More
+### 5. Menjalankan Server
+```sh
+npm run dev
+```
+Aplikasi akan berjalan di `http://localhost:3000`
 
-To learn more about Next.js, take a look at the following resources:
+## Kontribusi
+1. Fork repository ini
+2. Buat branch baru (`git checkout -b feature-anda`)
+3. Commit perubahan (`git commit -m 'Menambahkan fitur X'`)
+4. Push ke branch tersebut (`git push origin feature-anda`)
+5. Buat Pull Request
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Lisensi
+Proyek ini dilisensikan di bawah MIT License.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
