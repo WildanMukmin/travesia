@@ -13,9 +13,9 @@ interface ProfileMemberPageProps {
 const ProfileMemberPage = ({ userData }: ProfileMemberPageProps) => {
   return (
     <main className="py-8 px-4 w-full mx-auto">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-xl shadow-md overflow-hidden">
         {/* Header dengan info utama */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
           <h1 className="text-2xl font-bold">Profil Pengguna</h1>
         </div>
 
@@ -80,7 +80,7 @@ const ProfileMemberPage = ({ userData }: ProfileMemberPageProps) => {
           <Link href="/profile/edit-profile">
             <Button
               size={"sm"}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mr-3"
+              className="px-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mr-3"
             >
               <UserPen />
               Edit Profil

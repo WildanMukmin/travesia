@@ -4,17 +4,18 @@ import { GetProfileType } from "@/lib/profile";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { FileImage, User, UserPen } from "lucide-react";
+import Link from "next/link";
 
-interface ProfileOwnerPageProps {
+interface ProfileMemberPageProps {
   userData: GetProfileType;
 }
 
-const ProfileOwnerPage = ({ userData }: ProfileOwnerPageProps) => {
+const ProfileMemberPage = ({ userData }: ProfileMemberPageProps) => {
   return (
     <main className="py-8 px-4 w-full mx-auto">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-xl shadow-md overflow-hidden">
         {/* Header dengan info utama */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
           <h1 className="text-2xl font-bold">Profil Pengguna</h1>
         </div>
 
@@ -25,7 +26,7 @@ const ProfileOwnerPage = ({ userData }: ProfileOwnerPageProps) => {
               {userData?.imageProfile ? (
                 <Image
                   src={userData?.imageProfile}
-                  alt={`Foto profil ${userData?.name || "pengguna"}`}
+                  alt={`Foto profil ${userData.name || "pengguna"}`}
                   fill
                   className="object-cover"
                 />
@@ -37,13 +38,6 @@ const ProfileOwnerPage = ({ userData }: ProfileOwnerPageProps) => {
                 </div>
               )}
             </div>
-            <Button
-              size={"sm"}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
-            >
-              <FileImage />
-              Ubah Foto
-            </Button>
           </section>
 
           {/* Bagian data profil */}
@@ -71,21 +65,22 @@ const ProfileOwnerPage = ({ userData }: ProfileOwnerPageProps) => {
                 </p>
               </div>
             </div>
-
-            <div className="mt-8">
-              <Button
-                size={"sm"}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mr-3"
-              >
-                <UserPen />
-                Edit Profil
-              </Button>
-            </div>
           </section>
+        </div>
+        <div className="mt-8">
+          <Link href="/profile/edit-profile">
+            <Button
+              size={"sm"}
+              className="px-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mr-3"
+            >
+              <UserPen />
+              Edit Profil
+            </Button>
+          </Link>
         </div>
       </div>
     </main>
   );
 };
 
-export default ProfileOwnerPage;
+export default ProfileMemberPage;

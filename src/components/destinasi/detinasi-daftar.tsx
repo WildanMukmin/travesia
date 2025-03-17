@@ -138,7 +138,7 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
 
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const maxSize = 100 * 1024; // 100 KB
+      const maxSize = 1000 * 1024; // 1 MB
       const validTypes = ["image/png", "image/webp"];
 
       if (!validTypes.includes(file.type)) {
@@ -147,7 +147,7 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
       }
 
       if (file.size > maxSize) {
-        setErrorMessageImage("Ukuran file harus kurang dari 100 KB.");
+        setErrorMessageImage("Ukuran file harus kurang dari 1 MB.");
         return;
       }
 
@@ -482,7 +482,7 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex flex-col">
               <p className="text-sm text-gray-600 mb-2">
-                Unggah foto destinasi wisata Anda (format PNG/WebP, max 100KB)
+                Unggah foto destinasi wisata Anda (format PNG/WebP, max 1MB)
               </p>
 
               <div
@@ -529,7 +529,7 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
                       Klik untuk memilih gambar
                     </p>
                     <p className="text-xs text-gray-500 text-center">
-                      Format yang didukung: PNG, WebP (max. 100KB)
+                      Format yang didukung: PNG, WebP (max. 1MB)
                     </p>
                   </div>
                 )}
@@ -551,7 +551,7 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
                 </li>
                 <li className="flex items-start">
                   <span className="text-blue-500 mr-2">✓</span>
-                  Ukuran file maksimal 100KB
+                  Ukuran file maksimal 1MB
                 </li>
                 <li className="flex items-start">
                   <span className="text-blue-500 mr-2">✓</span>

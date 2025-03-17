@@ -24,6 +24,13 @@ export default async function Page({ params }: PageProps) {
     );
   }
   const user = await currentUser();
+  if (!user) {
+    return (
+      <main>
+        <h1>Destinasi Tidak Ditemukan</h1>
+      </main>
+    );
+  }
   return (
     <DestinasiDetailPage
       userId={data?.owner?.user?.id || ""}
@@ -36,7 +43,7 @@ export default async function Page({ params }: PageProps) {
       lokasi={data?.alamat || ""}
       jamOperasional={data?.jamOprasional || ""}
       harga={data?.harga || 0}
-      role={user?.role || ""}
+      role={user?.role}
       currentUserId={user?.id || ""}
     />
   );

@@ -29,11 +29,11 @@ import {
 } from "@/components/ui/select";
 import { FormSuccess } from "../auth/form-succsess";
 
-interface EditProfileMemberPageProps {
+interface EditProfileOwnerPageProps {
   userData: GetProfileType;
 }
 
-const EditProfileMemberPage = ({ userData }: EditProfileMemberPageProps) => {
+const EditProfileOwnerPage = ({ userData }: EditProfileOwnerPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -293,35 +293,6 @@ const EditProfileMemberPage = ({ userData }: EditProfileMemberPageProps) => {
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="gender"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="font-medium text-gray-700">
-                          Jenis Kelamin
-                        </FormLabel>
-                        <Select
-                          disabled={isPending}
-                          onValueChange={field.onChange}
-                          value={field.value || ""}
-                        >
-                          <SelectTrigger className="border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
-                            <SelectValue placeholder="Pilih jenis kelamin" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {genderOptions.map((item) => (
-                              <SelectItem key={item} value={item}>
-                                {item}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
                   {/* Tampilkan informasi email yang tidak bisa diubah */}
                   <div className="space-y-1">
                     <label className="text-sm font-medium text-gray-700">
@@ -370,4 +341,4 @@ const EditProfileMemberPage = ({ userData }: EditProfileMemberPageProps) => {
   );
 };
 
-export default EditProfileMemberPage;
+export default EditProfileOwnerPage;
