@@ -46,12 +46,12 @@ const DestinasiEditPage = () => {
   const [data, setData] = useState<GetOneDestinasiWithOwner | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
-  const [facilitiesInput, setFacilitiesInput] = useState("");
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [srcImage, setSrcImage] = useState<string | null>(null);
+  const [facilitiesInput, setFacilitiesInput] = useState("");
   const kategoriLokasiData = [
     "Aceh",
     "Bali",
@@ -452,7 +452,7 @@ const DestinasiEditPage = () => {
                               type="button"
                               onClick={() =>
                                 field.onChange(
-                                  field.value?.filter((s) => s !== facility),
+                                  field.value?.filter((s) => s !== facility)
                                 )
                               }
                               className="h-5 w-5 p-0 ml-1 text-blue-700 hover:text-red-600 hover:bg-transparent"

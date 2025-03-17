@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Gender, Role } from "@prisma/client";
 import * as z from "zod";
 
 export const signInSchema = z.object({
@@ -82,24 +82,23 @@ export const simulasiPembayaranSchema = z.object({
   pesan: z.string().optional(),
 });
 
-// export const editProfileMemberSchema = z.object({
-//   name: z.string().min(3),
-//   gender: z.nativeEnum(Gender),
-//   image: z
-//     .instanceof(File)
-//     .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
-//       message: "Logo harus sebuah file",
-//     })
-//     .optional(),
-// });
+export const editProfileMemberSchema = z.object({
+  name: z.string().min(3),
+  gender: z.string().optional(),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
+      message: "Logo harus sebuah file",
+    })
+    .optional(),
+});
 
-// export const editOwnerMemberSchema = z.object({
-//   name: z.string().min(3),
-//   gender: z.nativeEnum(Gender),
-//   image: z
-//     .instanceof(File)
-//     .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
-//       message: "Logo harus sebuah file",
-//     })
-//     .optional(),
-// });
+export const editOwnerMemberSchema = z.object({
+  name: z.string().min(3),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
+      message: "Logo harus sebuah file",
+    })
+    .optional(),
+});

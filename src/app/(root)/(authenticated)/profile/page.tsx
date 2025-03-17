@@ -1,5 +1,6 @@
 import RoleGate from "@/components/auth/role-gate";
-import ProfileMemberPage from "@/components/profile/profile-member";
+import ProfileMemberPage from "@/components/profile/profile-member-page";
+import ProfileOwnerPage from "@/components/profile/profile-owner-page";
 import { currentUser } from "@/lib/authenticate";
 import { getProfile } from "@/lib/profile";
 import { Role } from "@prisma/client";
@@ -18,8 +19,7 @@ export default async function Page() {
     const userData = await getProfile(user.id);
     return (
       <RoleGate accessRole={Role.OWNER}>
-        <main>owner</main>
-        <div>{JSON.stringify(userData)}</div>
+        <ProfileOwnerPage userData={userData} />
       </RoleGate>
     );
   }
