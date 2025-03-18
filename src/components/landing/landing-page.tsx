@@ -11,13 +11,15 @@ import {
 import { Button } from "@/components/ui/button";
 import DestinasiCard from "@/components/card/card-destinasi-carousel";
 import CardBlog from "@/components/card/card-blog";
-import { Destinasi } from "@prisma/client";
+import { DestinasiWithOwner } from "@/actions/destinasi";
+import { BlogWithCreator } from "@/actions/blog";
 
 interface LandingPageProps {
-  destinasi: Destinasi[];
+  destinasiData: DestinasiWithOwner;
+  blogData: BlogWithCreator;
 }
 
-const LandingPage = ({ destinasi }: LandingPageProps) => {
+const LandingPage = ({ destinasiData, blogData }: LandingPageProps) => {
   return (
     <main className="flex-wrap">
       {/* Featured Image with Category and Title */}
@@ -67,19 +69,21 @@ const LandingPage = ({ destinasi }: LandingPageProps) => {
         </h2>
 
         <div className="space-y-6">
-          {[1, 2, 3, 4, 5].map((item) => (
-            <CardBlog
-              key={item}
-              src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D"
-              judul={`Blog ${item}`}
-              slug={`blog-${item}`}
-              deskripsi="Deskripsi Singkat Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Sunt animi cumque aut voluptatum, maiores odit nostrum neque
-              fuga itaque ipsam inventore perspiciatis nobis labore expedita.
-              Facere, tempora! Aliquam, odio officia?"
-              penulis="wildan mukmin pada tanggal 26 januari 2025"
-            />
-          ))}
+          {blogData &&
+            blogData.map((item) => (
+              <CardBlog
+                key={item.id}
+                blogId={item.id}
+                src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+                judul={`${item.title}`}
+                slug={`${item.slug}`}
+                deskripsi={item.content[0].slice(0, 100)}
+                penulis={`${item.user.name} pada ${item.createdAt.toLocaleDateString()}`}
+              />
+            ))}
+          {blogData && blogData.length === 0 && (
+            <p className="text-center">Belum ada Postingan</p>
+          )}
         </div>
         <div className="w-full flex items-center justify-center">
           <Link href="/blog">
@@ -96,7 +100,7 @@ const LandingPage = ({ destinasi }: LandingPageProps) => {
           Top Destinasi ⭐
         </h2>
         <div className="flex flex-col gap-3 items-center justify-center">
-          {destinasi.length < 1 ? (
+          {destinasiData && destinasiData.length < 1 ? (
             <div>Belum Ada Destinasi Tersedia</div>
           ) : (
             <>
@@ -107,19 +111,20 @@ const LandingPage = ({ destinasi }: LandingPageProps) => {
                 className="w-full"
               >
                 <CarouselContent>
-                  {destinasi.map((item) => (
-                    <CarouselItem
-                      className="md:basis-1/2 lg:basis-1/3"
-                      key={item.id}
-                    >
-                      <DestinasiCard
-                        src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-                        judul={`${item.namaDestinasi}`}
-                        id={item.id}
-                        deskripsi={`${item.deskripsi.slice(0, 100)}......`}
-                      />
-                    </CarouselItem>
-                  ))}
+                  {destinasiData &&
+                    destinasiData.map((item) => (
+                      <CarouselItem
+                        className="md:basis-1/2 lg:basis-1/3"
+                        key={item.id}
+                      >
+                        <DestinasiCard
+                          src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                          judul={`${item.namaDestinasi}`}
+                          id={item.id}
+                          deskripsi={`${item.deskripsi.slice(0, 100)}......`}
+                        />
+                      </CarouselItem>
+                    ))}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />

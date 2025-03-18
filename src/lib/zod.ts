@@ -102,3 +102,17 @@ export const editOwnerMemberSchema = z.object({
     })
     .optional(),
 });
+
+export const postingBlogSchema = z.object({
+  userId: z.string(),
+  title: z.string(),
+  content: z
+    .array(z.string())
+    .min(1, "Setidaknya berikan 1 content utama anda"),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
+      message: "Logo harus sebuah file",
+    })
+    .optional(),
+});

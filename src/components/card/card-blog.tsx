@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 interface CardBlogProps {
+  blogId: string;
   src: string;
   judul: string;
   slug: string;
@@ -11,6 +12,7 @@ interface CardBlogProps {
 }
 
 const CardBlog = ({
+  blogId = "",
   src = "",
   judul = "",
   slug = "",
@@ -28,7 +30,7 @@ const CardBlog = ({
         />
       </div>
       <div className="flex flex-col w-1/2 p-6">
-        <Link href={`/blog/${slug}`}>
+        <Link href={`/blog/detail/${slug}?id=${blogId}`}>
           <h1 className="text-2xl font-bold hover:underline cursor-pointer">
             {judul}
           </h1>
@@ -36,7 +38,7 @@ const CardBlog = ({
         <p className="text-lg text-gray-600 mt-2 line-clamp-3">{deskripsi}</p>
         <p className="text-sm text-gray-500 mt-4">{penulis}</p>
         <div className="mt-4">
-          <Link href={`/blog/${slug}`}>
+          <Link href={`/blog/detail/${slug}?id=${blogId}`}>
             <Button className="">Lihat Selengkapnya</Button>
           </Link>
         </div>

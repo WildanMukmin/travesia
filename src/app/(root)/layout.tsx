@@ -80,6 +80,13 @@ export default async function Layout({
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/destinasi" legacyBehavior passHref>
+                <NavigationMenuLink className="font-normal hover:underline">
+                  DESTINASI
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
             {isLogin && (
               <NavigationMenuItem>
                 <Link href="/forum" legacyBehavior passHref>
@@ -89,13 +96,7 @@ export default async function Layout({
                 </Link>
               </NavigationMenuItem>
             )}
-            <NavigationMenuItem>
-              <Link href="/destinasi" legacyBehavior passHref>
-                <NavigationMenuLink className="font-normal hover:underline">
-                  DESTINASI
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
+
             {isLogin && (
               <NavigationMenuItem>
                 <Link href="/reservasi" legacyBehavior passHref>

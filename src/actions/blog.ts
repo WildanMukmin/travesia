@@ -1,0 +1,66 @@
+"use server";
+
+import { prisma } from "@/lib/prisma";
+import { postingBlogSchema } from "@/lib/zod";
+import { Prisma } from "@prisma/client";
+import * as z from "zod";
+
+export type BlogWithCreator = Prisma.PromiseReturnType<typeof getBlog>;
+
+export const getBlog = async () => {
+  try {
+    const blog = await prisma.blog.findMany({
+      orderBy: {
+        updatedAt: "desc",
+      },
+      take: 10,
+      include: {
+        user: true,
+        image: true,
+      },
+    });
+    return blog;
+  } catch (error) {
+    console.error("Error fetching blog:", error);
+    return null;
+  }
+};
+
+export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
+  const validatedFields = postingBlogSchema.safeParse(data);
+
+  if (!validatedFields.success) {
+    return { error: "Mohon isi form dengan benar!" };
+  }
+
+  const { title, content, image, userId } = validatedFields.data;
+
+  if (!title || !content) {
+    return { error: "Mohon isi form dengan benar!" };
+  }
+
+  if (!userId) {
+    return { error: "Terjadi Error Silahkan Login Kembali!" };
+  }
+
+  const slug = title
+    .toLowerCase()
+    .replace(/[^\w]+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "");
+
+  try {
+    await prisma.blog.create({
+      data: {
+        title,
+        content,
+        userId,
+        slug,
+      },
+    });
+
+    return { success: "Blog Berhasil Dibuat!" };
+  } catch (e) {
+    return { error: "Terjadi Error Saat mempublikasikan Blog" };
+  }
+};
