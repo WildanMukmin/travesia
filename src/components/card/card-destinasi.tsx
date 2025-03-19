@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
-import { Bookmark, Share2 } from "lucide-react";
 
 interface DestinasiCardProps {
   src: string;

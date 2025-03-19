@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { FormError } from "@/components/auth/form-error";
 import * as z from "zod";
 import { sighUpSchema } from "@/lib/zod";
-import { CardWrapper } from "./card-wrapper";
+import { CardWrapper } from "@/components/auth/card-wrapper";
 import Image from "next/image";
 import { register } from "@/actions/register";
 

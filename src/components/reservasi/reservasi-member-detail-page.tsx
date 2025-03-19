@@ -30,8 +30,8 @@ import {
   pengajuanPembatalanReservasi,
   ReservasiWithMember,
 } from "@/actions/reservasi";
-import ButtonPengajuanPembatalanTable from "../utils/button-pengajuan-pembatalan";
-import SuccessActionFeedbak from "../utils/success-action";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan";
+import SuccessActionFeedbak from "@/components/utils/success-action";
 import Link from "next/link";
 
 interface ReservasiMemberDetailPageProps {

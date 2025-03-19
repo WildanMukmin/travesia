@@ -18,7 +18,7 @@ import { FormSuccess } from "@/components/auth/form-succsess";
 import { FormError } from "@/components/auth/form-error";
 import * as z from "zod";
 import { signInSchema } from "@/lib/zod";
-import { CardWrapper } from "./card-wrapper";
+import { CardWrapper } from "@/components/auth/card-wrapper";
 import Image from "next/image";
 import { login } from "@/actions/login";
 

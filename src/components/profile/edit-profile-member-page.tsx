@@ -2,7 +2,7 @@
 
 import { GetProfileType, updateProfile } from "@/lib/profile";
 import Image from "next/image";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowLeft, ImagePlus, Upload, User } from "lucide-react";
 import { startTransition, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,8 +18,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Link from "next/link";
-import { FormError } from "../auth/form-error";
-import { Input } from "../ui/input";
+import { FormError } from "@/components/auth/form-error";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -27,7 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FormSuccess } from "../auth/form-succsess";
+import { FormSuccess } from "@/components/auth/form-succsess";
 
 interface EditProfileMemberPageProps {
   userData: GetProfileType;

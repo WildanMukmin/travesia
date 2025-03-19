@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client";
 import * as z from "zod";
 
 export type BlogWithCreator = Prisma.PromiseReturnType<typeof getBlog>;
+export type OneBlogWithCreator = Prisma.PromiseReturnType<typeof getOneBlog>;
 
 export const getBlog = async () => {
   try {
@@ -14,6 +15,24 @@ export const getBlog = async () => {
         updatedAt: "desc",
       },
       take: 10,
+      include: {
+        user: true,
+        image: true,
+      },
+    });
+    return blog;
+  } catch (error) {
+    console.error("Error fetching blog:", error);
+    return null;
+  }
+};
+
+export const getOneBlog = async (id: string) => {
+  try {
+    const blog = await prisma.blog.findUnique({
+      where: {
+        id,
+      },
       include: {
         user: true,
         image: true,

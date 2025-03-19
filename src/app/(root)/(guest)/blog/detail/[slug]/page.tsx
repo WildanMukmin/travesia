@@ -1,4 +1,5 @@
 import BlogDetailPage from "@/components/blog/blog-detail-page";
+import { Suspense } from "react";
 
 interface PageProps {
   params: Promise<{
@@ -8,6 +9,9 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
-
-  return <BlogDetailPage slug={slug} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BlogDetailPage slug={slug} />;
+    </Suspense>
+  );
 }

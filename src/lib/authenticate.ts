@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { prisma } from "./prisma";
+import { prisma } from "@/lib/prisma";
 
 export const currentUser = async () => {
   const data = await auth();

@@ -28,9 +28,9 @@ import {
   penerimaanPengajuanPembatalanReservasi,
   ReservasiWithMember,
 } from "@/actions/reservasi";
-import ButtonPengajuanPembatalanTable from "../utils/button-pengajuan-pembatalan";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan";
 import { Role } from "@prisma/client";
-import SuccessActionFeedbak from "../utils/success-action";
+import SuccessActionFeedbak from "@/components/utils/success-action";
 
 interface ReservasiOwnerDetailPageProps {
   reservasiData: ReservasiWithMember;

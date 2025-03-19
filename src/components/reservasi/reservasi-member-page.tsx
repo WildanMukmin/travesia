@@ -20,7 +20,7 @@ import {
   ReservasiWithMemberAll,
 } from "@/actions/reservasi";
 import { startTransition, useState } from "react";
-import SuccessActionFeedbak from "../utils/success-action";
+import SuccessActionFeedbak from "@/components/utils/success-action";
 
 interface ReservasiMemberPageProps {
   reservasiData: ReservasiWithMemberAll;
