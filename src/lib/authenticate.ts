@@ -1,5 +1,8 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+
+export type CurrentUser = Prisma.PromiseReturnType<typeof currentUser>;
 
 export const currentUser = async () => {
   const data = await auth();

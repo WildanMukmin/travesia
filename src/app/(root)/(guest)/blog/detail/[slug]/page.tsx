@@ -11,7 +11,7 @@ export default async function Page({ params }: PageProps) {
   const { slug } = await params;
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <BlogDetailPage slug={slug} />;
+      <BlogDetailPage slug={slug} />
     </Suspense>
   );
 }

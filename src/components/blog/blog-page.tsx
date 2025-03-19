@@ -1,3 +1,5 @@
+"use client";
+
 import CardBlog from "@/components/card/card-blog";
 import {
   Pagination,
@@ -17,13 +19,37 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import { BlogWithCreator } from "@/actions/blog";
+import { BlogWithCreator, deleteBlog } from "@/actions/blog";
+import { Button } from "@/components/ui/button";
+import { CurrentUser } from "@/lib/authenticate";
+import { startTransition, useState } from "react";
 
 interface BlogPageProps {
   blogData: BlogWithCreator;
+  user: CurrentUser;
 }
 
-const BlogPage = ({ blogData }: BlogPageProps) => {
+const BlogPage = ({ blogData, user }: BlogPageProps) => {
+  const isLogin = user ? true : false;
+  const [data, setData] = useState(blogData);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const onDelete = (id: string) => {
+    startTransition(() => {
+      deleteBlog(id).then((res) => {
+        if (res?.error) {
+          setErrorMessage(res?.error);
+        }
+        if (res?.success) {
+          setSuccessMessage(res?.success);
+        }
+        setData((prevData) => prevData?.filter((item) => item.id !== id) ?? []);
+      });
+    });
+  };
+  const onEdit = (id: string) => {
+    console.log("tombol edit", id);
+  };
   return (
     <main className="mt-10 max-w-full mx-auto px-4">
       <div className="flex justify-start mb-8">
@@ -41,24 +67,44 @@ const BlogPage = ({ blogData }: BlogPageProps) => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <h2 className="text-3xl font-bold border-b-2 border-blue-800 pb-2 mb-6">
-        Blog
-      </h2>
+      <div className="flex justify-between border-b-2 border-blue-800 pb-2 mb-6">
+        <h2 className="text-3xl font-bold">Blog</h2>
+        {isLogin && (
+          <Link href="/blog/posting-blog">
+            <Button>Posting Blog</Button>
+          </Link>
+        )}
+      </div>
+
+      {successMessage && (
+        <div className="bg-green-100 rounded-lg py-5 px-6 text-base text-green-700 mb-3">
+          {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700 mb-3">
+          {errorMessage}
+        </div>
+      )}
 
       <div className="space-y-10">
-        {blogData &&
-          blogData.map((item) => (
+        {data &&
+          data.map((item) => (
             <CardBlog
               key={item.id}
               blogId={item.id}
+              creatorId={item.user.id}
+              userId={user?.id || ""}
               src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
               judul={`${item.title}`}
               slug={`${item.slug}`}
               deskripsi={item.content[0].slice(0, 100)}
               penulis={`${item.user.name} pada ${item.createdAt.toLocaleDateString()}`}
+              onEdit={() => onEdit(item.id)}
+              onDelete={() => onDelete(item.id)}
             />
           ))}
-        {blogData && blogData.length === 0 && (
+        {data && data.length === 0 && (
           <p className="text-center">Belum ada Postingan</p>
         )}
       </div>

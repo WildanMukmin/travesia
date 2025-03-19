@@ -1,26 +1,41 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import ToolDropdown from "@/components/utils/tool-dropdown";
 
 interface CardBlogProps {
   blogId: string;
+  creatorId: string;
+  userId: string;
   src: string;
   judul: string;
   slug: string;
   deskripsi: string;
   penulis: string;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 const CardBlog = ({
   blogId = "",
+  creatorId = "",
+  userId = "",
   src = "",
   judul = "",
   slug = "",
   deskripsi = "",
   penulis = "",
+  onEdit,
+  onDelete,
 }: CardBlogProps) => {
   return (
-    <div className="flex flex-col md:flex-row items-start gap-6 bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="relative flex flex-col md:flex-row items-start gap-6 bg-white shadow-lg rounded-lg overflow-hidden">
+      {/* Dropdown di pojok kanan atas */}
+      {creatorId === userId && (
+        <ToolDropdown onEdit={onEdit} onDelete={onDelete} />
+      )}
       <div className="w-full md:w-[400px] h-[250px] relative">
         <Image
           src={src}
@@ -37,7 +52,7 @@ const CardBlog = ({
         </Link>
         <p className="text-lg text-gray-600 mt-2 line-clamp-3">{deskripsi}</p>
         <p className="text-sm text-gray-500 mt-4">{penulis}</p>
-        <div className="mt-4">
+        <div className="mt-4 flex items-center gap-4">
           <Link href={`/blog/detail/${slug}?id=${blogId}`}>
             <Button className="">Lihat Selengkapnya</Button>
           </Link>

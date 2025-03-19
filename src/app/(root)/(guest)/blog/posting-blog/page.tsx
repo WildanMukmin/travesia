@@ -16,8 +16,8 @@ export default async function Page() {
         <AlertCircle className="h-4 w-4" />
         <AlertTitle>Error</AlertTitle>
         <AlertDescription>
-          Anda tidak memiliki akses ke halaman ini, Silahkan login sebagai
-          Owner!
+          Anda tidak memiliki akses ke halaman ini, Silahkan login Terlebih
+          Dahulu!
         </AlertDescription>
       </Alert>
     </div>

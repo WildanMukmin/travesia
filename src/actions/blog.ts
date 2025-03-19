@@ -45,6 +45,20 @@ export const getOneBlog = async (id: string) => {
   }
 };
 
+export const deleteBlog = async (id: string) => {
+  try {
+    await prisma.blog.delete({
+      where: {
+        id,
+      },
+    });
+    return { success: "Blog Berhasil Dihapus!" };
+  } catch (error) {
+    console.error("Error fetching blog:", error);
+    return { error: "Gagal Menghapus Blog" };
+  }
+};
+
 export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
   const validatedFields = postingBlogSchema.safeParse(data);
 

@@ -38,7 +38,47 @@ const BlogDetailPage = ({ slug }: BlogDetailPageProps) => {
   }, [blogId]);
 
   if (!blogData) {
-    return null;
+    return (
+      <article className="max-w-full mx-auto px-4 py-8">
+        <div className="flex justify-start mb-8">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Home</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/blog">Blog</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  {slug
+                    .split("-")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <div className="mb-8 relative h-96 w-full rounded-lg overflow-hidden">
+          Loading Image
+        </div>
+
+        <h1 className="text-3xl font-bold mb-4">Loading</h1>
+
+        <div className="mt-12 pt-6 border-t">
+          <Link href="/blog" className="text-blue-600 hover:underline">
+            ← Back to all posts
+          </Link>
+        </div>
+      </article>
+    );
   }
   return (
     <article className="max-w-full mx-auto px-4 py-8">
