@@ -100,7 +100,6 @@ const BlogPage = ({ blogData, user }: BlogPageProps) => {
               slug={`${item.slug}`}
               deskripsi={item.content[0].slice(0, 100)}
               penulis={`${item.user.name} pada ${item.createdAt.toLocaleDateString()}`}
-              onEdit={() => onEdit(item.id)}
               onDelete={() => onDelete(item.id)}
             />
           ))}

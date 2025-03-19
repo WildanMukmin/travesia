@@ -7,15 +7,14 @@ import ToolDropdown from "@/components/utils/tool-dropdown";
 
 interface CardBlogProps {
   blogId: string;
-  creatorId: string;
-  userId: string;
+  creatorId?: string;
+  userId?: string;
   src: string;
   judul: string;
   slug: string;
   deskripsi: string;
   penulis: string;
-  onEdit: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 
 const CardBlog = ({
@@ -27,14 +26,13 @@ const CardBlog = ({
   slug = "",
   deskripsi = "",
   penulis = "",
-  onEdit,
   onDelete,
 }: CardBlogProps) => {
   return (
     <div className="relative flex flex-col md:flex-row items-start gap-6 bg-white shadow-lg rounded-lg overflow-hidden">
       {/* Dropdown di pojok kanan atas */}
-      {creatorId === userId && (
-        <ToolDropdown onEdit={onEdit} onDelete={onDelete} />
+      {creatorId === userId && onDelete && (
+        <ToolDropdown blogId={blogId} onDelete={onDelete} />
       )}
       <div className="w-full md:w-[400px] h-[250px] relative">
         <Image

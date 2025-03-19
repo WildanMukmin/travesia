@@ -73,7 +73,7 @@ const LandingPage = ({ destinasiData, blogData }: LandingPageProps) => {
             blogData.map((item) => (
               <CardBlog
                 key={item.id}
-                blogId={item.id}
+                blogId={item?.id}
                 src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
                 judul={`${item.title}`}
                 slug={`${item.slug}`}

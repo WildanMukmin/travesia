@@ -20,13 +20,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { startTransition, useState } from "react";
+import Link from "next/link";
 
 interface ToolDropdownProps {
-  onEdit: () => void;
+  blogId: string;
   onDelete: () => void;
 }
 
-const ToolDropdown = ({ onEdit, onDelete }: ToolDropdownProps) => {
+const ToolDropdown = ({ blogId, onDelete }: ToolDropdownProps) => {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const handleAction = () => {
@@ -44,11 +45,8 @@ const ToolDropdown = ({ onEdit, onDelete }: ToolDropdownProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="flex flex-col gap-3">
           <DropdownMenuItem asChild>
-            <Button
-              className="w-full cursor-pointer rounded-lg"
-              onClick={() => onEdit()}
-            >
-              Edit
+            <Button className="w-full cursor-pointer rounded-lg" asChild>
+              <Link href={`/blog/edit-blog/${blogId}`}>Edit</Link>
             </Button>
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>

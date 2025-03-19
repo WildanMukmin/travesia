@@ -59,6 +59,51 @@ export const deleteBlog = async (id: string) => {
   }
 };
 
+export const updateBlog = async (
+  id: string,
+  data: z.infer<typeof postingBlogSchema>,
+) => {
+  const validatedFields = postingBlogSchema.safeParse(data);
+
+  if (!validatedFields.success) {
+    return { error: "Mohon isi form dengan benar!" };
+  }
+
+  const { title, content, image, userId } = validatedFields.data;
+
+  if (!title || !content) {
+    return { error: "Mohon isi form dengan benar!" };
+  }
+
+  if (!userId) {
+    return { error: "Terjadi Error Silahkan Login Kembali!" };
+  }
+
+  const slug = title
+    .toLowerCase()
+    .replace(/[^\w]+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "");
+
+  try {
+    await prisma.blog.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        content,
+        userId,
+        slug,
+      },
+    });
+
+    return { success: "Blog Berhasil DIubah!" };
+  } catch (e) {
+    return { error: "Terjadi Error Saat Mengubah Blog" };
+  }
+};
+
 export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
   const validatedFields = postingBlogSchema.safeParse(data);
 
