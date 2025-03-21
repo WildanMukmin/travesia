@@ -62,17 +62,16 @@ model Owner {
 }
 
 model Forum {
-  id      String    @id @default(uuid())
+  id      String @id @default(uuid())
   userId  String
-  title   String
   slug    String
   content String
+
   like    Like[]
   dislike DisLike[]
   comment Comment[]
   image   Image?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

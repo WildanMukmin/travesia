@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -30,54 +32,61 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
+import { ForumWithCreator } from "@/actions/forum";
+import { useState } from "react";
 
-const ForumPage = () => {
+interface ForumPageProps {
+  forumData: ForumWithCreator;
+}
+
+const ForumPage = ({ forumData }: ForumPageProps) => {
   // Sample post data
-  const posts = [
-    {
-      id: 1,
-      user: {
-        name: "John Doe",
-        username: "johndoe",
-        avatar: "https://github.com/wildanmukmin.png",
-      },
-      content:
-        "UI design trends for 2025: What we're seeing in modern web applications and how to implement them in your next project.",
-      image:
-        "https://images.unsplash.com/photo-1742147550712-9c25dc0832aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8",
-      stats: {
-        comments: 28,
-        likes: 124,
-        upvotes: 35,
-        downvotes: 2,
-      },
-      time: "2h",
-      isPinned: true,
-      tags: ["Design", "UI/UX", "Web Dev"],
-      views: 523,
-    },
-    {
-      id: 2,
-      user: {
-        name: "Emily Chen",
-        username: "emilychen",
-        avatar: "https://github.com/wildanmukmin.png",
-      },
-      content:
-        "Just finished working on a new component library. Would love to get your feedback on the accessibility features I've implemented!",
-      image: null,
-      stats: {
-        comments: 14,
-        likes: 56,
-        upvotes: 19,
-        downvotes: 0,
-      },
-      time: "5h",
-      isPinned: false,
-      tags: ["React", "Accessibility", "Component Library"],
-      views: 248,
-    },
-  ];
+  // const posts = [
+  //   {
+  //     id: 1,
+  //     user: {
+  //       name: "John Doe",
+  //       username: "johndoe",
+  //       avatar: "https://github.com/wildanmukmin.png",
+  //     },
+  //     content:
+  //       "UI design trends for 2025: What we're seeing in modern web applications and how to implement them in your next project.",
+  //     image:
+  //       "https://images.unsplash.com/photo-1742147550712-9c25dc0832aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8",
+  //     stats: {
+  //       comments: 28,
+  //       likes: 124,
+  //       upvotes: 35,
+  //       downvotes: 2,
+  //     },
+  //     time: "2h",
+  //     isPinned: true,
+  //     tags: ["Design", "UI/UX", "Web Dev"],
+  //     views: 523,
+  //   },
+  //   {
+  //     id: 2,
+  //     user: {
+  //       name: "Emily Chen",
+  //       username: "emilychen",
+  //       avatar: "https://github.com/wildanmukmin.png",
+  //     },
+  //     content:
+  //       "Just finished working on a new component library. Would love to get your feedback on the accessibility features I've implemented!",
+  //     image: null,
+  //     stats: {
+  //       comments: 14,
+  //       likes: 56,
+  //       upvotes: 19,
+  //       downvotes: 0,
+  //     },
+  //     time: "5h",
+  //     isPinned: false,
+  //     tags: ["React", "Accessibility", "Component Library"],
+  //     views: 248,
+  //   },
+  // ];
+  const [data, setData] = useState(forumData);
 
   return (
     <main className="mt-10 max-w-full mx-auto px-4">
@@ -142,115 +151,105 @@ const ForumPage = () => {
           </div>
 
           <TabsContent value="trending" className="space-y-6">
-            {posts.map((post) => (
-              <Card
-                key={post.id}
-                className="overflow-hidden hover:shadow-md transition-shadow duration-300"
-              >
-                <CardContent className="p-0">
-                  <div className="border-b border-gray-100">
-                    <div className="p-6">
-                      <div className="flex items-start gap-4">
-                        <Avatar className="h-10 w-10 border-2 border-blue-100">
-                          <AvatarImage
-                            src={post.user.avatar}
-                            alt={post.user.name}
-                          />
-                          <AvatarFallback>
-                            <User
-                              height={20}
-                              width={20}
-                              className="text-black"
+            {data &&
+              data.map((post) => (
+                <Card
+                  key={post.id}
+                  className="overflow-hidden hover:shadow-md transition-shadow duration-300"
+                >
+                  <CardContent className="p-0">
+                    <div className="border-b border-gray-100">
+                      <div className="p-6">
+                        <div className="flex items-start gap-4">
+                          <Avatar className="h-10 w-10 border-2 border-blue-100">
+                            <AvatarImage
+                              src="https://github.com/wildanmukmin.png"
+                              alt={post.user.name || ""}
                             />
-                          </AvatarFallback>
-                        </Avatar>
-
-                        <div className="w-full">
-                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
-                            <div className="flex items-center gap-2">
-                              <span className="font-bold text-blue-900">
-                                {post.user.name}
-                              </span>
-                              <span className="text-gray-500 text-sm">
-                                @{post.user.username}
-                              </span>
-                              {post.isPinned && (
-                                <Badge
-                                  variant="outline"
-                                  className="flex items-center gap-1 text-xs py-0 bg-blue-50"
-                                >
-                                  <Pin size={10} />
-                                  <span>Pinned</span>
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 text-gray-500 text-sm mt-1 sm:mt-0">
-                              <Calendar size={14} />
-                              <span>{post.time} ago</span>
-                              <span>•</span>
-                              <Eye size={14} />
-                              <span>{post.views} views</span>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8 rounded-full ml-2"
-                              >
-                                <MoreHorizontal size={16} />
-                              </Button>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            {post.tags.map((tag, idx) => (
-                              <Badge
-                                key={idx}
-                                variant="secondary"
-                                className="bg-blue-50 text-blue-700 hover:bg-blue-100"
-                              >
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-
-                          <p className="text-gray-800 mb-4">{post.content}</p>
-
-                          {post.image && (
-                            <div className="mb-4 overflow-hidden rounded-lg">
-                              <Image
-                                src={post.image}
-                                alt="Post Image"
-                                width={1200}
-                                height={500}
-                                className="rounded-lg hover:scale-105 transition-transform duration-300 w-full"
+                            <AvatarFallback>
+                              <User
+                                height={20}
+                                width={20}
+                                className="text-black"
                               />
-                            </div>
-                          )}
+                            </AvatarFallback>
+                          </Avatar>
 
-                          <div className="flex justify-between pt-2 text-gray-500 border-t border-gray-100">
-                            <button className="flex items-center gap-2 hover:text-blue-500 transition-colors px-2 py-1 rounded-md hover:bg-blue-50">
-                              <MessageSquare size={18} />
-                              <span>{post.stats.comments}</span>
-                            </button>
-                            <button className="flex items-center gap-2 hover:text-red-500 transition-colors px-2 py-1 rounded-md hover:bg-red-50">
-                              <Heart size={18} />
-                              <span>{post.stats.likes}</span>
-                            </button>
-                            <button className="flex items-center gap-2 hover:text-green-500 transition-colors px-2 py-1 rounded-md hover:bg-green-50">
-                              <ThumbsUp size={18} />
-                              <span>{post.stats.upvotes}</span>
-                            </button>
-                            <button className="flex items-center gap-2 hover:text-orange-500 transition-colors px-2 py-1 rounded-md hover:bg-orange-50">
-                              <ThumbsDown size={18} />
-                              <span>{post.stats.downvotes}</span>
-                            </button>
+                          <div className="w-full">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                              <div className="flex items-center gap-2">
+                                <span className="font-bold text-blue-900">
+                                  {post.user.name}
+                                </span>
+                                <span className="text-gray-500 text-sm">
+                                  @{post.user.email}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 text-gray-500 text-sm mt-1 sm:mt-0">
+                                <Calendar size={14} />
+                                <span>
+                                  {post.createdAt.toLocaleDateString()} ago
+                                </span>
+                                <span>•</span>
+                                <Eye size={14} />
+                                {/* <span>{post.views} views</span> */}
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 rounded-full ml-2"
+                                >
+                                  <MoreHorizontal size={16} />
+                                </Button>
+                              </div>
+                            </div>
+
+                            {/* <div className="flex flex-wrap gap-2 mb-3">
+                              {post.tags.map((tag, idx) => (
+                                <Badge
+                                  key={idx}
+                                  variant="secondary"
+                                  className="bg-blue-50 text-blue-700 hover:bg-blue-100"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div> */}
+
+                            <p className="text-gray-800 mb-4">{post.content}</p>
+
+                            {post.image?.gambar && (
+                              <div className="mb-4 overflow-hidden rounded-lg">
+                                <Image
+                                  src={post.image?.gambar}
+                                  alt="Post Image"
+                                  width={1200}
+                                  height={500}
+                                  className="rounded-lg hover:scale-105 transition-transform duration-300 w-full"
+                                />
+                              </div>
+                            )}
+
+                            <div className="flex justify-between pt-2 text-gray-500 border-t border-gray-100">
+                              <button className="flex items-center gap-2 hover:text-blue-500 transition-colors px-2 py-1 rounded-md hover:bg-blue-50">
+                                <MessageSquare size={18} />
+                                <span>{post.comment.length}</span>
+                              </button>
+                              <button className="flex items-center gap-2 hover:text-green-500 transition-colors px-2 py-1 rounded-md hover:bg-green-50">
+                                <ThumbsUp size={18} />
+                                <span>{post.like.length}</span>
+                              </button>
+                              <button className="flex items-center gap-2 hover:text-orange-500 transition-colors px-2 py-1 rounded-md hover:bg-orange-50">
+                                <ThumbsDown size={18} />
+                                <span>{post.dislike.length}</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              ))}
           </TabsContent>
 
           <TabsContent value="latest" className="space-y-6">
