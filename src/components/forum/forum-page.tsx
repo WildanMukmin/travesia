@@ -116,7 +116,7 @@ const ForumPage = ({ forumData }: ForumPageProps) => {
               className="pl-8 w-full sm:w-64 bg-gray-50"
             />
           </div>
-          <Link href="/blog/posting-blog">
+          <Link href="/forum/posting-forum">
             <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
               <PenSquare size={16} />
               <span>New Post</span>
@@ -151,7 +151,8 @@ const ForumPage = ({ forumData }: ForumPageProps) => {
           </div>
 
           <TabsContent value="trending" className="space-y-6">
-            {data &&
+            {data?.length !== 0 ? (
+              data &&
               data.map((post) => (
                 <Card
                   key={post.id}
@@ -249,7 +250,12 @@ const ForumPage = ({ forumData }: ForumPageProps) => {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              ))
+            ) : (
+              <p className="text-center text-gray-500 py-4">
+                Tampilan post trending akan muncul di sini
+              </p>
+            )}
           </TabsContent>
 
           <TabsContent value="latest" className="space-y-6">

@@ -116,3 +116,14 @@ export const postingBlogSchema = z.object({
     })
     .optional(),
 });
+
+export const postingForumSchema = z.object({
+  userId: z.string(),
+  content: z.string().min(1, "Masukan Caption minimal 1 huruf lah..."),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
+      message: "Logo harus sebuah file",
+    })
+    .optional(),
+});
