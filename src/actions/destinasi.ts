@@ -13,7 +13,7 @@ export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
 >;
 
 export const daftarDestinasi = async (
-  data: z.infer<typeof daftarDestinasiSchema>,
+  data: z.infer<typeof daftarDestinasiSchema>
 ) => {
   const validatedFields = daftarDestinasiSchema.safeParse(data);
   const kategoriLokasiData = [
@@ -137,7 +137,7 @@ export const daftarDestinasi = async (
 
 export const editDestinasi = async (
   destinasiId: string,
-  data: z.infer<typeof editDestinasiSchema>,
+  data: z.infer<typeof editDestinasiSchema>
 ) => {
   const validatedFields = editDestinasiSchema.safeParse(data);
   const kategoriLokasiData = [
@@ -277,7 +277,7 @@ export const getAllDestinasi = async () => {
 
 export const getPaginatedDestinasi = async (
   page: number = 1,
-  limit: number = 10,
+  limit: number = 10
 ) => {
   try {
     const skip = (page - 1) * limit; // Menghitung jumlah data yang dilewati

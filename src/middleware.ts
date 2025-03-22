@@ -1,13 +1,13 @@
 import authConfig from "@/auth.config";
-import NextAuth from "next-auth";
 import {
-  apiAuthPrefix,
-  publicRoutes,
   DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
   authRoutes,
   blogPrefix,
   destinasiPrefix,
+  publicRoutes,
 } from "@/routes";
+import NextAuth from "next-auth";
 
 const { auth } = NextAuth(authConfig);
 

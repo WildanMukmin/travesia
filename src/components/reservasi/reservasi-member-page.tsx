@@ -1,6 +1,10 @@
 "use client";
 
-import { Activity } from "lucide-react";
+import {
+  pengajuanPembatalanReservasi,
+  ReservasiWithMemberAll,
+} from "@/actions/reservasi";
+import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -12,15 +16,11 @@ import {
 } from "@/components/ui/table";
 import AlertTable from "@/components/utils/alert-table";
 import ButtonDetailTable from "@/components/utils/button-detail-table";
-import ReservasiWrapComponent from "@/components/reservasi/reservasi-wrap-component";
 import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan";
-import { Role } from "@prisma/client";
-import {
-  pengajuanPembatalanReservasi,
-  ReservasiWithMemberAll,
-} from "@/actions/reservasi";
-import { startTransition, useState } from "react";
 import SuccessActionFeedbak from "@/components/utils/success-action";
+import { Role } from "@prisma/client";
+import { Activity } from "lucide-react";
+import { startTransition, useState } from "react";
 
 interface ReservasiMemberPageProps {
   reservasiData: ReservasiWithMemberAll;
@@ -35,7 +35,7 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
   const handleClickPengajuanPembatalan = (
     id: string,
     userOwnerId: string,
-    userMemberId: string,
+    userMemberId: string
   ) => {
     startTransition(() => {
       setIsLoading(true);
@@ -51,7 +51,7 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
           }
 
           setIsLoading(false);
-        },
+        }
       );
     });
   };
@@ -128,7 +128,7 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
                               handleClickPengajuanPembatalan(
                                 item.id,
                                 item.destinasi.owner.userId,
-                                item.member?.userId || "",
+                                item.member?.userId || ""
                               )
                             }
                             content="Ajukan Pembatalan"

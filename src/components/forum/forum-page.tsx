@@ -1,5 +1,7 @@
 "use client";
 
+import { ForumWithCreator } from "@/actions/forum";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,31 +10,26 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import {
-  MessageSquare,
-  Heart,
-  ThumbsUp,
-  ThumbsDown,
-  PenSquare,
-  User,
-  Search,
-  Filter,
-  Pin,
-  TrendingUp,
-  Calendar,
-  Eye,
-  Clock,
-  MoreHorizontal,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { ForumWithCreator } from "@/actions/forum";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Calendar,
+  Clock,
+  Eye,
+  Filter,
+  MessageSquare,
+  MoreHorizontal,
+  PenSquare,
+  Search,
+  ThumbsDown,
+  ThumbsUp,
+  TrendingUp,
+  User,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 interface ForumPageProps {

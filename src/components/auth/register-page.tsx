@@ -1,8 +1,9 @@
 "use client";
 
-import { Computer, EyeIcon, EyeOffIcon, User } from "lucide-react";
+import { register } from "@/actions/register";
+import { CardWrapper } from "@/components/auth/card-wrapper";
+import { FormError } from "@/components/auth/form-error";
 import { Button } from "@/components/ui/button";
-import { Role } from "@prisma/client";
 import {
   Form,
   FormControl,
@@ -12,15 +13,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { sighUpSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Role } from "@prisma/client";
+import { Computer, EyeIcon, EyeOffIcon, User } from "lucide-react";
+import Image from "next/image";
 import { startTransition, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FormError } from "@/components/auth/form-error";
 import * as z from "zod";
-import { sighUpSchema } from "@/lib/zod";
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import Image from "next/image";
-import { register } from "@/actions/register";
 
 const RegisterPage = () => {
   // <-------------------------- Role Tools -------------------------->

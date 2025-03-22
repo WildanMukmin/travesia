@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,19 +9,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import AlertPage from "@/components/utils/alert-page";
 import {
   CalendarIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  MailIcon,
+  MapPinIcon,
   PhoneIcon,
   UserIcon,
-  MapPinIcon,
-  ClockIcon,
-  CheckCircleIcon,
   XCircleIcon,
-  MailIcon,
 } from "lucide-react";
-import AlertPage from "@/components/utils/alert-page";
 import { useState } from "react";
 
 interface ReservasiMemberDetailPageProps {

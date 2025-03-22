@@ -1,11 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
-import { LogOutIcon } from "lucide-react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -14,6 +10,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { LogOutIcon } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { startTransition, useState } from "react";
 const LogoutButton = () => {
   const [isPending, setIsPending] = useState(false);

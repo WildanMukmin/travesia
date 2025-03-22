@@ -1,6 +1,16 @@
 "use client";
 
+import { BlogWithCreator, deleteBlog } from "@/actions/blog";
 import CardBlog from "@/components/card/card-blog";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -10,18 +20,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import Link from "next/link";
-import { BlogWithCreator, deleteBlog } from "@/actions/blog";
-import { Button } from "@/components/ui/button";
 import { CurrentUser } from "@/lib/authenticate";
+import Link from "next/link";
 import { startTransition, useState } from "react";
 
 interface BlogPageProps {
@@ -47,9 +47,7 @@ const BlogPage = ({ blogData, user }: BlogPageProps) => {
       });
     });
   };
-  const onEdit = (id: string) => {
-    console.log("tombol edit", id);
-  };
+
   return (
     <main className="mt-10 max-w-full mx-auto px-4">
       <div className="flex justify-start mb-8">

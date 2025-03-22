@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -8,16 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
-  Linkedin,
+  Code,
+  Globe,
   Instagram,
+  Linkedin,
+  Target,
   Twitter,
   Users,
-  Code,
-  Target,
-  Globe,
 } from "lucide-react";
 import Image from "next/image";
 

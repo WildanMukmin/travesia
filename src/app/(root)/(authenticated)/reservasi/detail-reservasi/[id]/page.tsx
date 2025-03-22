@@ -1,4 +1,3 @@
-import { getDestinasiById } from "@/actions/destinasi";
 import { getReservasiById } from "@/actions/reservasi";
 import RoleGate from "@/components/auth/role-gate";
 import ReservasiMemberDetailPage from "@/components/reservasi/reservasi-member-detail-page";

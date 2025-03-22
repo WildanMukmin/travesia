@@ -1,5 +1,7 @@
 "use client";
 
+import LogoutButton from "@/components/auth/button-logout";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,8 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import LogoutButton from "@/components/auth/button-logout";
 import { User } from "lucide-react";
 import Link from "next/link";
 

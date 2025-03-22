@@ -1,10 +1,9 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { buatReservasiSchema, editProfileMemberSchema } from "@/lib/zod";
+import { editProfileMemberSchema } from "@/lib/zod";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import * as z from "zod";
 
 export type GetProfileType = Prisma.PromiseReturnType<typeof getProfile>;
@@ -28,7 +27,7 @@ export const getProfile = async (userId: string) => {
 
 export const updateProfile = async (
   userId: string,
-  data: z.infer<typeof editProfileMemberSchema>,
+  data: z.infer<typeof editProfileMemberSchema>
 ) => {
   try {
     const validatedFields = editProfileMemberSchema.safeParse(data);

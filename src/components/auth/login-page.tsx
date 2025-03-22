@@ -1,6 +1,9 @@
 "use client";
 
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { login } from "@/actions/login";
+import { CardWrapper } from "@/components/auth/card-wrapper";
+import { FormError } from "@/components/auth/form-error";
+import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,16 +14,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { FormSuccess } from "@/components/auth/form-succsess";
-import { FormError } from "@/components/auth/form-error";
-import * as z from "zod";
 import { signInSchema } from "@/lib/zod";
-import { CardWrapper } from "@/components/auth/card-wrapper";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Image from "next/image";
-import { login } from "@/actions/login";
+import { startTransition, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);

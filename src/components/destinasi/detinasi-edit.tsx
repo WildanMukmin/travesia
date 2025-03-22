@@ -1,6 +1,15 @@
 "use client";
 
+import {
+  editDestinasi,
+  getDestinasiById,
+  GetOneDestinasiWithOwner,
+} from "@/actions/destinasi";
+import { FormError } from "@/components/auth/form-error";
+import { FormSuccess } from "@/components/auth/form-succsess";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -10,25 +19,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import Link from "next/link";
-import { ArrowLeft, ImagePlus, Plus, Upload, X } from "lucide-react";
-import { editDestinasiSchema } from "@/lib/zod";
-import { FormError } from "@/components/auth/form-error";
-import { FormSuccess } from "@/components/auth/form-succsess";
-import Image from "next/image";
-import {
-  daftarDestinasi,
-  editDestinasi,
-  getDestinasiById,
-  GetOneDestinasiWithOwner,
-} from "@/actions/destinasi";
 import {
   Select,
   SelectContent,
@@ -36,7 +26,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { editDestinasiSchema } from "@/lib/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, ImagePlus, Plus, Upload, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { startTransition, useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 const DestinasiEditPage = () => {
   const destinasiId = useSearchParams().get("id");
@@ -452,7 +451,7 @@ const DestinasiEditPage = () => {
                               type="button"
                               onClick={() =>
                                 field.onChange(
-                                  field.value?.filter((s) => s !== facility),
+                                  field.value?.filter((s) => s !== facility)
                                 )
                               }
                               className="h-5 w-5 p-0 ml-1 text-blue-700 hover:text-red-600 hover:bg-transparent"

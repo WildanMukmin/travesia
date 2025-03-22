@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import { deleteBlog, getOneBlog, OneBlogWithCreator } from "@/actions/blog";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,11 +9,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import ToolDropdown from "@/components/utils/tool-dropdown";
+import { ArrowLeft, CalendarDays, Clock, User } from "lucide-react";
+import { revalidatePath } from "next/cache";
+import Image from "next/image";
+import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
 import { startTransition, useEffect, useState } from "react";
-import { deleteBlog, getOneBlog, OneBlogWithCreator } from "@/actions/blog";
-import ToolDropdown from "@/components/utils/tool-dropdown";
-import { CalendarDays, User, Clock, ArrowLeft } from "lucide-react";
 
 interface BlogDetailPageProps {
   slug: string;
@@ -52,6 +53,7 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
           setErrorMessage(res?.error);
         }
         if (res?.success) {
+          revalidatePath("/blog");
           redirect("/blog");
         }
       });
@@ -128,7 +130,7 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
 
   const readingTime = Math.max(
     1,
-    Math.ceil(blogData.content.join(" ").split(" ").length / 200),
+    Math.ceil(blogData.content.join(" ").split(" ").length / 200)
   );
 
   return (

@@ -1,6 +1,9 @@
 "use client";
 
+import { FormError } from "@/components/auth/form-error";
+import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -10,19 +13,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { CreditCard, AlertCircle, CheckCircle } from "lucide-react";
+import { pembayaran } from "@/lib/pembayaran";
+import { simulasiPembayaranSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useEffect, useState } from "react";
+import { AlertCircle, CheckCircle, CreditCard } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { startTransition, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { simulasiPembayaranSchema } from "@/lib/zod";
-import { FormError } from "@/components/auth/form-error";
-import { useSearchParams } from "next/navigation";
-import { pembayaran } from "@/lib/pembayaran";
-import { FormSuccess } from "@/components/auth/form-succsess";
 
 const ReservasiMemberSimulasiBayarPage = () => {
   const searchParams = useSearchParams();

@@ -1,3 +1,20 @@
+import DestinasiCard from "@/components/card/card-destinasi";
+import DestinasiKategoriCard from "@/components/card/card-kategori";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import {
   Pagination,
   PaginationContent,
@@ -7,25 +24,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import DestinasiKategoriCard from "@/components/card/card-kategori";
-import DestinasiCard from "@/components/card/card-destinasi";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import { DestinasiWithOwner } from "@/actions/destinasi";
 
 interface DestinasiPageProps {
   data: any[];

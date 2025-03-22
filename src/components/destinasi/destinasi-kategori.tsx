@@ -1,13 +1,12 @@
+import DestinasiCard from "@/components/card/card-destinasi";
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import Link from "next/link";
 import {
   Pagination,
   PaginationContent,
@@ -17,8 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import DestinasiCard from "@/components/card/card-destinasi";
-import { DestinasiWithOwner } from "@/actions/destinasi";
+import Link from "next/link";
 
 interface DestinasiKategoriPageProps {
   data: any[];

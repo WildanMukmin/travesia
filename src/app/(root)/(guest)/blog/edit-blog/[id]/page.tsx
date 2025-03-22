@@ -1,5 +1,4 @@
 import { getOneBlog } from "@/actions/blog";
-import { getDestinasiById } from "@/actions/destinasi";
 import BlogEditPage from "@/components/blog/blog-edit-page";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { currentUser } from "@/lib/authenticate";

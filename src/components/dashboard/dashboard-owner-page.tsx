@@ -1,29 +1,15 @@
 "use client";
 
-import Link from "next/link";
+import { OwnerWithDestinasi } from "@/actions/owner";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Clock,
-  MapPin,
-  Info,
-  SquarePen,
-  UserIcon,
-  BadgeCheck,
-  DollarSign,
-  ArrowRight,
-  Sparkles,
-  Bell,
-  X,
-} from "lucide-react";
-import Image from "next/image";
-import AlertTable from "@/components/utils/alert-table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetContent,
@@ -32,13 +18,27 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { OwnerWithDestinasi } from "@/actions/owner";
+import AlertTable from "@/components/utils/alert-table";
 import {
   deleteNotifikasi,
   NotifikasiType,
   updateReadNotifikasi,
 } from "@/lib/notifikasi";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Bell,
+  Clock,
+  DollarSign,
+  Info,
+  MapPin,
+  Sparkles,
+  SquarePen,
+  UserIcon,
+  X,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 interface DashboardOwnerPageProps {
@@ -55,7 +55,7 @@ const DashboardOwnerPage = ({
   const [notifikasiData, setNotifikasiData] = useState(notifikasi || []);
   const [unreadCount, setUnreadCount] = useState(
     notifikasiData?.filter((notif) => notif.status === "belum-dibaca").length ||
-      0,
+      0
   );
 
   const handleReadNotifikasi = async (id: string) => {
@@ -84,7 +84,7 @@ const DashboardOwnerPage = ({
 
       if (result) {
         const updatedNotifikasi = notifikasiData.filter(
-          (notif) => notif.id !== id,
+          (notif) => notif.id !== id
         );
         setNotifikasiData(updatedNotifikasi);
         setUnreadCount((prevCount) => Math.max(0, prevCount - 1));
@@ -241,7 +241,7 @@ const DashboardOwnerPage = ({
                             </div>
                             <span className="text-gray-700">{fasilitas}</span>
                           </div>
-                        ),
+                        )
                       )}
                     </div>
                   </div>
@@ -301,8 +301,8 @@ const DashboardOwnerPage = ({
                               minimumFractionDigits: 2,
                             }).format(
                               Number(
-                                ownerDestinasiData?.owner?.destinasi?.harga,
-                              ),
+                                ownerDestinasiData?.owner?.destinasi?.harga
+                              )
                             )}
                           </p>
                         </div>

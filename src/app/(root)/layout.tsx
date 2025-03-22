@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ProfileDropdown from "@/components/profile/profile-dropdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -7,10 +7,10 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Facebook, HomeIcon, Instagram, Search, Twitter } from "lucide-react";
 import { currentUser } from "@/lib/authenticate";
-import ProfileDropdown from "@/components/profile/profile-dropdown";
+import { Facebook, HomeIcon, Instagram, Search, Twitter } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Layout({
   children,

@@ -1,7 +1,7 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export type NotifikasiType = Prisma.PromiseReturnType<
   typeof getNotificationByUserId

@@ -1,36 +1,35 @@
 "use client";
 
 import {
+  penerimaanPengajuanPembatalanReservasi,
+  ReservasiWithMember,
+} from "@/actions/reservasi";
+import { Badge } from "@/components/ui/badge";
+import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import AlertPage from "@/components/utils/alert-page";
+import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan";
+import SuccessActionFeedbak from "@/components/utils/success-action";
+import { Role } from "@prisma/client";
 import {
   CalendarIcon,
+  CheckCircleIcon,
+  Clock,
+  ClockIcon,
+  DollarSign,
+  MailIcon,
+  MapPinIcon,
   PhoneIcon,
   UserIcon,
-  MapPinIcon,
-  ClockIcon,
-  CheckCircleIcon,
   XCircleIcon,
-  MailIcon,
-  Clock,
-  DollarSign,
-  Backpack,
 } from "lucide-react";
-import AlertPage from "@/components/utils/alert-page";
 import { startTransition, useState } from "react";
-import {
-  penerimaanPengajuanPembatalanReservasi,
-  ReservasiWithMember,
-} from "@/actions/reservasi";
-import ButtonPengajuanPembatalanTable from "@/components/utils/button-pengajuan-pembatalan";
-import { Role } from "@prisma/client";
-import SuccessActionFeedbak from "@/components/utils/success-action";
 
 interface ReservasiOwnerDetailPageProps {
   reservasiData: ReservasiWithMember;
@@ -76,7 +75,7 @@ const ReservasiOwnerDetailPage = ({
   const handleClickPengajuanPembatalan = (
     id: string,
     userOwnerId: string,
-    userMemberId: string,
+    userMemberId: string
   ) => {
     startTransition(() => {
       setIsLoading(true);
@@ -95,7 +94,7 @@ const ReservasiOwnerDetailPage = ({
                     member: prevData.member ?? null,
                     destinasi: prevData.destinasi ?? null, // Pastikan properti penting tetap ada
                   }
-                : prevData,
+                : prevData
             );
           }
         })
@@ -216,7 +215,7 @@ const ReservasiOwnerDetailPage = ({
                       <span className="block">
                         {data.tanggalReservasi.toLocaleDateString(
                           "id-ID",
-                          options,
+                          options
                         )}
                       </span>
                       <span className="text-xs text-gray-500">
@@ -301,7 +300,7 @@ const ReservasiOwnerDetailPage = ({
                   handleClickPengajuanPembatalan(
                     data.id,
                     data.destinasi.owner.userId || "",
-                    data.member?.userId || "",
+                    data.member?.userId || ""
                   )
                 }
                 content="Terima Pengajuan"

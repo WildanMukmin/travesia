@@ -1,4 +1,4 @@
-import { Gender, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import * as z from "zod";
 
 export const signInSchema = z.object({

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import QRCode from "qrcode";
+import { ReservasiWithMember } from "@/actions/reservasi";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,12 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Alert } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Copy, RefreshCw } from "lucide-react";
-import { ReservasiWithMember } from "@/actions/reservasi";
+import { Copy, Loader2, RefreshCw } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import QRCode from "qrcode";
+import { useEffect, useState } from "react";
 
 interface ReservasiMemberPembayaranPageProps {
   id: string;

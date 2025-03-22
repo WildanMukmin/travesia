@@ -1,6 +1,9 @@
 "use client";
 
+import { FormError } from "@/components/auth/form-error";
+import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -10,21 +13,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+import { postingForumSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, ImagePlus } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import { startTransition, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import Link from "next/link";
-import { ArrowLeft, ImagePlus, Plus, Upload, X } from "lucide-react";
-import { postingForumSchema } from "@/lib/zod";
-import { FormError } from "@/components/auth/form-error";
-import { FormSuccess } from "@/components/auth/form-succsess";
-import Image from "next/image";
-import { postingBlog } from "@/actions/blog";
-import { redirect } from "next/navigation";
 
 interface ForumPostingPageProps {
   userId: string;

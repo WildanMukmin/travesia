@@ -1,9 +1,9 @@
 import RoleGate from "@/components/auth/role-gate";
+import DestinasiEditPage from "@/components/destinasi/detinasi-edit";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { currentUser } from "@/lib/authenticate";
 import { Role } from "@prisma/client";
 import { AlertCircle } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import DestinasiEditPage from "@/components/destinasi/detinasi-edit";
 import { Suspense } from "react";
 
 export default async function Page() {

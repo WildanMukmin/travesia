@@ -1,9 +1,9 @@
-import Credentials from "next-auth/providers/credentials";
 import bcryptjs from "bcryptjs";
 import type { NextAuthConfig } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
-import { signInSchema } from "@/lib/zod";
 import { getUserByEmail } from "@/data/user";
+import { signInSchema } from "@/lib/zod";
 
 export default {
   providers: [

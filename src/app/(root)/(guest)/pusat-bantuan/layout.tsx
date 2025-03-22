@@ -1,9 +1,9 @@
 "use client";
 
-import { User, MessageSquare, MapPin } from "lucide-react";
-import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { MapPin, MessageSquare, User } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname(); // Mendapatkan path aktif saat ini

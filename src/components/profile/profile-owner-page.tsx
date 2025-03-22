@@ -1,9 +1,9 @@
 "use client";
 
-import { GetProfileType } from "@/lib/profile";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { FileImage, User, UserPen } from "lucide-react";
+import { GetProfileType } from "@/lib/profile";
+import { User, UserPen } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface ProfileMemberPageProps {

@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { LogOutIcon } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -12,6 +10,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { LogOutIcon } from "lucide-react";
 import { startTransition, useState } from "react";
 
 interface ButtonAlertProps {

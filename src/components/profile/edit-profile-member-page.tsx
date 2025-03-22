@@ -1,14 +1,8 @@
 "use client";
 
-import { GetProfileType, updateProfile } from "@/lib/profile";
-import Image from "next/image";
+import { FormError } from "@/components/auth/form-error";
+import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ImagePlus, Upload, User } from "lucide-react";
-import { startTransition, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { editProfileMemberSchema } from "@/lib/zod";
-import * as z from "zod";
 import {
   Form,
   FormControl,
@@ -17,8 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Link from "next/link";
-import { FormError } from "@/components/auth/form-error";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -27,7 +19,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FormSuccess } from "@/components/auth/form-succsess";
+import { GetProfileType, updateProfile } from "@/lib/profile";
+import { editProfileMemberSchema } from "@/lib/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, ImagePlus, Upload, User } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { startTransition, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 interface EditProfileMemberPageProps {
   userData: GetProfileType;

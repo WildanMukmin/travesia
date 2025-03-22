@@ -1,6 +1,6 @@
-import { Role } from "@prisma/client";
-import { currentUserRole } from "@/lib/authenticate";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { currentUserRole } from "@/lib/authenticate";
+import { Role } from "@prisma/client";
 import { AlertCircle } from "lucide-react";
 
 interface RoleGateProps {

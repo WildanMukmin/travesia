@@ -1,16 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  MapPin,
-  Clock,
-  User,
-  ArrowLeft,
-  BadgeCheck,
-  DollarSign,
-  SquarePen,
-} from "lucide-react";
-import { Role } from "@prisma/client";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,6 +6,19 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Role } from "@prisma/client";
+import {
+  ArrowLeft,
+  BadgeCheck,
+  Clock,
+  DollarSign,
+  MapPin,
+  SquarePen,
+  User,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface DestinasiDetailPageProps {
   userId: string;

@@ -1,6 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { BlogWithCreator } from "@/actions/blog";
+import { DestinasiWithOwner } from "@/actions/destinasi";
+import CardBlog from "@/components/card/card-blog";
+import DestinasiCard from "@/components/card/card-destinasi-carousel";
+import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -8,11 +10,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
-import DestinasiCard from "@/components/card/card-destinasi-carousel";
-import CardBlog from "@/components/card/card-blog";
-import { DestinasiWithOwner } from "@/actions/destinasi";
-import { BlogWithCreator } from "@/actions/blog";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface LandingPageProps {
   destinasiData: DestinasiWithOwner;
