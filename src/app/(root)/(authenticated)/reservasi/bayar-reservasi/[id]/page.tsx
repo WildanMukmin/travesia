@@ -3,6 +3,7 @@ import RoleGate from "@/components/auth/role-gate";
 import ReservasiMemberPembayaranPage from "@/components/reservasi/reservasi-member-pembayaran-page";
 import { currentUser } from "@/lib/authenticate";
 import { Role } from "@prisma/client";
+import { CheckCircle } from "lucide-react";
 import { redirect } from "next/navigation";
 interface PageProps {
   params: Promise<{
@@ -26,7 +27,14 @@ export default async function Page({ params }: PageProps) {
     }
 
     if (reservasi.status === "selesai") {
-      return <p>Reservasi telah selesai.</p>;
+      return (
+        <div className="flex flex-col items-center justify-center min-h-screen p-4">
+          <div className="flex items-center mb-4 text-green-500">
+            <CheckCircle className="mr-2 h-6 w-6" />
+            <h2 className="text-xl font-bold">Pembayaran Telah Selasai!</h2>
+          </div>
+        </div>
+      );
     }
 
     const hasExpired =

@@ -20,9 +20,7 @@ const LogoutButton = () => {
   const handleClick = () => {
     setIsPending(true);
     startTransition(() => {
-      signOut({ callbackUrl: "/login" }).then(() => {
-        setIsPending(false);
-      });
+      signOut({ callbackUrl: "/login" });
     });
   };
   return (

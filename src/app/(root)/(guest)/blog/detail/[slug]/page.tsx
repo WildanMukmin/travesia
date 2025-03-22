@@ -1,4 +1,5 @@
 import BlogDetailPage from "@/components/blog/blog-detail-page";
+import { currentUser } from "@/lib/authenticate";
 import { Suspense } from "react";
 
 interface PageProps {
@@ -9,9 +10,10 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
+  const user = await currentUser();
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <BlogDetailPage slug={slug} />
+      <BlogDetailPage slug={slug} userId={user?.id || ""} />
     </Suspense>
   );
 }

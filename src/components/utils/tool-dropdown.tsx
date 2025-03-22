@@ -36,7 +36,7 @@ const ToolDropdown = ({ blogId, onDelete }: ToolDropdownProps) => {
   };
 
   return (
-    <div className="absolute top-4 right-4">
+    <div className="absolute top-4 right-4 bg-gray-200 rounded-full">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon">
