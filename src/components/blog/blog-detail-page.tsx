@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import ToolDropdown from "@/components/utils/tool-dropdown";
 import { ArrowLeft, CalendarDays, Clock, User } from "lucide-react";
-import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
@@ -53,7 +52,6 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
           setErrorMessage(res?.error);
         }
         if (res?.success) {
-          revalidatePath("/blog");
           redirect("/blog");
         }
       });

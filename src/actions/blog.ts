@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { postingBlogSchema } from "@/lib/zod";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import * as z from "zod";
 
 export type BlogWithCreator = Prisma.PromiseReturnType<typeof getBlog>;
@@ -52,6 +53,7 @@ export const deleteBlog = async (id: string) => {
         id,
       },
     });
+    revalidatePath("/blog");
     return { success: "Blog Berhasil Dihapus!" };
   } catch (error) {
     console.error("Error fetching blog:", error);
