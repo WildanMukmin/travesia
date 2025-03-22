@@ -7,7 +7,7 @@ import * as z from "zod";
 
 export type NotifikasiType = Prisma.PromiseReturnType<typeof pembayaran>;
 export const pembayaran = async (
-  value: z.infer<typeof simulasiPembayaranSchema>
+  value: z.infer<typeof simulasiPembayaranSchema>,
 ) => {
   const validatedFields = simulasiPembayaranSchema.safeParse(value);
   if (!validatedFields.success) {

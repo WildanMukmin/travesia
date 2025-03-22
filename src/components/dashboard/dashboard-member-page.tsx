@@ -42,16 +42,16 @@ const DashboardMemberPage = ({
   notifikasi,
 }: DashboardMemberPageProps) => {
   const perjalananSelesaiCount = reservasiData?.filter(
-    (item) => item.status === "selesai"
+    (item) => item.status === "selesai",
   ).length;
   const perjalananDibatalkanCount = reservasiData?.filter(
-    (item) => item.status === "dibatalkan"
+    (item) => item.status === "dibatalkan",
   ).length;
 
   const [notifikasiData, setNotifikasiData] = useState(notifikasi || []);
   const [unreadCount, setUnreadCount] = useState(
     notifikasiData?.filter((notif) => notif.status === "belum-dibaca").length ||
-      0
+      0,
   );
 
   const handleReadNotifikasi = async (id: string) => {
@@ -80,7 +80,7 @@ const DashboardMemberPage = ({
 
       if (result) {
         const updatedNotifikasi = notifikasiData.filter(
-          (notif) => notif.id !== id
+          (notif) => notif.id !== id,
         );
         setNotifikasiData(updatedNotifikasi);
         setUnreadCount((prevCount) => Math.max(0, prevCount - 1));

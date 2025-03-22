@@ -130,7 +130,7 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
 
   const readingTime = Math.max(
     1,
-    Math.ceil(blogData.content.join(" ").split(" ").length / 200)
+    Math.ceil(blogData.content.join(" ").split(" ").length / 200),
   );
 
   return (

@@ -27,7 +27,7 @@ export const getProfile = async (userId: string) => {
 
 export const updateProfile = async (
   userId: string,
-  data: z.infer<typeof editProfileMemberSchema>
+  data: z.infer<typeof editProfileMemberSchema>,
 ) => {
   try {
     const validatedFields = editProfileMemberSchema.safeParse(data);

@@ -62,7 +62,7 @@ const ReservasiMemberDetailPage = ({
   const handleClickPengajuanPembatalan = (
     id: string,
     userOwnerId: string,
-    userMemberId: string
+    userMemberId: string,
   ) => {
     startTransition(() => {
       setIsLoading(true);
@@ -81,7 +81,7 @@ const ReservasiMemberDetailPage = ({
                     member: prevData.member ?? null,
                     destinasi: prevData.destinasi ?? null, // Pastikan properti penting tetap ada
                   }
-                : prevData
+                : prevData,
             );
           }
         })
@@ -219,7 +219,7 @@ const ReservasiMemberDetailPage = ({
                       <span className="block">
                         {data?.tanggalReservasi.toLocaleDateString(
                           "id-ID",
-                          options
+                          options,
                         )}
                       </span>
                       <span className="text-xs text-gray-500">
@@ -304,7 +304,7 @@ const ReservasiMemberDetailPage = ({
                   handleClickPengajuanPembatalan(
                     data?.id || "",
                     data?.destinasi.owner.userId || "",
-                    data?.member?.userId || ""
+                    data?.member?.userId || "",
                   )
                 }
                 content="Ajukan Pembatalan"

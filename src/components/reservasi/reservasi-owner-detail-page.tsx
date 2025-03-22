@@ -75,7 +75,7 @@ const ReservasiOwnerDetailPage = ({
   const handleClickPengajuanPembatalan = (
     id: string,
     userOwnerId: string,
-    userMemberId: string
+    userMemberId: string,
   ) => {
     startTransition(() => {
       setIsLoading(true);
@@ -94,7 +94,7 @@ const ReservasiOwnerDetailPage = ({
                     member: prevData.member ?? null,
                     destinasi: prevData.destinasi ?? null, // Pastikan properti penting tetap ada
                   }
-                : prevData
+                : prevData,
             );
           }
         })
@@ -215,7 +215,7 @@ const ReservasiOwnerDetailPage = ({
                       <span className="block">
                         {data.tanggalReservasi.toLocaleDateString(
                           "id-ID",
-                          options
+                          options,
                         )}
                       </span>
                       <span className="text-xs text-gray-500">
@@ -300,7 +300,7 @@ const ReservasiOwnerDetailPage = ({
                   handleClickPengajuanPembatalan(
                     data.id,
                     data.destinasi.owner.userId || "",
-                    data.member?.userId || ""
+                    data.member?.userId || "",
                   )
                 }
                 content="Terima Pengajuan"

@@ -322,8 +322,8 @@ const BlogPostingPage = ({ userId }: BlogPostingPageProps) => {
                                     onClick={() =>
                                       field.onChange(
                                         field.value?.filter(
-                                          (_, i) => i !== index
-                                        )
+                                          (_, i) => i !== index,
+                                        ),
                                       )
                                     }
                                     className="h-7 w-7 p-0 text-gray-500 hover:text-red-600 hover:bg-red-50"
