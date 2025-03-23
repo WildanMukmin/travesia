@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import ToolDropdown from "@/components/utils/tool-dropdown";
+import ToolDropdown from "@/components/utils/tool-dropdown-blog";
 import { ArrowLeft, CalendarDays, Clock, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

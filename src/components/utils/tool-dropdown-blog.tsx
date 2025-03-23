@@ -21,12 +21,12 @@ import { MoreVertical } from "lucide-react";
 import Link from "next/link";
 import { startTransition, useState } from "react";
 
-interface ToolDropdownProps {
+interface ToolDropdownBlogProps {
   blogId: string;
   onDelete: () => void;
 }
 
-const ToolDropdown = ({ blogId, onDelete }: ToolDropdownProps) => {
+const ToolDropdownBlog = ({ blogId, onDelete }: ToolDropdownBlogProps) => {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const handleAction = () => {
@@ -99,4 +99,4 @@ const ToolDropdown = ({ blogId, onDelete }: ToolDropdownProps) => {
   );
 };
 
-export default ToolDropdown;
+export default ToolDropdownBlog;

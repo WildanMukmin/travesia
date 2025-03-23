@@ -139,6 +139,7 @@ export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
       },
     });
 
+    revalidatePath("/blog");
     return { success: "Blog Berhasil Dibuat!" };
   } catch (e) {
     return { error: "Terjadi Error Saat mempublikasikan Blog" };

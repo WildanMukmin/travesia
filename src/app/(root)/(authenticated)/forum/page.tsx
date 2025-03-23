@@ -6,11 +6,10 @@ import { AlertCircle } from "lucide-react";
 
 export default async function Page() {
   const user = await currentUser();
-
   const forum = await getForum();
 
   if (!!user) {
-    return <ForumPage forumData={forum} />;
+    return <ForumPage forumData={forum} userId={user.id || ""} />;
   }
 
   return (

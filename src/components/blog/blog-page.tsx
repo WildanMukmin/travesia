@@ -42,8 +42,10 @@ const BlogPage = ({ blogData, user }: BlogPageProps) => {
         }
         if (res?.success) {
           setSuccessMessage(res?.success);
+          setData(
+            (prevData) => prevData?.filter((item) => item.id !== id) ?? [],
+          );
         }
-        setData((prevData) => prevData?.filter((item) => item.id !== id) ?? []);
       });
     });
   };

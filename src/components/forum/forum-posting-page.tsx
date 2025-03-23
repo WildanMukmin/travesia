@@ -1,5 +1,6 @@
 "use client";
 
+import { postingForum } from "@/actions/forum";
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,7 @@ const ForumPostingPage = ({ userId }: ForumPostingPageProps) => {
 
   useEffect(() => {
     if (successMessage) {
-      redirect("/blog");
+      redirect("/forum");
     }
   }, [successMessage]);
 
@@ -61,7 +62,17 @@ const ForumPostingPage = ({ userId }: ForumPostingPageProps) => {
     try {
       startTransition(() => {
         // handleSaveImage();
-        console.log(data);
+        // console.log(data);
+        postingForum(data).then((res) => {
+          if (!res) {
+            setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
+          }
+          if (res?.error) {
+            setErrorMessage(res.error);
+          } else if (res?.success) {
+            setSuccessMessage("Blog berhasil dipublikasikan!");
+          }
+        });
       });
     } catch (error) {
       setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import ToolDropdown from "@/components/utils/tool-dropdown";
+import ToolDropdown from "@/components/utils/tool-dropdown-blog";
 import Image from "next/image";
 import Link from "next/link";
 

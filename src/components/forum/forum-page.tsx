@@ -1,6 +1,11 @@
 "use client";
 
-import { ForumWithCreator } from "@/actions/forum";
+import {
+  deleteForum,
+  dislikeForum,
+  ForumWithCreator,
+  likeForum,
+} from "@/actions/forum";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Breadcrumb,
@@ -20,7 +25,6 @@ import {
   Eye,
   Filter,
   MessageSquare,
-  MoreHorizontal,
   PenSquare,
   Search,
   ThumbsDown,
@@ -30,60 +34,88 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { startTransition, useState } from "react";
+import ToolDropdownForum from "../utils/tool-dropdown-forum";
 
 interface ForumPageProps {
   forumData: ForumWithCreator;
+  userId: string;
 }
 
-const ForumPage = ({ forumData }: ForumPageProps) => {
-  // Sample post data
-  // const posts = [
-  //   {
-  //     id: 1,
-  //     user: {
-  //       name: "John Doe",
-  //       username: "johndoe",
-  //       avatar: "https://github.com/wildanmukmin.png",
-  //     },
-  //     content:
-  //       "UI design trends for 2025: What we're seeing in modern web applications and how to implement them in your next project.",
-  //     image:
-  //       "https://images.unsplash.com/photo-1742147550712-9c25dc0832aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8",
-  //     stats: {
-  //       comments: 28,
-  //       likes: 124,
-  //       upvotes: 35,
-  //       downvotes: 2,
-  //     },
-  //     time: "2h",
-  //     isPinned: true,
-  //     tags: ["Design", "UI/UX", "Web Dev"],
-  //     views: 523,
-  //   },
-  //   {
-  //     id: 2,
-  //     user: {
-  //       name: "Emily Chen",
-  //       username: "emilychen",
-  //       avatar: "https://github.com/wildanmukmin.png",
-  //     },
-  //     content:
-  //       "Just finished working on a new component library. Would love to get your feedback on the accessibility features I've implemented!",
-  //     image: null,
-  //     stats: {
-  //       comments: 14,
-  //       likes: 56,
-  //       upvotes: 19,
-  //       downvotes: 0,
-  //     },
-  //     time: "5h",
-  //     isPinned: false,
-  //     tags: ["React", "Accessibility", "Component Library"],
-  //     views: 248,
-  //   },
-  // ];
+const ForumPage = ({ forumData, userId }: ForumPageProps) => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [data, setData] = useState(forumData);
+  const handleDelete = (forumId: string) => {
+    startTransition(() => {
+      deleteForum(forumId).then((res) => {
+        if (res?.error) {
+          setErrorMessage(res?.error);
+        }
+        if (res?.success) {
+          setSuccessMessage(res?.success);
+          setData(
+            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? [],
+          );
+        }
+      });
+    });
+  };
+
+  const handleComment = (forumId: string, userId: string) => {
+    startTransition(() => {
+      console.log("comment : ", forumId);
+    });
+  };
+  const handleLike = (forumId: string, userId: string) => {
+    startTransition(() => {
+      likeForum(forumId, userId).then((res) => {
+        if (res?.success) {
+          setData(
+            (prevData) =>
+              prevData?.map((item) =>
+                item.id === forumId
+                  ? {
+                      ...item,
+                      like: res.likeData
+                        ? [...item.like, res.likeData] // Jika menambah like
+                        : item.like.filter((like) => like.userId !== userId), // Jika unlike
+                      dislike: item.dislike.filter(
+                        (dislike) => dislike.userId !== userId,
+                      ), // Hapus dislike jika ada
+                    }
+                  : item,
+              ) ?? [],
+          );
+        }
+      });
+    });
+  };
+
+  const handleDislike = (forumId: string, userId: string) => {
+    startTransition(() => {
+      dislikeForum(forumId, userId).then((res) => {
+        if (res?.success) {
+          setData(
+            (prevData) =>
+              prevData?.map((item) =>
+                item.id === forumId
+                  ? {
+                      ...item,
+                      dislike: res.dislikeData
+                        ? [...item.dislike, res.dislikeData] // Jika menambah dislike
+                        : item.dislike.filter(
+                            (dislike) => dislike.userId !== userId,
+                          ), // Jika undislike
+                      like: item.like.filter((like) => like.userId !== userId), // Hapus like jika ada
+                    }
+                  : item,
+              ) ?? [],
+          );
+        }
+      });
+    });
+  };
 
   return (
     <main className="mt-10 max-w-full mx-auto px-4">
@@ -121,6 +153,17 @@ const ForumPage = ({ forumData }: ForumPageProps) => {
           </Link>
         </div>
       </div>
+
+      {successMessage && (
+        <div className="bg-green-100 rounded-lg py-5 px-6 text-base text-green-700 mb-3">
+          {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700 mb-3">
+          {errorMessage}
+        </div>
+      )}
 
       {/* Forum filters and tabs */}
       <div className="mb-8">
@@ -190,14 +233,12 @@ const ForumPage = ({ forumData }: ForumPageProps) => {
                                 </span>
                                 <span>•</span>
                                 <Eye size={14} />
-                                {/* <span>{post.views} views</span> */}
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-8 w-8 rounded-full ml-2"
-                                >
-                                  <MoreHorizontal size={16} />
-                                </Button>
+                                {userId === post.user.id && (
+                                  <ToolDropdownForum
+                                    forumId={post.id}
+                                    onDelete={() => handleDelete(post.id)}
+                                  />
+                                )}
                               </div>
                             </div>
 
@@ -228,18 +269,30 @@ const ForumPage = ({ forumData }: ForumPageProps) => {
                             )}
 
                             <div className="flex justify-between pt-2 text-gray-500 border-t border-gray-100">
-                              <button className="flex items-center gap-2 hover:text-blue-500 transition-colors px-2 py-1 rounded-md hover:bg-blue-50">
+                              <Button
+                                variant="ghost"
+                                onClick={() => handleComment(post.id, userId)}
+                                className="flex items-center gap-2 hover:text-blue-500 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
+                              >
                                 <MessageSquare size={18} />
                                 <span>{post.comment.length}</span>
-                              </button>
-                              <button className="flex items-center gap-2 hover:text-green-500 transition-colors px-2 py-1 rounded-md hover:bg-green-50">
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                onClick={() => handleLike(post.id, userId)}
+                                className="flex items-center gap-2 hover:text-green-500 transition-colors px-2 py-1 rounded-md hover:bg-green-50"
+                              >
                                 <ThumbsUp size={18} />
                                 <span>{post.like.length}</span>
-                              </button>
-                              <button className="flex items-center gap-2 hover:text-orange-500 transition-colors px-2 py-1 rounded-md hover:bg-orange-50">
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                onClick={() => handleDislike(post.id, userId)}
+                                className="flex items-center gap-2 hover:text-orange-500 transition-colors px-2 py-1 rounded-md hover:bg-orange-50"
+                              >
                                 <ThumbsDown size={18} />
                                 <span>{post.dislike.length}</span>
-                              </button>
+                              </Button>
                             </div>
                           </div>
                         </div>
