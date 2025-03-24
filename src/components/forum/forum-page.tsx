@@ -55,7 +55,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
         if (res?.success) {
           setSuccessMessage(res?.success);
           setData(
-            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? [],
+            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? []
           );
         }
       });
@@ -81,11 +81,11 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                         ? [...item.like, res.likeData] // Jika menambah like
                         : item.like.filter((like) => like.userId !== userId), // Jika unlike
                       dislike: item.dislike.filter(
-                        (dislike) => dislike.userId !== userId,
+                        (dislike) => dislike.userId !== userId
                       ), // Hapus dislike jika ada
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
         }
       });
@@ -105,12 +105,12 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                       dislike: res.dislikeData
                         ? [...item.dislike, res.dislikeData] // Jika menambah dislike
                         : item.dislike.filter(
-                            (dislike) => dislike.userId !== userId,
+                            (dislike) => dislike.userId !== userId
                           ), // Jika undislike
                       like: item.like.filter((like) => like.userId !== userId), // Hapus like jika ada
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
         }
       });
@@ -280,17 +280,35 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                               <Button
                                 variant="ghost"
                                 onClick={() => handleLike(post.id, userId)}
-                                className="flex items-center gap-2 hover:text-green-500 transition-colors px-2 py-1 rounded-md hover:bg-green-50"
+                                className={`flex items-center gap-2 ${post.like.filter((like) => like.userId === userId).length > 0 && "text-green-500 bg-green-50"} hover:text-green-500 hover:bg-green-50 transition-colors px-2 py-1 rounded-md `}
                               >
-                                <ThumbsUp size={18} />
+                                <ThumbsUp
+                                  size={18}
+                                  strokeWidth={
+                                    post.like.filter(
+                                      (like) => like.userId === userId
+                                    ).length > 0
+                                      ? 3
+                                      : 1
+                                  }
+                                />
                                 <span>{post.like.length}</span>
                               </Button>
                               <Button
                                 variant="ghost"
                                 onClick={() => handleDislike(post.id, userId)}
-                                className="flex items-center gap-2 hover:text-orange-500 transition-colors px-2 py-1 rounded-md hover:bg-orange-50"
+                                className={`flex items-center gap-2 ${post.dislike.filter((dislike) => dislike.userId === userId).length > 0 && "text-orange-500 bg-orange-50"} hover:text-orange-500 hover:bg-orange-50 transition-colors px-2 py-1 rounded-md `}
                               >
-                                <ThumbsDown size={18} />
+                                <ThumbsDown
+                                  size={18}
+                                  strokeWidth={
+                                    post.dislike.filter(
+                                      (dislike) => dislike.userId === userId
+                                    ).length > 0
+                                      ? 3
+                                      : 1
+                                  }
+                                />
                                 <span>{post.dislike.length}</span>
                               </Button>
                             </div>
