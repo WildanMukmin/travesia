@@ -17,13 +17,13 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Calendar,
   Clock,
   Eye,
   Filter,
+  InfoIcon,
   MessageSquare,
   PenSquare,
   Search,
@@ -36,6 +36,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { startTransition, useState } from "react";
 import ToolDropdownForum from "../utils/tool-dropdown-forum";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "../ui/textarea";
 
 interface ForumPageProps {
   forumData: ForumWithCreator;
@@ -46,6 +59,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [data, setData] = useState(forumData);
+  const [modalCommentOpen, setModalCommentOpen] = useState(false);
   const handleDelete = (forumId: string) => {
     startTransition(() => {
       deleteForum(forumId).then((res) => {
@@ -55,17 +69,15 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
         if (res?.success) {
           setSuccessMessage(res?.success);
           setData(
-            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? []
+            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? [],
           );
         }
       });
     });
   };
 
-  const handleComment = (forumId: string, userId: string) => {
-    startTransition(() => {
-      console.log("comment : ", forumId);
-    });
+  const handleComment = () => {
+    setModalCommentOpen((prev) => !prev);
   };
   const handleLike = (forumId: string, userId: string) => {
     startTransition(() => {
@@ -81,11 +93,11 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                         ? [...item.like, res.likeData] // Jika menambah like
                         : item.like.filter((like) => like.userId !== userId), // Jika unlike
                       dislike: item.dislike.filter(
-                        (dislike) => dislike.userId !== userId
+                        (dislike) => dislike.userId !== userId,
                       ), // Hapus dislike jika ada
                     }
-                  : item
-              ) ?? []
+                  : item,
+              ) ?? [],
           );
         }
       });
@@ -105,12 +117,12 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                       dislike: res.dislikeData
                         ? [...item.dislike, res.dislikeData] // Jika menambah dislike
                         : item.dislike.filter(
-                            (dislike) => dislike.userId !== userId
+                            (dislike) => dislike.userId !== userId,
                           ), // Jika undislike
                       like: item.like.filter((like) => like.userId !== userId), // Hapus like jika ada
                     }
-                  : item
-              ) ?? []
+                  : item,
+              ) ?? [],
           );
         }
       });
@@ -242,18 +254,6 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                               </div>
                             </div>
 
-                            {/* <div className="flex flex-wrap gap-2 mb-3">
-                              {post.tags.map((tag, idx) => (
-                                <Badge
-                                  key={idx}
-                                  variant="secondary"
-                                  className="bg-blue-50 text-blue-700 hover:bg-blue-100"
-                                >
-                                  {tag}
-                                </Badge>
-                              ))}
-                            </div> */}
-
                             <p className="text-gray-800 mb-4">{post.content}</p>
 
                             {post.image?.gambar && (
@@ -269,14 +269,179 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                             )}
 
                             <div className="flex justify-between pt-2 text-gray-500 border-t border-gray-100">
-                              <Button
-                                variant="ghost"
-                                onClick={() => handleComment(post.id, userId)}
-                                className="flex items-center gap-2 hover:text-blue-500 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
-                              >
-                                <MessageSquare size={18} />
-                                <span>{post.comment.length}</span>
-                              </Button>
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    onClick={() =>
+                                      setModalCommentOpen((prev) => !prev)
+                                    }
+                                    className="flex items-center gap-2 hover:text-blue-500 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
+                                  >
+                                    <MessageSquare size={18} />
+                                    <span>{post.comment.length}</span>
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="w-full h-96 flex flex-col">
+                                  <DialogTitle className="sr-only">
+                                    Post and Comments
+                                  </DialogTitle>
+                                  <div className="flex flex-col gap-4 overflow-auto">
+                                    <div className="border-b pb-4">
+                                      <h3 className="text-lg font-semibold mb-4 text-blue-900">
+                                        Post and Comments
+                                      </h3>
+                                      <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300 border-none shadow-none">
+                                        <CardContent className="p-0">
+                                          <div className="flex items-start gap-4">
+                                            <Avatar className="h-10 w-10 border-2 border-blue-100">
+                                              <AvatarImage
+                                                src="https://github.com/wildanmukmin.png"
+                                                alt={post.user.name || ""}
+                                              />
+                                              <AvatarFallback>
+                                                <User
+                                                  height={20}
+                                                  width={20}
+                                                  className="text-black"
+                                                />
+                                              </AvatarFallback>
+                                            </Avatar>
+                                            <div className="w-full">
+                                              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                                                <div className="flex items-center gap-2">
+                                                  <span className="font-bold text-blue-900">
+                                                    {post.user.name}
+                                                  </span>
+                                                  <span className="text-gray-500 text-sm">
+                                                    @{post.user.email}
+                                                  </span>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-gray-500 text-sm mt-1 sm:mt-0">
+                                                  <Calendar size={14} />
+                                                  <span>
+                                                    {post.createdAt.toLocaleDateString()}{" "}
+                                                    ago
+                                                  </span>
+                                                </div>
+                                              </div>
+                                              <p className="text-gray-800 mb-4">
+                                                {post.content}
+                                              </p>
+                                              {post.image?.gambar && (
+                                                <div className="mb-4 overflow-hidden rounded-lg">
+                                                  <Image
+                                                    src={post.image?.gambar}
+                                                    alt="Post Image"
+                                                    width={1200}
+                                                    height={500}
+                                                    className="rounded-lg hover:scale-105 transition-transform duration-300 w-full"
+                                                  />
+                                                </div>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </CardContent>
+                                      </Card>
+                                    </div>
+
+                                    {/* Comments Section */}
+                                    <div className="border-b pb-4">
+                                      <h3 className="text-lg font-semibold mb-4 text-blue-900">
+                                        Comments ({post.comment.length})
+                                      </h3>
+                                      {post.comment.length === 0 ? (
+                                        <div className="text-center text-gray-500 py-8">
+                                          <MessageSquare
+                                            size={48}
+                                            className="mx-auto mb-4 text-gray-300"
+                                          />
+                                          <p>No comments yet</p>
+                                          <p className="text-sm">
+                                            Be the first to comment!
+                                          </p>
+                                        </div>
+                                      ) : (
+                                        post.comment.map((comment) => (
+                                          <div
+                                            key={comment.id}
+                                            className="mb-4 pb-4 border-b last:border-b-0 flex items-start gap-3"
+                                          >
+                                            <Avatar className="h-8 w-8">
+                                              <AvatarImage
+                                                src={`https://github.com/wildanmukmin.png`}
+                                                alt={
+                                                  comment.user.name || "User"
+                                                }
+                                              />
+                                              <AvatarFallback>
+                                                <User className="h-5 w-5" />
+                                              </AvatarFallback>
+                                            </Avatar>
+                                            <div>
+                                              <div className="flex items-center gap-2 mb-1">
+                                                <span className="font-semibold text-sm">
+                                                  {comment.user.name}
+                                                </span>
+                                                <span className="text-xs text-gray-500">
+                                                  {comment.createdAt.toLocaleString()}
+                                                </span>
+                                              </div>
+                                              <p className="text-sm text-gray-700">
+                                                {comment.pesan}
+                                              </p>
+                                            </div>
+                                          </div>
+                                        ))
+                                      )}
+                                    </div>
+
+                                    {/* Comment Input */}
+                                    <div className="mt-4 pt-4 border-t">
+                                      <div className="flex items-start gap-3">
+                                        <Avatar className="h-10 w-10">
+                                          <AvatarImage
+                                            src="https://github.com/wildanmukmin.png"
+                                            alt="Your avatar"
+                                          />
+                                          <AvatarFallback>
+                                            <User className="h-6 w-6" />
+                                          </AvatarFallback>
+                                        </Avatar>
+                                        <div className="flex-grow">
+                                          <Textarea
+                                            placeholder="Write a comment..."
+                                            className="w-full min-h-[100px] mb-2"
+                                          />
+                                          <div className="flex justify-end gap-2">
+                                            <Button variant="outline">
+                                              Cancel
+                                            </Button>
+                                            <Button className="bg-blue-600 hover:bg-blue-700">
+                                              Post Comment
+                                            </Button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <DialogFooter className="justify-between">
+                                    <div className="flex items-center gap-2 text-gray-500">
+                                      <InfoIcon size={16} />
+                                      <span className="text-sm">
+                                        Public discussion. Be respectful.
+                                      </span>
+                                    </div>
+                                    <DialogClose asChild>
+                                      <Button type="button" variant="secondary">
+                                        Close
+                                      </Button>
+                                    </DialogClose>
+                                  </DialogFooter>
+                                </DialogContent>
+                              </Dialog>
+
                               <Button
                                 variant="ghost"
                                 onClick={() => handleLike(post.id, userId)}
@@ -286,7 +451,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                   size={18}
                                   strokeWidth={
                                     post.like.filter(
-                                      (like) => like.userId === userId
+                                      (like) => like.userId === userId,
                                     ).length > 0
                                       ? 3
                                       : 1
@@ -303,7 +468,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                   size={18}
                                   strokeWidth={
                                     post.dislike.filter(
-                                      (dislike) => dislike.userId === userId
+                                      (dislike) => dislike.userId === userId,
                                     ).length > 0
                                       ? 3
                                       : 1

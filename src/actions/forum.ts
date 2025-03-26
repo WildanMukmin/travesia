@@ -17,7 +17,11 @@ export const getForum = async () => {
       include: {
         user: true,
         image: true,
-        comment: true,
+        comment: {
+          include: {
+            user: true,
+          },
+        },
         like: true,
         dislike: true,
       },
