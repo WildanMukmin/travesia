@@ -57,10 +57,10 @@ import Link from "next/link";
 import { startTransition, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { FormError } from "../auth/form-error";
-import { FormSuccess } from "../auth/form-succsess";
-import { Textarea } from "../ui/textarea";
-import ToolDropdownForum from "../utils/tool-dropdown-forum";
+import { FormError } from "@/components/auth/form-error";
+import { FormSuccess } from "@/components/auth/form-succsess";
+import { Textarea } from "@/components/ui/textarea";
+import ToolDropdownForum from "@/components/utils/tool-dropdown-forum";
 
 interface ForumPageProps {
   forumData: ForumWithCreator;
@@ -91,7 +91,7 @@ const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
         if (res?.success) {
           setSuccessMessage(res?.success);
           setData(
-            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? []
+            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? [],
           );
         }
       });
@@ -115,11 +115,11 @@ const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
                         ? [...item.like, res.likeData] // Jika menambah like
                         : item.like.filter((like) => like.userId !== userId), // Jika unlike
                       dislike: item.dislike.filter(
-                        (dislike) => dislike.userId !== userId
+                        (dislike) => dislike.userId !== userId,
                       ), // Hapus dislike jika ada
                     }
-                  : item
-              ) ?? []
+                  : item,
+              ) ?? [],
           );
         }
       });
@@ -139,12 +139,12 @@ const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
                       dislike: res.dislikeData
                         ? [...item.dislike, res.dislikeData] // Jika menambah dislike
                         : item.dislike.filter(
-                            (dislike) => dislike.userId !== userId
+                            (dislike) => dislike.userId !== userId,
                           ), // Jika undislike
                       like: item.like.filter((like) => like.userId !== userId), // Hapus like jika ada
                     }
-                  : item
-              ) ?? []
+                  : item,
+              ) ?? [],
           );
         }
       });
@@ -152,7 +152,7 @@ const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
   };
 
   const handlePostingComment = (
-    dataForm: z.infer<typeof postingCommentSchema>
+    dataForm: z.infer<typeof postingCommentSchema>,
   ) => {
     setErrorMessage("");
     dataForm.forumId = openComment;
@@ -172,11 +172,11 @@ const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
                       comment: res.commentData
                         ? [...item.comment, res.commentData] // Jika menambah comment
                         : item.comment.filter(
-                            (comment) => comment.userId !== dataForm.userId
+                            (comment) => comment.userId !== dataForm.userId,
                           ), // Jika menghapus comment
                     }
-                  : item
-              ) ?? []
+                  : item,
+              ) ?? [],
           );
         }
       });
@@ -475,7 +475,7 @@ const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
                                           <Form {...form}>
                                             <form
                                               onSubmit={form.handleSubmit(
-                                                handlePostingComment
+                                                handlePostingComment,
                                               )}
                                               className="space-y-6"
                                             >
@@ -550,7 +550,7 @@ const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
                                   size={18}
                                   strokeWidth={
                                     post.like.filter(
-                                      (like) => like.userId === userId
+                                      (like) => like.userId === userId,
                                     ).length > 0
                                       ? 3
                                       : 1
@@ -568,7 +568,7 @@ const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
                                   size={18}
                                   strokeWidth={
                                     post.dislike.filter(
-                                      (dislike) => dislike.userId === userId
+                                      (dislike) => dislike.userId === userId,
                                     ).length > 0
                                       ? 3
                                       : 1
