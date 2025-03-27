@@ -17,7 +17,26 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { postingCommentSchema } from "@/lib/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Calendar,
   Clock,
@@ -35,20 +54,12 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { startTransition, useState } from "react";
-import ToolDropdownForum from "../utils/tool-dropdown-forum";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { FormError } from "../auth/form-error";
+import { FormSuccess } from "../auth/form-succsess";
 import { Textarea } from "../ui/textarea";
+import ToolDropdownForum from "../utils/tool-dropdown-forum";
 
 interface ForumPageProps {
   forumData: ForumWithCreator;
@@ -59,7 +70,16 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [data, setData] = useState(forumData);
-  const [modalCommentOpen, setModalCommentOpen] = useState(false);
+  const [openComment, setOpenComment] = useState("");
+  const [isPending, setIsPending] = useState(false);
+  const form = useForm<z.infer<typeof postingCommentSchema>>({
+    resolver: zodResolver(postingCommentSchema),
+    defaultValues: {
+      forumId: "",
+      userId: userId || "",
+      pesan: openComment || "",
+    },
+  });
   const handleDelete = (forumId: string) => {
     startTransition(() => {
       deleteForum(forumId).then((res) => {
@@ -69,15 +89,15 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
         if (res?.success) {
           setSuccessMessage(res?.success);
           setData(
-            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? [],
+            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? []
           );
         }
       });
     });
   };
 
-  const handleComment = () => {
-    setModalCommentOpen((prev) => !prev);
+  const handleCommentClick = (id: string) => {
+    setOpenComment(id);
   };
   const handleLike = (forumId: string, userId: string) => {
     startTransition(() => {
@@ -93,11 +113,11 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                         ? [...item.like, res.likeData] // Jika menambah like
                         : item.like.filter((like) => like.userId !== userId), // Jika unlike
                       dislike: item.dislike.filter(
-                        (dislike) => dislike.userId !== userId,
+                        (dislike) => dislike.userId !== userId
                       ), // Hapus dislike jika ada
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
         }
       });
@@ -117,15 +137,26 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                       dislike: res.dislikeData
                         ? [...item.dislike, res.dislikeData] // Jika menambah dislike
                         : item.dislike.filter(
-                            (dislike) => dislike.userId !== userId,
+                            (dislike) => dislike.userId !== userId
                           ), // Jika undislike
                       like: item.like.filter((like) => like.userId !== userId), // Hapus like jika ada
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
         }
       });
+    });
+  };
+
+  const handlePostingComment = (data: z.infer<typeof postingCommentSchema>) => {
+    setErrorMessage("");
+    data.forumId = openComment;
+    setIsPending(true);
+    startTransition(() => {
+      console.log(data);
+      form.setValue("pesan", "");
+      setIsPending(false);
     });
   };
 
@@ -273,9 +304,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                 <DialogTrigger asChild>
                                   <Button
                                     variant="ghost"
-                                    onClick={() =>
-                                      setModalCommentOpen((prev) => !prev)
-                                    }
+                                    onClick={() => handleCommentClick(post.id)}
                                     className="flex items-center gap-2 hover:text-blue-500 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
                                   >
                                     <MessageSquare size={18} />
@@ -409,18 +438,54 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                           </AvatarFallback>
                                         </Avatar>
                                         <div className="flex-grow">
-                                          <Textarea
-                                            placeholder="Write a comment..."
-                                            className="w-full min-h-[100px] mb-2"
-                                          />
-                                          <div className="flex justify-end gap-2">
-                                            <Button variant="outline">
-                                              Cancel
-                                            </Button>
-                                            <Button className="bg-blue-600 hover:bg-blue-700">
-                                              Post Comment
-                                            </Button>
-                                          </div>
+                                          <Form {...form}>
+                                            <form
+                                              onSubmit={form.handleSubmit(
+                                                handlePostingComment
+                                              )}
+                                              className="space-y-6"
+                                            >
+                                              <FormField
+                                                control={form.control}
+                                                name="pesan"
+                                                render={({ field }) => (
+                                                  <FormItem>
+                                                    <FormLabel className="font-medium text-gray-700">
+                                                      Tulis komentar
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                      <Textarea
+                                                        {...field}
+                                                        disabled={isPending}
+                                                        className="w-full min-h-[100px] mb-2"
+                                                        placeholder="Tulis komentar..."
+                                                      />
+                                                    </FormControl>
+                                                    <FormMessage className="text-sm" />
+                                                  </FormItem>
+                                                )}
+                                              />
+                                              {errorMessage && (
+                                                <FormError
+                                                  message={errorMessage}
+                                                />
+                                              )}
+                                              {successMessage && (
+                                                <FormSuccess
+                                                  message={successMessage}
+                                                />
+                                              )}
+                                              <div className="flex justify-end gap-2">
+                                                <Button
+                                                  className="bg-blue-600 hover:bg-blue-700"
+                                                  type="submit"
+                                                  disabled={isPending}
+                                                >
+                                                  Posting Komentar
+                                                </Button>
+                                              </div>
+                                            </form>
+                                          </Form>
                                         </div>
                                       </div>
                                     </div>
@@ -430,7 +495,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                     <div className="flex items-center gap-2 text-gray-500">
                                       <InfoIcon size={16} />
                                       <span className="text-sm">
-                                        Public discussion. Be respectful.
+                                        Diskusi Public. Mohon saling menghargai.
                                       </span>
                                     </div>
                                     <DialogClose asChild>
@@ -451,7 +516,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                   size={18}
                                   strokeWidth={
                                     post.like.filter(
-                                      (like) => like.userId === userId,
+                                      (like) => like.userId === userId
                                     ).length > 0
                                       ? 3
                                       : 1
@@ -459,6 +524,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                 />
                                 <span>{post.like.length}</span>
                               </Button>
+
                               <Button
                                 variant="ghost"
                                 onClick={() => handleDislike(post.id, userId)}
@@ -468,7 +534,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                   size={18}
                                   strokeWidth={
                                     post.dislike.filter(
-                                      (dislike) => dislike.userId === userId,
+                                      (dislike) => dislike.userId === userId
                                     ).length > 0
                                       ? 3
                                       : 1

@@ -127,3 +127,9 @@ export const postingForumSchema = z.object({
     })
     .optional(),
 });
+
+export const postingCommentSchema = z.object({
+  forumId: z.string(),
+  userId: z.string(),
+  pesan: z.string(),
+});
