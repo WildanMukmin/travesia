@@ -9,7 +9,13 @@ export default async function Page() {
   const forum = await getForum();
 
   if (!!user) {
-    return <ForumPage forumData={forum} userId={user.id || ""} />;
+    return (
+      <ForumPage
+        forumData={forum}
+        userId={user.id || ""}
+        userName={user.name || ""}
+      />
+    );
   }
 
   return (

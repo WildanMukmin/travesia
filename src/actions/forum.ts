@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { postingForumSchema } from "@/lib/zod";
+import { postingCommentSchema, postingForumSchema } from "@/lib/zod";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import * as z from "zod";
@@ -34,7 +34,7 @@ export const getForum = async () => {
 };
 
 export const postingForum = async (
-  data: z.infer<typeof postingForumSchema>,
+  data: z.infer<typeof postingForumSchema>
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -183,5 +183,38 @@ export const dislikeForum = async (forumId: string, userId: string) => {
   } catch (error) {
     console.error("Error processing dislike:", error);
     return { error: "Gagal membenci forum" };
+  }
+};
+
+export const commentForum = async (
+  data: z.infer<typeof postingCommentSchema>
+) => {
+  const validatedFields = postingCommentSchema.safeParse(data);
+
+  if (!validatedFields.success) {
+    return { error: "Mohon isi form dengan benar!" };
+  }
+
+  const { forumId, userId, pesan } = validatedFields.data;
+
+  if (!forumId || !userId || !pesan) {
+    return { error: "Terjadi Error Silahkan Login Kembali!" };
+  }
+
+  try {
+    const commentData = await prisma.comment.create({
+      data: {
+        forumId,
+        userId,
+        pesan,
+      },
+      include: {
+        user: true,
+      },
+    });
+    return { success: "Komentar Berhasil Dibuat!", commentData };
+  } catch (error) {
+    console.error("Error processing comment:", error);
+    return { error: "Gagal membuat komentar" };
   }
 };

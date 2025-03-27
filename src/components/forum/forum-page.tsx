@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  commentForum,
   deleteForum,
   dislikeForum,
   ForumWithCreator,
@@ -64,9 +65,10 @@ import ToolDropdownForum from "../utils/tool-dropdown-forum";
 interface ForumPageProps {
   forumData: ForumWithCreator;
   userId: string;
+  userName: string;
 }
 
-const ForumPage = ({ forumData, userId }: ForumPageProps) => {
+const ForumPage = ({ forumData, userId, userName }: ForumPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [data, setData] = useState(forumData);
@@ -149,12 +151,35 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
     });
   };
 
-  const handlePostingComment = (data: z.infer<typeof postingCommentSchema>) => {
+  const handlePostingComment = (
+    dataForm: z.infer<typeof postingCommentSchema>
+  ) => {
     setErrorMessage("");
-    data.forumId = openComment;
+    dataForm.forumId = openComment;
     setIsPending(true);
     startTransition(() => {
-      console.log(data);
+      commentForum(dataForm).then((res) => {
+        if (res?.error) {
+          setErrorMessage(res?.error);
+        }
+        if (res?.success) {
+          setData(
+            (prevData) =>
+              prevData?.map((item) =>
+                item.id === dataForm.forumId
+                  ? {
+                      ...item,
+                      comment: res.commentData
+                        ? [...item.comment, res.commentData] // Jika menambah comment
+                        : item.comment.filter(
+                            (comment) => comment.userId !== dataForm.userId
+                          ), // Jika menghapus comment
+                    }
+                  : item
+              ) ?? []
+          );
+        }
+      });
       form.setValue("pesan", "");
       setIsPending(false);
     });
@@ -313,12 +338,12 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                 </DialogTrigger>
                                 <DialogContent className="w-full h-96 flex flex-col">
                                   <DialogTitle className="sr-only">
-                                    Post and Comments
+                                    Postingan Forum dan Komentar
                                   </DialogTitle>
                                   <div className="flex flex-col gap-4 overflow-auto">
                                     <div className="border-b pb-4">
                                       <h3 className="text-lg font-semibold mb-4 text-blue-900">
-                                        Post and Comments
+                                        Postingan Forum dan Komentar
                                       </h3>
                                       <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300 border-none shadow-none">
                                         <CardContent className="p-0">
@@ -394,7 +419,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                         post.comment.map((comment) => (
                                           <div
                                             key={comment.id}
-                                            className="mb-4 pb-4 border-b last:border-b-0 flex items-start gap-3"
+                                            className="mb-4 pb-4 border-b last:border-b-0 flex items-start gap-3 mx-4"
                                           >
                                             <Avatar className="h-8 w-8">
                                               <AvatarImage
@@ -407,16 +432,25 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                                 <User className="h-5 w-5" />
                                               </AvatarFallback>
                                             </Avatar>
-                                            <div>
+                                            <div className="w-full max-w-4xl">
+                                              {" "}
+                                              {/* Ubah max-w agar tidak terlalu lebar */}
                                               <div className="flex items-center gap-2 mb-1">
-                                                <span className="font-semibold text-sm">
-                                                  {comment.user.name}
-                                                </span>
+                                                {comment.user.name ===
+                                                userName ? (
+                                                  <span className="font-semibold text-sm text-blue-600">
+                                                    Me
+                                                  </span>
+                                                ) : (
+                                                  <span className="font-semibold text-sm">
+                                                    {comment.user.name}
+                                                  </span>
+                                                )}
                                                 <span className="text-xs text-gray-500">
                                                   {comment.createdAt.toLocaleString()}
                                                 </span>
                                               </div>
-                                              <p className="text-sm text-gray-700">
+                                              <p className="text-sm text-gray-700 break-words whitespace-pre-wrap">
                                                 {comment.pesan}
                                               </p>
                                             </div>
@@ -437,7 +471,7 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                             <User className="h-6 w-6" />
                                           </AvatarFallback>
                                         </Avatar>
-                                        <div className="flex-grow">
+                                        <div className="flex-grow w-full max-w-4xl">
                                           <Form {...form}>
                                             <form
                                               onSubmit={form.handleSubmit(
@@ -451,13 +485,13 @@ const ForumPage = ({ forumData, userId }: ForumPageProps) => {
                                                 render={({ field }) => (
                                                   <FormItem>
                                                     <FormLabel className="font-medium text-gray-700">
-                                                      Tulis komentar
+                                                      {userName}
                                                     </FormLabel>
                                                     <FormControl>
                                                       <Textarea
                                                         {...field}
                                                         disabled={isPending}
-                                                        className="w-full min-h-[100px] mb-2"
+                                                        className="w-full max-w-4xl min-h-[100px] mb-2"
                                                         placeholder="Tulis komentar..."
                                                       />
                                                     </FormControl>
