@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     if (!validation.success) {
       return NextResponse.json(
         { error: validation.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const AUTH_SECRET = process.env.AUTH_SECRET;
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     if (existingAdmin) {
       return NextResponse.json(
         { error: "Email sudah digunakan" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -52,13 +52,13 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { message: "Akun admin berhasil dibuat", admin: newAdmin },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { error: "Terjadi kesalahan pada server" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

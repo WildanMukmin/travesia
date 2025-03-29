@@ -162,7 +162,7 @@ export default function DashboardAdminPage() {
   const totalUsers = users.length;
   const totalRevenue = bookings.reduce(
     (sum, booking) => sum + booking.totalAmount,
-    0
+    0,
   );
 
   // Dashboard content
@@ -219,7 +219,7 @@ export default function DashboardAdminPage() {
       (booking) =>
         booking.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        booking.package.toLowerCase().includes(searchTerm.toLowerCase())
+        booking.package.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     return (
@@ -321,7 +321,7 @@ export default function DashboardAdminPage() {
       (pkg) =>
         pkg.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         pkg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        pkg.destination.toLowerCase().includes(searchTerm.toLowerCase())
+        pkg.destination.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     return (
@@ -492,7 +492,7 @@ export default function DashboardAdminPage() {
       (user) =>
         user.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     return (

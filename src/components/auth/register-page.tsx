@@ -139,7 +139,7 @@ const RegisterPage = () => {
                 }}
                 className="px-8"
                 type="button"
-                disabled={!role}
+                disabled={isPending}
               >
                 Lanjut
               </Button>
@@ -173,7 +173,7 @@ const RegisterPage = () => {
                         <FormControl>
                           <Input
                             {...field}
-                            disabled={form.formState.isSubmitting}
+                            disabled={isPending}
                             placeholder="Username"
                             className="border-2 border-gray-100 shadow-sm"
                             type="text"
@@ -192,7 +192,7 @@ const RegisterPage = () => {
                         <FormControl>
                           <Input
                             {...field}
-                            disabled={form.formState.isSubmitting}
+                            disabled={isPending}
                             placeholder="Enter an email address"
                             className="border-2 border-gray-100 shadow-sm"
                             type="email"
@@ -212,7 +212,7 @@ const RegisterPage = () => {
                           <FormControl>
                             <Input
                               {...field}
-                              disabled={form.formState.isSubmitting}
+                              disabled={isPending}
                               placeholder="********"
                               className="border-2 border-gray-100 shadow-sm"
                               type={showPassword ? "text" : "password"}
@@ -246,7 +246,7 @@ const RegisterPage = () => {
                           <FormControl>
                             <Input
                               {...field}
-                              disabled={form.formState.isSubmitting}
+                              disabled={isPending}
                               placeholder="********"
                               className="border-2 border-gray-100 shadow-sm"
                               type={showPassword ? "text" : "password"}
@@ -279,14 +279,14 @@ const RegisterPage = () => {
                         setOnSelectRole(true);
                         setOnFormRegistration(false);
                       }}
-                      disabled={form.formState.isSubmitting || isPending}
+                      disabled={isPending}
                       className="w-full bg-slate-500 text-white hover:bg-slate-600"
                     >
                       {isPending ? "Memuat..." : "Kembali"}
                     </Button>
                     <Button
                       type="submit"
-                      disabled={form.formState.isSubmitting || isPending}
+                      disabled={isPending}
                       className="w-full bg-green-500 text-white hover:bg-green-600"
                     >
                       {isPending ? "Memuat..." : "Daftar"}

@@ -76,7 +76,7 @@ const LoginPage = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={form.formState.isSubmitting}
+                          disabled={isPending}
                           placeholder="Enter an email address"
                           className="border-2 border-gray-100 shadow-sm"
                           type="email"
@@ -96,7 +96,7 @@ const LoginPage = () => {
                         <FormControl>
                           <Input
                             {...field}
-                            disabled={form.formState.isSubmitting}
+                            disabled={isPending}
                             placeholder="Password"
                             className="border-2 border-gray-100 shadow-sm"
                             type={showPassword ? "text" : "password"}
