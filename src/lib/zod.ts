@@ -133,3 +133,9 @@ export const postingCommentSchema = z.object({
   userId: z.string(),
   pesan: z.string(),
 });
+
+export const adminSchema = z.object({
+  name: z.string().min(3, "Nama harus memiliki minimal 3 karakter"),
+  email: z.string().email("Email tidak valid"),
+  password: z.string().min(8, "Password harus memiliki minimal 8 karakter"),
+});

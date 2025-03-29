@@ -9,6 +9,7 @@ export const publicRoutes = [
   "/pusat-bantuan/forum-komunitas-&-blog",
   "/pusat-bantuan/kelola-destinasi",
   "/simulasi-bayar",
+  "/api/admin/register",
 ];
 
 export const authRoutes = ["/login", "/register", "logout", "/forgot-password"];
