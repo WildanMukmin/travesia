@@ -64,7 +64,7 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
     .join(" ");
 
   // Skeletal loading UI
-  if (isLoading || !blogData || !userId) {
+  if (isLoading || !blogData) {
     return (
       <div className="max-w-full mx-auto px-4 py-8">
         <div className="flex justify-start mb-8">
@@ -128,7 +128,7 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
 
   const readingTime = Math.max(
     1,
-    Math.ceil(blogData.content.join(" ").split(" ").length / 200),
+    Math.ceil(blogData.content.join(" ").split(" ").length / 200)
   );
 
   return (

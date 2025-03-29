@@ -24,7 +24,7 @@ interface DestinasiDetailPageProps {
   userId: string;
   currentUserId: string;
   id: string;
-  role: Role;
+  role?: Role;
   namaDestinasi: string;
   kategoriLokasi: string;
   deskripsi: string;
