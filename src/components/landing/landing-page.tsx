@@ -1,3 +1,5 @@
+"use client";
+
 import { BlogWithCreator } from "@/actions/blog";
 import { DestinasiWithOwner } from "@/actions/destinasi";
 import CardBlog from "@/components/card/card-blog";
@@ -10,16 +12,23 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Role, User } from "@prisma/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 interface LandingPageProps {
   destinasiData: DestinasiWithOwner;
   blogData: BlogWithCreator;
+  user: User | null;
 }
 
-const LandingPage = ({ destinasiData, blogData }: LandingPageProps) => {
+const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
+  if (user && user.role === Role.ADMIN) {
+    redirect("/dashboard");
+  }
   return (
     <main className="flex-wrap">
       {/* Featured Image with Category and Title */}

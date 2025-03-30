@@ -8,6 +8,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { currentUser } from "@/lib/authenticate";
+import { Role } from "@prisma/client";
 import { Facebook, HomeIcon, Instagram, Search, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +20,10 @@ export default async function Layout({
 }) {
   const user = await currentUser();
   const isLogin = !!user;
+
+  if (user?.role === Role.ADMIN) {
+    return <>{children}</>;
+  }
   return (
     <>
       {/* Header */}
