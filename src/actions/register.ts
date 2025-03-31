@@ -1,6 +1,6 @@
 "use server";
 
-import bcrypt from "bcryptjs";
+import bcryptjs from "bcryptjs";
 import * as z from "zod";
 import { getUserByEmail } from "@/data/user";
 import { sighUpSchema } from "@/lib/zod";
@@ -29,7 +29,7 @@ export const register = async (value: z.infer<typeof sighUpSchema>) => {
     return { error: "Email sudah terdaftar!" };
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcryptjs.hash(password, 10);
   const user = await prisma.user.create({
     data: {
       name,

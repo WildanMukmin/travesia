@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { Role } from "@prisma/client";
 import { adminSchema } from "@/lib/zod";
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     if (!validation.success) {
       return NextResponse.json(
         { error: validation.error.format() },
-        { status: 400 },
+        { status: 400 }
       );
     }
     const AUTH_SECRET = process.env.AUTH_SECRET;
@@ -33,12 +33,12 @@ export async function POST(req: Request) {
     if (existingAdmin) {
       return NextResponse.json(
         { error: "Email sudah digunakan" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcryptjs.hash(password, 10);
 
     // Buat akun admin baru
     const newAdmin = await prisma.user.create({
@@ -52,13 +52,13 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { message: "Akun admin berhasil dibuat", admin: newAdmin },
-      { status: 201 },
+      { status: 201 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { error: "Terjadi kesalahan pada server" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
