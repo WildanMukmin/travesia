@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import { AllUsers } from "@/data/user";
 import { Menu, MoreHorizontal, PlusCircle, Search, User } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 interface AdminKelolaAkunPageProps {
@@ -131,7 +132,14 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                        <DropdownMenuItem>Lihat Pengguna</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            className="cursor-pointer"
+                            href={`/admin/kelola-user/detail/${user.id}`}
+                          >
+                            Lihat Pengguna
+                          </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem>Edit Pengguna</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600">
