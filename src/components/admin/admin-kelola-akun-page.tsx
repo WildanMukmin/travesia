@@ -36,17 +36,24 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
   const itemsPerPage = 10;
 
   const filteredUsers =
-    users?.filter(
-      (user) =>
+    users?.filter((user) => {
+      const formattedDate = new Date(user.createdAt)
+        .toISOString()
+        .split("T")[0]; // Format "YYYY-MM-DD"
+
+      return (
         user.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        formattedDate.includes(searchTerm) || // Mencari berdasarkan tanggal
         user.role.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+      );
+    }) || [];
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   return (
@@ -95,6 +102,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
               <TableRow>
                 <TableHead>ID</TableHead>
                 <TableHead>Nama</TableHead>
+                <TableHead>Tgl Dibuat</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Aksi</TableHead>
@@ -105,6 +113,13 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.id}</TableCell>
                   <TableCell>{user.name}</TableCell>
+                  <TableCell>
+                    {new Date(user.createdAt).toLocaleDateString("id-ID", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
@@ -120,7 +135,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                         <DropdownMenuItem>Edit Pengguna</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600">
-                          Nonaktifkan Pengguna
+                          Hapus Pengguna
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
