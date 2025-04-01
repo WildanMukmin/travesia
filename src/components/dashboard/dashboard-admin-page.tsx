@@ -641,7 +641,6 @@ const DashboardAdminPage = ({
 
   return (
     <main className="flex h-screen">
-      {/* Sidebar - hidden on mobile by default, shown when toggled */}
       <div className={`${sidebarOpen ? "block" : "hidden"} md:block h-full`}>
         <AdminSidebar onClose={() => setSidebarOpen(false)} />
       </div>
