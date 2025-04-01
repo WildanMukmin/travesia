@@ -2,6 +2,17 @@
 
 import AdminHeader from "@/components/admin/admin-header";
 import AdminSidebar from "@/components/admin/admin-sidebar";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -21,10 +32,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AllUsers } from "@/data/user";
-import { Menu, MoreHorizontal, PlusCircle, Search, User } from "lucide-react";
+import { AllUsers, deleteUserByid } from "@/data/user";
+import {
+  AlertCircle,
+  CheckCircle,
+  Menu,
+  MoreHorizontal,
+  PlusCircle,
+  Search,
+} from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 
 interface AdminKelolaAkunPageProps {
   users: AllUsers;
@@ -35,6 +53,11 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const [isPending, setIsPending] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const filteredUsers =
     users?.filter((user) => {
@@ -54,8 +77,29 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
+
+  const handleAction = (id: string) => {
+    startTransition(() => {
+      setIsOpen(true);
+      deleteUserByid(id).then((res) => {
+        console.log(res);
+        if (res.success) {
+          setSuccessMessage(res.success);
+          setErrorMessage("");
+        } else if (res.error) {
+          setErrorMessage(res.error);
+          setSuccessMessage("");
+        }
+      });
+      setIsOpen(false);
+      setTimeout(() => {
+        setSuccessMessage("");
+        setErrorMessage("");
+      }, 10000);
+    });
+  };
 
   return (
     <main className="flex h-screen">
@@ -77,6 +121,22 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
           headline="Admin Kelola Akun Travesia"
           tagline="Kelola pengguna travel Travesia"
         />
+
+        {successMessage && (
+          <Alert className="mb-4 bg-green-50 border-green-500">
+            <CheckCircle className="h-4 w-4 text-green-500" />
+            <AlertTitle>Berhasil</AlertTitle>
+            <AlertDescription>{successMessage}</AlertDescription>
+          </Alert>
+        )}
+
+        {errorMessage && (
+          <Alert className="mb-4 bg-red-50 border-red-500">
+            <AlertCircle className="h-4 w-4 text-red-500" />
+            <AlertTitle>Gagal</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
         <section className="mt-4">
           <div className="flex justify-between items-center mb-4">
@@ -142,8 +202,52 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                         </DropdownMenuItem>
                         <DropdownMenuItem>Edit Pengguna</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600">
-                          Hapus Pengguna
+
+                        <DropdownMenuItem
+                          onSelect={(e) => e.preventDefault()}
+                          asChild
+                        >
+                          <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                className="w-full cursor-pointer rounded-lg"
+                                variant="destructive"
+                              >
+                                Hapus
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Apakah anda yakin ingin menghapus?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Tindakan ini akan menghapus pengguna secara
+                                  permanen!
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel
+                                  className="w-full text-white bg-gray-600"
+                                  asChild
+                                >
+                                  <Button
+                                    variant={"default"}
+                                    disabled={isPending}
+                                  >
+                                    {isPending ? "Memuat..." : "Tidak"}
+                                  </Button>
+                                </AlertDialogCancel>
+                                <Button
+                                  className="w-full text-white bg-red-600 cursor-pointer hover:text-red-600 hover:bg-white flex gap-2"
+                                  onClick={() => handleAction(user.id)}
+                                  disabled={isPending}
+                                >
+                                  {isPending ? "Memuat..." : "Ya"}
+                                </Button>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

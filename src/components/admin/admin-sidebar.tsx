@@ -1,20 +1,11 @@
 "use client";
 
+import LogoutButton from "@/components/auth/button-logout";
 import { cn } from "@/lib/utils";
-import {
-  FileText,
-  Home,
-  LogOut,
-  MapPin,
-  MessageSquare,
-  Settings,
-  Users,
-  X,
-} from "lucide-react";
+import { FileText, Home, MapPin, MessageSquare, Users, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import LogoutButton from "../auth/button-logout";
-import Image from "next/image";
 
 interface AdminSidebarProps {
   onClose?: () => void;
@@ -93,7 +84,7 @@ const AdminSidebar = ({ onClose }: AdminSidebarProps) => {
                   "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   pathname === item.href
                     ? "bg-blue-700 text-white"
-                    : "hover:bg-blue-800 hover:text-white"
+                    : "hover:bg-blue-800 hover:text-white",
                 )}
                 onClick={onClose}
               >

@@ -52,7 +52,7 @@ export const getAllForum = async () => {
 };
 
 export const postingForum = async (
-  data: z.infer<typeof postingForumSchema>
+  data: z.infer<typeof postingForumSchema>,
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -205,7 +205,7 @@ export const dislikeForum = async (forumId: string, userId: string) => {
 };
 
 export const commentForum = async (
-  data: z.infer<typeof postingCommentSchema>
+  data: z.infer<typeof postingCommentSchema>,
 ) => {
   const validatedFields = postingCommentSchema.safeParse(data);
 

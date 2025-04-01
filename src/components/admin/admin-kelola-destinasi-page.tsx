@@ -44,7 +44,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
           day: "2-digit",
           month: "long",
           year: "numeric",
-        }
+        },
       );
 
       return (
@@ -62,7 +62,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
   const totalPages = Math.ceil(filteredDestinasi.length / itemsPerPage);
   const paginatedDestinasi = filteredDestinasi.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   return (

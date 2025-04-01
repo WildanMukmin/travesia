@@ -52,7 +52,7 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   return (
