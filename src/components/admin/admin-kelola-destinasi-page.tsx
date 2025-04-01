@@ -44,7 +44,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
           day: "2-digit",
           month: "long",
           year: "numeric",
-        },
+        }
       );
 
       return (
@@ -62,7 +62,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
   const totalPages = Math.ceil(filteredDestinasi.length / itemsPerPage);
   const paginatedDestinasi = filteredDestinasi.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   return (
@@ -148,7 +148,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                          <DropdownMenuItem>Lihat Detail</DropdownMenuItem>
+                          <DropdownMenuItem>Lihat Destinasi</DropdownMenuItem>
                           <DropdownMenuItem>Edit Destinasi</DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem className="text-red-600">

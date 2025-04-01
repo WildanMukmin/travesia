@@ -130,11 +130,11 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                        <DropdownMenuItem>Lihat Detail</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Pengguna</DropdownMenuItem>
+                        <DropdownMenuItem>Lihat Postingan</DropdownMenuItem>
+                        <DropdownMenuItem>Edit Postingan</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600">
-                          Hapus Pengguna
+                          Hapus Postingan
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

@@ -130,11 +130,11 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                        <DropdownMenuItem>Lihat Detail</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Pengguna</DropdownMenuItem>
+                        <DropdownMenuItem>Lihat Blog</DropdownMenuItem>
+                        <DropdownMenuItem>Edit Blog</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600">
-                          Hapus Pengguna
+                          Hapus Blog
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AllUsers } from "@/data/user";
-import { Menu, MoreHorizontal, PlusCircle, Search } from "lucide-react";
+import { Menu, MoreHorizontal, PlusCircle, Search, User } from "lucide-react";
 import { useState } from "react";
 
 interface AdminKelolaAkunPageProps {
@@ -53,7 +53,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   return (
@@ -131,7 +131,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                        <DropdownMenuItem>Lihat Detail</DropdownMenuItem>
+                        <DropdownMenuItem>Lihat Pengguna</DropdownMenuItem>
                         <DropdownMenuItem>Edit Pengguna</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600">

@@ -48,11 +48,11 @@ const AdminSidebar = ({ onClose }: AdminSidebarProps) => {
       href: "/admin/kelola-forum",
       icon: MessageSquare,
     },
-    {
-      title: "Settings",
-      href: "/admin/settings",
-      icon: Settings,
-    },
+    // {
+    //   title: "Settings",
+    //   href: "/admin/settings",
+    //   icon: Settings,
+    // },
   ];
 
   return (
@@ -93,7 +93,7 @@ const AdminSidebar = ({ onClose }: AdminSidebarProps) => {
                   "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   pathname === item.href
                     ? "bg-blue-700 text-white"
-                    : "hover:bg-blue-800 hover:text-white",
+                    : "hover:bg-blue-800 hover:text-white"
                 )}
                 onClick={onClose}
               >
