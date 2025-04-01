@@ -15,6 +15,8 @@ export type ReservasiWithMember = Prisma.PromiseReturnType<
   typeof getReservasiById
 >;
 
+export type AllReservasi = Prisma.PromiseReturnType<typeof getAllReservasi>;
+
 export const buatReservasi = async (
   data: z.infer<typeof buatReservasiSchema>,
 ) => {
@@ -324,5 +326,17 @@ export const batalReservasi = async (id: string, userId: string) => {
   } catch (error) {
     console.error("Error dalam pembatalan reservasi:", error);
     return { error: "Gagal membatalkan reservasi" };
+  }
+};
+
+export const getAllReservasi = async () => {
+  try {
+    const reservasi = await prisma.reservasi.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return reservasi;
+  } catch (error) {
+    console.error("Error fetching destinasi:", error);
+    return null;
   }
 };

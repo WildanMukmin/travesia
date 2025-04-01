@@ -8,6 +8,7 @@ import * as z from "zod";
 
 export type BlogWithCreator = Prisma.PromiseReturnType<typeof getBlog>;
 export type OneBlogWithCreator = Prisma.PromiseReturnType<typeof getOneBlog>;
+export type AllBlog = Prisma.PromiseReturnType<typeof getAllBlog>;
 
 export const getBlog = async () => {
   try {
@@ -26,6 +27,15 @@ export const getBlog = async () => {
     console.error("Error fetching blog:", error);
     return null;
   }
+};
+
+export const getAllBlog = async () => {
+  const blog = prisma.blog.findMany({
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+  return blog;
 };
 
 export const getOneBlog = async (id: string) => {

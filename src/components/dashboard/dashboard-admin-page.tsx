@@ -1,4 +1,3 @@
-// app/admin/page.jsx
 "use client";
 
 import React, { useState } from "react";
@@ -63,8 +62,13 @@ import {
   LogOut,
   Menu,
 } from "lucide-react";
-import AdminSidebar from "../admin/admin-sidebar";
-import AdminHeader from "../admin/admin-header";
+import AdminSidebar from "@/components/admin/admin-sidebar";
+import AdminHeader from "@/components/admin/admin-header";
+import { AllUsers } from "@/data/user";
+import { AllReservasi } from "@/actions/reservasi";
+import { AllDestinasi } from "@/actions/destinasi";
+import { AllBlog } from "@/actions/blog";
+import { AllForum } from "@/actions/forum";
 
 // export default function DashboardAdminPage() {
 //   const [bookings, setBookings] = useState([
@@ -618,7 +622,21 @@ import AdminHeader from "../admin/admin-header";
 //   );
 // }
 
-const DashboardAdminPage = () => {
+interface DashboardAdminPageProps {
+  users: AllUsers;
+  reservasi: AllReservasi;
+  destinasi: AllDestinasi;
+  blog: AllBlog;
+  forum: AllForum;
+}
+
+const DashboardAdminPage = ({
+  users,
+  reservasi,
+  destinasi,
+  blog,
+  forum,
+}: DashboardAdminPageProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
@@ -649,27 +667,27 @@ const DashboardAdminPage = () => {
             {[
               {
                 title: "Total Pengguna",
-                value: 10,
+                value: users?.length,
                 description: "Pengguna aktif",
               },
               {
-                title: "Total Pemesanan",
-                value: 10,
-                description: "Pemesanan aktif",
+                title: "Total Reservasi",
+                value: reservasi?.length,
+                description: "Semua Reservasi Travesia",
               },
               {
                 title: "Total Destinasi",
-                value: 10,
+                value: destinasi?.length,
                 description: "Paket tersedia",
               },
               {
                 title: "Total Blog",
-                value: 10,
+                value: blog?.length,
                 description: "Blog tersedia",
               },
               {
                 title: "Total Forum",
-                value: 10,
+                value: forum?.length,
                 description: "Forum tersedia",
               },
             ].map((item, index) => (

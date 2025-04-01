@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import * as z from "zod";
 
 export type ForumWithCreator = Prisma.PromiseReturnType<typeof getForum>;
+export type AllForum = Prisma.PromiseReturnType<typeof getAllForum>;
 
 export const getForum = async () => {
   try {
@@ -24,6 +25,20 @@ export const getForum = async () => {
         },
         like: true,
         dislike: true,
+      },
+    });
+    return forum;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const getAllForum = async () => {
+  try {
+    const forum = await prisma.forum.findMany({
+      orderBy: {
+        createdAt: "desc",
       },
     });
     return forum;

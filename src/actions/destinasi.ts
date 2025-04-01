@@ -12,6 +12,8 @@ export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
   typeof getDestinasiById
 >;
 
+export type AllDestinasi = Prisma.PromiseReturnType<typeof getAllDestinasi>;
+
 export const daftarDestinasi = async (
   data: z.infer<typeof daftarDestinasiSchema>,
 ) => {
