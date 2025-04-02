@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import * as z from "zod";
 
 export type ForumWithCreator = Prisma.PromiseReturnType<typeof getForum>;
+export type OneForumWithCreator = Prisma.PromiseReturnType<typeof getForumById>;
 export type AllForum = Prisma.PromiseReturnType<typeof getAllForum>;
 
 export const getForum = async () => {
@@ -14,6 +15,31 @@ export const getForum = async () => {
     const forum = await prisma.forum.findMany({
       orderBy: {
         createdAt: "desc",
+      },
+      include: {
+        user: true,
+        image: true,
+        comment: {
+          include: {
+            user: true,
+          },
+        },
+        like: true,
+        dislike: true,
+      },
+    });
+    return forum;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const getForumById = async (id: string) => {
+  try {
+    const forum = await prisma.forum.findUnique({
+      where: {
+        id,
       },
       include: {
         user: true,
@@ -52,7 +78,7 @@ export const getAllForum = async () => {
 };
 
 export const postingForum = async (
-  data: z.infer<typeof postingForumSchema>
+  data: z.infer<typeof postingForumSchema>,
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -205,7 +231,7 @@ export const dislikeForum = async (forumId: string, userId: string) => {
 };
 
 export const commentForum = async (
-  data: z.infer<typeof postingCommentSchema>
+  data: z.infer<typeof postingCommentSchema>,
 ) => {
   const validatedFields = postingCommentSchema.safeParse(data);
 

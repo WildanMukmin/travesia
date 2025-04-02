@@ -10,11 +10,7 @@ export default async function Page() {
 
   if (!!user) {
     return (
-      <ForumPage
-        forumData={forum}
-        userId={user.id || ""}
-        userName={user.name || ""}
-      />
+      <ForumPage forumsData={forum} user={user} userName={user.name || ""} />
     );
   }
 

@@ -13,7 +13,7 @@ export default async function Page({ params }: PageProps) {
   const user = await currentUser();
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <BlogDetailPage slug={slug} userId={user?.id || ""} />
+      <BlogDetailPage slug={slug} user={user} />
     </Suspense>
   );
 }
