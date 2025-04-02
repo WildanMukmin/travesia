@@ -49,6 +49,7 @@ interface AdminKelolaAkunPageProps {
 }
 
 const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
+  const [usersData, setUsersData] = useState<AllUsers>(users);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,7 +61,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const filteredUsers =
-    users?.filter((user) => {
+    usersData?.filter((user) => {
       const formattedDate = new Date(user.createdAt)
         .toISOString()
         .split("T")[0]; // Format "YYYY-MM-DD"
@@ -88,6 +89,9 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
         if (res.success) {
           setSuccessMessage(res.success);
           setErrorMessage("");
+          setUsersData((prevData) =>
+            prevData ? prevData.filter((item) => item.id !== id) : [],
+          );
         } else if (res.error) {
           setErrorMessage(res.error);
           setSuccessMessage("");

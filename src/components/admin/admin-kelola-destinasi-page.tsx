@@ -1,8 +1,19 @@
 "use client";
 
-import { DestinasiWithOwner } from "@/actions/destinasi";
+import { deleteDestinasiById, DestinasiWithOwner } from "@/actions/destinasi";
 import AdminHeader from "@/components/admin/admin-header";
 import AdminSidebar from "@/components/admin/admin-sidebar";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,22 +33,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Menu, MoreHorizontal, PlusCircle, Search } from "lucide-react";
-import { useState } from "react";
+import {
+  AlertCircle,
+  CheckCircle,
+  Menu,
+  MoreHorizontal,
+  PlusCircle,
+  Search,
+} from "lucide-react";
+import Link from "next/link";
+import { startTransition, useState } from "react";
 
 interface DashboardAdminPageProps {
   destinasi: DestinasiWithOwner;
 }
 
 const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
+  const [destinasiData, setDestinasiData] =
+    useState<DestinasiWithOwner>(destinasi);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  // State untuk alert dan dialog
+  const [isPending, setIsPending] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
   // Filter destinasi berdasarkan pencarian
   const filteredDestinasi =
-    destinasi?.filter((dest) => {
+    destinasiData?.filter((dest) => {
       const formattedDate = new Date(dest.createdAt).toLocaleDateString(
         "id-ID",
         {
@@ -65,6 +92,37 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
     currentPage * itemsPerPage,
   );
 
+  // Handle hapus destinasi
+  const handleAction = (id: string) => {
+    startTransition(() => {
+      setIsPending(true);
+      setIsOpen(true);
+
+      deleteDestinasiById(id)
+        .then((res) => {
+          if (res.success) {
+            setSuccessMessage(res.success);
+            setErrorMessage("");
+            setDestinasiData((prevData) =>
+              prevData ? prevData.filter((item) => item.id !== id) : [],
+            );
+          } else if (res.error) {
+            setErrorMessage(res.error);
+            setSuccessMessage("");
+          }
+        })
+        .finally(() => {
+          setIsPending(false); // Pindahkan ke finally agar dieksekusi setelah async selesai
+          setIsOpen(false);
+        });
+
+      setTimeout(() => {
+        setSuccessMessage("");
+        setErrorMessage("");
+      }, 10000);
+    });
+  };
+
   return (
     <main className="flex h-screen">
       {/* Sidebar */}
@@ -87,6 +145,24 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
           headline="Admin Kelola Destinasi"
           tagline="Kelola data destinasi Travesia"
         />
+
+        {/* Alert Success */}
+        {successMessage && (
+          <Alert className="mb-4 bg-green-50 border-green-500">
+            <CheckCircle className="h-4 w-4 text-green-500" />
+            <AlertTitle>Berhasil</AlertTitle>
+            <AlertDescription>{successMessage}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Alert Error */}
+        {errorMessage && (
+          <Alert className="mb-4 bg-red-50 border-red-500">
+            <AlertCircle className="h-4 w-4 text-red-500" />
+            <AlertTitle>Gagal</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
         <section className="mt-4">
           {/* Input Pencarian & Tombol Tambah */}
@@ -148,11 +224,61 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                          <DropdownMenuItem>Lihat Destinasi</DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              className="cursor-pointer"
+                              href={`/admin/kelola-destinasi/detail/${dest.id}`}
+                            >
+                              Lihat Destinasi
+                            </Link>
+                          </DropdownMenuItem>
                           <DropdownMenuItem>Edit Destinasi</DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">
-                            Hapus Destinasi
+                          <DropdownMenuItem
+                            onSelect={(e) => e.preventDefault()}
+                            asChild
+                          >
+                            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  className="w-full cursor-pointer rounded-lg"
+                                  variant="destructive"
+                                >
+                                  Hapus Destinasi
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Apakah anda yakin ingin menghapus?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Tindakan ini akan menghapus destinasi secara
+                                    permanen!
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel
+                                    className="w-full text-white bg-gray-600"
+                                    asChild
+                                  >
+                                    <Button
+                                      variant={"default"}
+                                      disabled={isPending}
+                                    >
+                                      {isPending ? "Memuat..." : "Tidak"}
+                                    </Button>
+                                  </AlertDialogCancel>
+                                  <Button
+                                    className="w-full text-white bg-red-600 cursor-pointer hover:text-red-600 hover:bg-white flex gap-2"
+                                    onClick={() => handleAction(dest.id)}
+                                    disabled={isPending}
+                                  >
+                                    {isPending ? "Memuat..." : "Ya"}
+                                  </Button>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

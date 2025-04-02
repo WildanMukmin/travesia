@@ -347,3 +347,17 @@ export const getDestinasiByKategori = async (kategori: string) => {
     return null;
   }
 };
+
+export const deleteDestinasiById = async (id: string) => {
+  try {
+    await prisma.destinasi.delete({
+      where: {
+        id,
+      },
+    });
+    return { success: "Destinasi berhasil dihapus" };
+  } catch (error) {
+    console.error("Error deleting destinasi:", error);
+    return { error: "Terjadi kesalahan, silahkan coba lagi" };
+  }
+};

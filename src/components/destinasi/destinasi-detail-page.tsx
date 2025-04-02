@@ -51,44 +51,56 @@ const DestinasiDetailPage = ({
 }: DestinasiDetailPageProps) => {
   return (
     <main className="mt-10 flex flex-col">
-      <div className="flex justify-start mb-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/destinasi">Destinasi</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link
-                  href={`/destinasi/kategori/${kategoriLokasi.split(" ").join("-")}`}
-                >
-                  {kategoriLokasi}
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{namaDestinasi}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-      <Link
-        href="/destinasi"
-        className="flex items-center text-blue-600 mb-6 hover:underline w-fit"
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Kembali ke Destinasi
-      </Link>
+      {role !== "ADMIN" && (
+        <div className="flex justify-start mb-8">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Home</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/destinasi">Destinasi</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link
+                    href={`/destinasi/kategori/${kategoriLokasi.split(" ").join("-")}`}
+                  >
+                    {kategoriLokasi}
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{namaDestinasi}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      )}
+      {role === "ADMIN" ? (
+        <Link
+          href="/admin/kelola-destinasi"
+          className="flex items-center text-blue-600 mb-6 hover:underline w-fit"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Kembali ke Daftar Destinasi
+        </Link>
+      ) : (
+        <Link
+          href="/destinasi"
+          className="flex items-center text-blue-600 mb-6 hover:underline w-fit"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Kembali ke Destinasi
+        </Link>
+      )}
 
       {/* Content Section */}
       <div className="p-8">
@@ -230,7 +242,7 @@ const DestinasiDetailPage = ({
                 )}
 
                 {role === Role.ADMIN && (
-                  <Link href="/dashboard-admin">
+                  <Link href="/admin/kelola-destinasi">
                     <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
                       Dashboard Admin
                     </Button>
