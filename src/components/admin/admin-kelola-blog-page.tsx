@@ -78,7 +78,7 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
   const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
   const paginatedBlogs = filteredBlogs.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   // Handle hapus blog
@@ -91,7 +91,7 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
             setSuccessMessage(res.success);
             setErrorMessage("");
             setBlogsData((prevData) =>
-              prevData ? prevData.filter((item) => item.id !== id) : []
+              prevData ? prevData.filter((item) => item.id !== id) : [],
             );
           } else if (res.error) {
             setErrorMessage(res.error);
