@@ -52,7 +52,7 @@ export const getAllForum = async () => {
 };
 
 export const postingForum = async (
-  data: z.infer<typeof postingForumSchema>,
+  data: z.infer<typeof postingForumSchema>
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -205,7 +205,7 @@ export const dislikeForum = async (forumId: string, userId: string) => {
 };
 
 export const commentForum = async (
-  data: z.infer<typeof postingCommentSchema>,
+  data: z.infer<typeof postingCommentSchema>
 ) => {
   const validatedFields = postingCommentSchema.safeParse(data);
 
@@ -234,5 +234,19 @@ export const commentForum = async (
   } catch (error) {
     console.error("Error processing comment:", error);
     return { error: "Gagal membuat komentar" };
+  }
+};
+
+export const deleteForumById = async (id: string) => {
+  try {
+    await prisma.forum.delete({
+      where: {
+        id,
+      },
+    });
+    return { success: "Forum Berhasil Dihapus!" };
+  } catch (error) {
+    console.error("Error fetching forum:", error);
+    return { error: "Gagal Menghapus forum" };
   }
 };
