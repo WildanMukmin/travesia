@@ -10,6 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import ToolDropdown from "@/components/utils/tool-dropdown-blog";
+import { CurrentUser } from "@/lib/authenticate";
 import { ArrowLeft, CalendarDays, Clock, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,10 +19,10 @@ import { startTransition, useEffect, useState } from "react";
 
 interface BlogDetailPageProps {
   slug: string;
-  userId: string;
+  user: CurrentUser;
 }
 
-const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
+const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
   const blogId = useSearchParams().get("id");
   if (!blogId) {
     return null;
@@ -67,32 +68,36 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
   if (isLoading || !blogData) {
     return (
       <div className="max-w-full mx-auto px-4 py-8">
-        <div className="flex justify-start mb-8">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/">Home</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/blog">Blog</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {slug
-                    .split("-")
-                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ")}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+        {user?.role !== "ADMIN" && (
+          <div className="flex justify-start mb-8">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/">Home</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/blog">Blog</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    {slug
+                      .split("-")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        )}
 
         <div className="animate-pulse">
           <div className="mb-8 relative h-96 w-full rounded-lg overflow-hidden bg-gray-300"></div>
@@ -128,38 +133,40 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
 
   const readingTime = Math.max(
     1,
-    Math.ceil(blogData.content.join(" ").split(" ").length / 200),
+    Math.ceil(blogData.content.join(" ").split(" ").length / 200)
   );
 
   return (
     <div className="max-w-full mx-auto px-4 py-8">
       {/* Breadcrumbs with improved spacing and styling */}
-      <div className="flex justify-start mb-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/blog">Blog</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {slug
-                  .split("-")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      {user?.role !== "ADMIN" && (
+        <div className="flex justify-start mb-8">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Home</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/blog">Blog</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  {slug
+                    .split("-")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      )}
 
       {/* Main Content */}
       <article className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -212,14 +219,15 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
             </div>
 
             {/* Dropdown positioned better */}
-            {userId === blogData.user.id && (
-              <div className="absolute top-0 -right-8">
-                <ToolDropdown
-                  blogId={blogId}
-                  onDelete={() => onDelete(blogId)}
-                />
-              </div>
-            )}
+            {user?.id === blogData.user.id ||
+              (user?.role === "ADMIN" && (
+                <div className="absolute top-0 -right-8">
+                  <ToolDropdown
+                    blogId={blogId}
+                    onDelete={() => onDelete(blogId)}
+                  />
+                </div>
+              ))}
           </div>
 
           {/* Blog Content with improved typography and spacing */}
@@ -234,15 +242,27 @@ const BlogDetailPage = ({ slug, userId }: BlogDetailPageProps) => {
       </article>
 
       {/* Back to blog link with improved styling */}
-      <div className="mt-12">
-        <Link
-          href="/blog"
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors font-medium"
-        >
-          <ArrowLeft size={18} className="mr-2" />
-          Back to all posts
-        </Link>
-      </div>
+      {user?.role !== "ADMIN" ? (
+        <div className="mt-12">
+          <Link
+            href="/blog"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors font-medium"
+          >
+            <ArrowLeft size={18} className="mr-2" />
+            Back to all posts
+          </Link>
+        </div>
+      ) : (
+        <div className="mt-12">
+          <Link
+            href="/admin/kelola-blog"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors font-medium"
+          >
+            <ArrowLeft size={18} className="mr-2" />
+            Back to List all posts
+          </Link>
+        </div>
+      )}
 
       {/* Error message display */}
       {errorMessage && (

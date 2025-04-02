@@ -1,8 +1,19 @@
 "use client";
 
-import { BlogWithCreator } from "@/actions/blog";
+import { BlogWithCreator, deleteBlogById } from "@/actions/blog";
 import AdminHeader from "@/components/admin/admin-header";
 import AdminSidebar from "@/components/admin/admin-sidebar";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,21 +33,36 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Menu, MoreHorizontal, PlusCircle, Search } from "lucide-react";
-import { useState } from "react";
+import {
+  AlertCircle,
+  CheckCircle,
+  Menu,
+  MoreHorizontal,
+  PlusCircle,
+  Search,
+} from "lucide-react";
+import Link from "next/link";
+import { startTransition, useState } from "react";
 
 interface AdminKelolaBlogPageProps {
   blogs: BlogWithCreator;
 }
 
 const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
+  const [blogsData, setBlogsData] = useState(blogs);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const filteredUsers =
-    blogs?.filter((blog) => {
+  // State untuk alert dan dialog
+  const [isPending, setIsPending] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const filteredBlogs =
+    blogsData?.filter((blog) => {
       const formattedDate = new Date(blog.createdAt)
         .toISOString()
         .split("T")[0]; // Format "YYYY-MM-DD"
@@ -49,11 +75,39 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
       );
     }) || [];
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-  const paginatedUsers = filteredUsers.slice(
+  const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
+  const paginatedBlogs = filteredBlogs.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
+
+  // Handle hapus blog
+  const handleAction = (id: string) => {
+    startTransition(() => {
+      setIsPending(true);
+      deleteBlogById(id)
+        .then((res) => {
+          if (res.success) {
+            setSuccessMessage(res.success);
+            setErrorMessage("");
+            setBlogsData((prevData) =>
+              prevData ? prevData.filter((item) => item.id !== id) : []
+            );
+          } else if (res.error) {
+            setErrorMessage(res.error);
+            setSuccessMessage("");
+          }
+        })
+        .finally(() => {
+          setIsPending(false);
+          setIsOpen(false);
+          setTimeout(() => {
+            setSuccessMessage("");
+            setErrorMessage("");
+          }, 10000);
+        });
+    });
+  };
 
   return (
     <main className="flex h-screen">
@@ -75,6 +129,24 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
           headline="Admin Kelola Blog Travesia"
           tagline="Kelola blog travel Travesia"
         />
+
+        {/* Alert Success */}
+        {successMessage && (
+          <Alert className="mb-4 bg-green-50 border-green-500">
+            <CheckCircle className="h-4 w-4 text-green-500" />
+            <AlertTitle>Berhasil</AlertTitle>
+            <AlertDescription>{successMessage}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Alert Error */}
+        {errorMessage && (
+          <Alert className="mb-4 bg-red-50 border-red-500">
+            <AlertCircle className="h-4 w-4 text-red-500" />
+            <AlertTitle>Gagal</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
 
         <section className="mt-4">
           <div className="flex justify-between items-center mb-4">
@@ -107,40 +179,98 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedUsers.map((blog) => (
-                <TableRow key={blog.id}>
-                  <TableCell className="font-medium">
-                    {blog.id.slice(0, 5)}...
-                  </TableCell>
-                  <TableCell>{blog.user.name}</TableCell>
-                  <TableCell>
-                    {new Date(blog.createdAt).toLocaleDateString("id-ID", {
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </TableCell>
-                  <TableCell>{blog.title}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                        <DropdownMenuItem>Lihat Blog</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Blog</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600">
-                          Hapus Blog
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+              {paginatedBlogs.length > 0 ? (
+                paginatedBlogs.map((blog) => (
+                  <TableRow key={blog.id}>
+                    <TableCell className="font-medium">
+                      {blog.id.slice(0, 5)}...
+                    </TableCell>
+                    <TableCell>{blog.user.name}</TableCell>
+                    <TableCell>
+                      {new Date(blog.createdAt).toLocaleDateString("id-ID", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </TableCell>
+                    <TableCell>{blog.title}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              className="cursor-pointer"
+                              href={`/admin/kelola-blog/detail/${blog.slug}?id=${blog.id}`}
+                            >
+                              Lihat Blog
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>Edit Blog</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onSelect={(e) => e.preventDefault()}
+                            asChild
+                          >
+                            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  className="w-full cursor-pointer rounded-lg"
+                                  variant="destructive"
+                                >
+                                  Hapus Blog
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Apakah anda yakin ingin menghapus?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Tindakan ini akan menghapus blog secara
+                                    permanen!
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel
+                                    className="w-full text-white bg-gray-600"
+                                    asChild
+                                  >
+                                    <Button
+                                      variant={"default"}
+                                      disabled={isPending}
+                                    >
+                                      {isPending ? "Memuat..." : "Tidak"}
+                                    </Button>
+                                  </AlertDialogCancel>
+                                  <Button
+                                    className="w-full text-white bg-red-600 cursor-pointer hover:text-red-600 hover:bg-white flex gap-2"
+                                    onClick={() => handleAction(blog.id)}
+                                    disabled={isPending}
+                                  >
+                                    {isPending ? "Memuat..." : "Ya"}
+                                  </Button>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-gray-500">
+                    Tidak ada blog ditemukan.
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
 

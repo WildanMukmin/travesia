@@ -73,7 +73,7 @@ export const deleteBlog = async (id: string) => {
 
 export const updateBlog = async (
   id: string,
-  data: z.infer<typeof postingBlogSchema>,
+  data: z.infer<typeof postingBlogSchema>
 ) => {
   const validatedFields = postingBlogSchema.safeParse(data);
 
@@ -153,5 +153,19 @@ export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
     return { success: "Blog Berhasil Dibuat!" };
   } catch (e) {
     return { error: "Terjadi Error Saat mempublikasikan Blog" };
+  }
+};
+
+export const deleteBlogById = async (id: string) => {
+  try {
+    await prisma.blog.delete({
+      where: {
+        id,
+      },
+    });
+    return { success: "Blog Berhasil Dihapus!" };
+  } catch (error) {
+    console.error("Error fetching blog:", error);
+    return { error: "Gagal Menghapus Blog" };
   }
 };
