@@ -1,6 +1,8 @@
 import BlogDetailPage from "@/components/blog/blog-detail-page";
 import { currentUser } from "@/lib/authenticate";
 import { Suspense } from "react";
+import RoleGate from "@/components/auth/role-gate";
+import { Role } from "@prisma/client";
 
 interface PageProps {
   params: Promise<{
@@ -13,9 +15,11 @@ export default async function Page({ params }: PageProps) {
   const user = await currentUser();
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="max-w-screen-xl mx-auto px-4">
-        <BlogDetailPage slug={slug} user={user} />
-      </div>
+      <RoleGate accessRole={Role.ADMIN}>
+        <div className="max-w-screen-xl mx-auto px-4">
+          <BlogDetailPage slug={slug} user={user} />
+        </div>
+      </RoleGate>
     </Suspense>
   );
 }

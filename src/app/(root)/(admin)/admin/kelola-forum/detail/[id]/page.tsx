@@ -1,6 +1,8 @@
 import { getForumById } from "@/actions/forum";
 import ForumPage from "@/components/forum/forum-page";
 import { currentUser } from "@/lib/authenticate";
+import RoleGate from "@/components/auth/role-gate";
+import { Role } from "@prisma/client";
 
 interface PageProps {
   params: Promise<{
@@ -23,8 +25,10 @@ export default async function Page({ params }: PageProps) {
     );
   }
   return (
-    <div className="max-w-screen-xl mx-auto px-4">
-      <ForumPage forumData={forum} user={user} userName={user.name || ""} />
-    </div>
+    <RoleGate accessRole={Role.ADMIN}>
+      <div className="max-w-screen-xl mx-auto px-4">
+        <ForumPage forumData={forum} user={user} userName={user.name || ""} />
+      </div>
+    </RoleGate>
   );
 }
