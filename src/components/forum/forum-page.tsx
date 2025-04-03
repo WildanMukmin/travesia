@@ -102,7 +102,7 @@ const ForumPage = ({
         if (res?.success) {
           setSuccessMessage(res?.success);
           setData(
-            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? [],
+            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? []
           );
         }
       });
@@ -126,11 +126,11 @@ const ForumPage = ({
                         ? [...item.like, res.likeData] // Jika menambah like
                         : item.like.filter((like) => like.userId !== userId), // Jika unlike
                       dislike: item.dislike.filter(
-                        (dislike) => dislike.userId !== userId,
+                        (dislike) => dislike.userId !== userId
                       ), // Hapus dislike jika ada
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
 
           setOneData((prevData) =>
@@ -141,10 +141,10 @@ const ForumPage = ({
                     ? [...prevData.like, res.likeData]
                     : prevData.like.filter((like) => like.userId !== userId),
                   dislike: prevData.dislike.filter(
-                    (dislike) => dislike.userId !== userId,
+                    (dislike) => dislike.userId !== userId
                   ),
                 }
-              : prevData,
+              : prevData
           );
         }
       });
@@ -164,12 +164,12 @@ const ForumPage = ({
                       dislike: res.dislikeData
                         ? [...item.dislike, res.dislikeData] // Jika menambah dislike
                         : item.dislike.filter(
-                            (dislike) => dislike.userId !== userId,
+                            (dislike) => dislike.userId !== userId
                           ), // Jika undislike
                       like: item.like.filter((like) => like.userId !== userId), // Hapus like jika ada
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
 
           setOneData((prevData) =>
@@ -179,11 +179,11 @@ const ForumPage = ({
                   dislike: res.dislikeData
                     ? [...prevData.dislike, res.dislikeData] // Perbaiki dari prevData.like ke prevData.dislike
                     : prevData.dislike.filter(
-                        (dislike) => dislike.userId !== userId,
+                        (dislike) => dislike.userId !== userId
                       ),
                   like: prevData.like.filter((like) => like.userId !== userId),
                 }
-              : prevData,
+              : prevData
           );
         }
       });
@@ -191,7 +191,7 @@ const ForumPage = ({
   };
 
   const handlePostingComment = (
-    dataForm: z.infer<typeof postingCommentSchema>,
+    dataForm: z.infer<typeof postingCommentSchema>
   ) => {
     setErrorMessage("");
     dataForm.forumId = openComment;
@@ -212,8 +212,8 @@ const ForumPage = ({
                         ? [...item.comment, res.commentData]
                         : item.comment,
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
 
           setOneData((prevData) =>
@@ -224,7 +224,7 @@ const ForumPage = ({
                     ? [...prevData.comment, res.commentData]
                     : prevData.comment,
                 }
-              : prevData,
+              : prevData
           );
         }
       });
@@ -302,10 +302,11 @@ const ForumPage = ({
                           </span>
                           <span>•</span>
                           <Eye size={14} />
-                          {user?.id === oneData?.user.id && (
+                          {user?.role === Role.ADMIN && (
                             <ToolDropdownForum
-                              forumId={oneData?.id}
-                              onDelete={() => handleDelete(oneData?.id)}
+                              admin={true}
+                              forumId={oneData?.id || ""}
+                              onDelete={() => handleDelete(oneData?.id || "")}
                             />
                           )}
                         </div>
@@ -475,7 +476,7 @@ const ForumPage = ({
                                     <Form {...form}>
                                       <form
                                         onSubmit={form.handleSubmit(
-                                          handlePostingComment,
+                                          handlePostingComment
                                         )}
                                         className="space-y-6"
                                       >
@@ -550,7 +551,7 @@ const ForumPage = ({
                             size={18}
                             strokeWidth={
                               (oneData?.like?.filter(
-                                (like) => like.userId === user?.id,
+                                (like) => like.userId === user?.id
                               ).length ?? 0) > 0
                                 ? 3
                                 : 1
@@ -570,7 +571,7 @@ const ForumPage = ({
                             size={18}
                             strokeWidth={
                               (oneData?.dislike?.filter(
-                                (dislike) => dislike.userId === user?.id,
+                                (dislike) => dislike.userId === user?.id
                               ).length ?? 0) > 0
                                 ? 3
                                 : 1
@@ -706,8 +707,16 @@ const ForumPage = ({
                                 </span>
                                 <span>•</span>
                                 <Eye size={14} />
-                                {user?.id === post.user.id && (
+                                {user?.id === post.user.id &&
+                                  user?.role !== Role.ADMIN && (
+                                    <ToolDropdownForum
+                                      forumId={post.id}
+                                      onDelete={() => handleDelete(post.id)}
+                                    />
+                                  )}
+                                {user?.role === Role.ADMIN && (
                                   <ToolDropdownForum
+                                    admin={true}
                                     forumId={post.id}
                                     onDelete={() => handleDelete(post.id)}
                                   />
@@ -880,7 +889,7 @@ const ForumPage = ({
                                           <Form {...form}>
                                             <form
                                               onSubmit={form.handleSubmit(
-                                                handlePostingComment,
+                                                handlePostingComment
                                               )}
                                               className="space-y-6"
                                             >
@@ -957,7 +966,7 @@ const ForumPage = ({
                                   size={18}
                                   strokeWidth={
                                     post.like.filter(
-                                      (like) => like.userId === user?.id,
+                                      (like) => like.userId === user?.id
                                     ).length > 0
                                       ? 3
                                       : 1
@@ -977,7 +986,7 @@ const ForumPage = ({
                                   size={18}
                                   strokeWidth={
                                     post.dislike.filter(
-                                      (dislike) => dislike.userId === user?.id,
+                                      (dislike) => dislike.userId === user?.id
                                     ).length > 0
                                       ? 3
                                       : 1

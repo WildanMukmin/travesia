@@ -24,9 +24,14 @@ import { startTransition, useState } from "react";
 interface ToolDropdownForumProps {
   forumId: string;
   onDelete: () => void;
+  admin?: boolean;
 }
 
-const ToolDropdownForum = ({ forumId, onDelete }: ToolDropdownForumProps) => {
+const ToolDropdownForum = ({
+  forumId,
+  onDelete,
+  admin,
+}: ToolDropdownForumProps) => {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const handleAction = () => {
@@ -47,9 +52,15 @@ const ToolDropdownForum = ({ forumId, onDelete }: ToolDropdownForumProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="flex flex-col gap-3">
         <DropdownMenuItem asChild>
-          <Button className="w-full cursor-pointer rounded-lg" asChild>
-            <Link href={`/forum/edit-forum/${forumId}`}>Edit</Link>
-          </Button>
+          {admin ? (
+            <Button className="w-full cursor-pointer rounded-lg" asChild>
+              <Link href={`/admin/kelola-forum/edit/${forumId}`}>Edit</Link>
+            </Button>
+          ) : (
+            <Button className="w-full cursor-pointer rounded-lg" asChild>
+              <Link href={`/forum/edit-forum/${forumId}`}>Edit</Link>
+            </Button>
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
           <AlertDialog open={isOpen} onOpenChange={setIsOpen}>

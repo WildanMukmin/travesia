@@ -52,7 +52,7 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
 
   useEffect(() => {
     if (successMessage && admin) {
-      redirect("/admin/kelola-forum");
+      redirect(`/admin/kelola-forum/detail/${forumData?.id}`);
     } else if (successMessage) {
       redirect("/forum");
     }
