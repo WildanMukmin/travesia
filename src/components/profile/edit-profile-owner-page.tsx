@@ -24,9 +24,13 @@ import * as z from "zod";
 
 interface EditProfileOwnerPageProps {
   userData: GetProfileType;
+  admin?: boolean;
 }
 
-const EditProfileOwnerPage = ({ userData }: EditProfileOwnerPageProps) => {
+const EditProfileOwnerPage = ({
+  userData,
+  admin,
+}: EditProfileOwnerPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -307,16 +311,32 @@ const EditProfileOwnerPage = ({ userData }: EditProfileOwnerPageProps) => {
                 {successMessage && <FormSuccess message={successMessage} />}
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
-                  <Link href="/profile" className="w-full sm:w-auto">
-                    <Button
-                      type="button"
-                      disabled={isPending}
-                      variant="outline"
-                      className="w-full flex items-center justify-center gap-2 border-gray-300"
+                  {admin ? (
+                    <Link
+                      href="/admin/kelola-user"
+                      className="w-full sm:w-auto"
                     >
-                      <ArrowLeft className="h-4 w-4" /> Kembali ke Profil
-                    </Button>
-                  </Link>
+                      <Button
+                        type="button"
+                        disabled={isPending}
+                        variant="outline"
+                        className="w-full flex items-center justify-center gap-2 border-gray-300"
+                      >
+                        <ArrowLeft className="h-4 w-4" /> Kembali ke Kelola User
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Link href="/profile" className="w-full sm:w-auto">
+                      <Button
+                        type="button"
+                        disabled={isPending}
+                        variant="outline"
+                        className="w-full flex items-center justify-center gap-2 border-gray-300"
+                      >
+                        <ArrowLeft className="h-4 w-4" /> Kembali ke Profil
+                      </Button>
+                    </Link>
+                  )}
                   <Button
                     type="submit"
                     disabled={isPending}

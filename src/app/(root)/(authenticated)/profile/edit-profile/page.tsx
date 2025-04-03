@@ -20,7 +20,6 @@ export default async function Page() {
     return (
       <RoleGate accessRole={Role.OWNER}>
         <EditProfileOwnerPage userData={userData} />
-        <main>tetser</main>
       </RoleGate>
     );
   }

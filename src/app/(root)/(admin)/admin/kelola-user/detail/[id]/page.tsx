@@ -31,9 +31,9 @@ export default async function Page({ params }: PageProps) {
             className="text-blue-600 underline underline-offset-1"
             href={"/admin/kelola-user"}
           >
-            Back to List....
+            Kembali ke Daftar...
           </Link>
-          <ProfileMemberPage userData={userData} />
+          <ProfileMemberPage userData={userData} admin={true} />
         </main>
       </RoleGate>
     );
@@ -48,9 +48,9 @@ export default async function Page({ params }: PageProps) {
             className="text-blue-600 underline underline-offset-1"
             href={"/admin/kelola-user"}
           >
-            Back to List....
+            Kembali ke Daftar...
           </Link>
-          <ProfileOwnerPage userData={userData} />
+          <ProfileOwnerPage userData={userData} admin={true} />
         </main>
       </RoleGate>
     );
@@ -65,7 +65,7 @@ export default async function Page({ params }: PageProps) {
             className="text-blue-600 underline underline-offset-1"
             href={"/admin/kelola-user"}
           >
-            Back to List....
+            Kembali ke Daftar...
           </Link>
           <div className="bg-white rounded-xl shadow-md overflow-hidden mt-5">
             {/* Header dengan info utama */}

@@ -8,9 +8,10 @@ import Link from "next/link";
 
 interface ProfileMemberPageProps {
   userData: GetProfileType;
+  admin?: boolean;
 }
 
-const ProfileMemberPage = ({ userData }: ProfileMemberPageProps) => {
+const ProfileMemberPage = ({ userData, admin }: ProfileMemberPageProps) => {
   return (
     <main className="py-8 px-4 w-full mx-auto">
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -77,15 +78,27 @@ const ProfileMemberPage = ({ userData }: ProfileMemberPageProps) => {
           </section>
         </div>
         <div className="mt-8">
-          <Link href="/profile/edit-profile">
-            <Button
-              size={"sm"}
-              className="px-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mr-3"
-            >
-              <UserPen />
-              Edit Profil
-            </Button>
-          </Link>
+          {admin ? (
+            <Link href={`/admin/kelola-user/edit/${userData?.id}`}>
+              <Button
+                size={"sm"}
+                className="px-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mr-3"
+              >
+                <UserPen />
+                Edit Profil
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/profile/edit-profile">
+              <Button
+                size={"sm"}
+                className="px-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mr-3"
+              >
+                <UserPen />
+                Edit Profil
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </main>

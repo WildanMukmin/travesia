@@ -90,7 +90,7 @@ const DestinasiDetailPage = ({
           className="flex items-center text-blue-600 mb-6 hover:underline w-fit"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Kembali ke Daftar Destinasi
+          Kembali ke Daftar... Destinasi
         </Link>
       ) : (
         <Link
