@@ -78,7 +78,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   const handleAction = (id: string) => {
@@ -90,7 +90,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
           setSuccessMessage(res.success);
           setErrorMessage("");
           setUsersData((prevData) =>
-            prevData ? prevData.filter((item) => item.id !== id) : []
+            prevData ? prevData.filter((item) => item.id !== id) : [],
           );
         } else if (res.error) {
           setErrorMessage(res.error);

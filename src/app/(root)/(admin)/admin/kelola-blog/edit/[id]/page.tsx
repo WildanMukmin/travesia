@@ -1,27 +1,28 @@
 import { getOneBlog } from "@/actions/blog";
 import RoleGate from "@/components/auth/role-gate";
 import BlogEditPage from "@/components/blog/blog-edit-page";
-import { redirect } from "next/navigation";
 import { Role } from "@prisma/client";
-import { currentUser } from "@/lib/authenticate";
-
+import { redirect } from "next/navigation";
 interface PageProps {
-  params: { id: string };
-  searchParams: { userId?: string };
+  params: Promise<{
+    id: string;
+  }>;
 }
 
-export default async function Page({ params, searchParams }: PageProps) {
-  const { id } = params;
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
   if (!id) {
     redirect("/admin/kelola-blog");
   }
-
-  const userId = searchParams.userId || "";
   const blog = await getOneBlog(id);
-
   return (
     <RoleGate accessRole={Role.ADMIN}>
-      <BlogEditPage userId={userId} blogId={id} blogData={blog} admin={true} />
+      <BlogEditPage
+        userId={blog?.userId || ""}
+        blogId={id}
+        blogData={blog}
+        admin={true}
+      />
     </RoleGate>
   );
 }

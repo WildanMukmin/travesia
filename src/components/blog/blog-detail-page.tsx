@@ -90,7 +90,7 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
                     {slug
                       .split("-")
                       .map(
-                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1),
                       )
                       .join(" ")}
                   </BreadcrumbPage>
@@ -134,7 +134,7 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
 
   const readingTime = Math.max(
     1,
-    Math.ceil(blogData.content.join(" ").split(" ").length / 200)
+    Math.ceil(blogData.content.join(" ").split(" ").length / 200),
   );
 
   return (
