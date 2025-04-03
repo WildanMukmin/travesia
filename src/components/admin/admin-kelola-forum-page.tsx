@@ -78,7 +78,7 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
   const totalPages = Math.ceil(filteredForums.length / itemsPerPage);
   const paginatedForums = filteredForums.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   // Handle hapus forum
@@ -91,7 +91,7 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
             setSuccessMessage(res.success);
             setErrorMessage("");
             setForumsData((prevData) =>
-              prevData ? prevData.filter((item) => item.id !== id) : []
+              prevData ? prevData.filter((item) => item.id !== id) : [],
             );
           } else if (res.error) {
             setErrorMessage(res.error);
