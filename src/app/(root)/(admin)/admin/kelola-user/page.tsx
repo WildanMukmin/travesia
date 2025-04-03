@@ -7,7 +7,7 @@ export default async function Page() {
   const users = await getAllUser();
   return (
     <RoleGate accessRole={Role.ADMIN}>
-      <AdminKelolaAkunPage users={users} />;
+      <AdminKelolaAkunPage users={users} />
     </RoleGate>
   );
 }

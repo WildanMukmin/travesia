@@ -7,7 +7,7 @@ export default async function Page() {
   const blog = await getBlog();
   return (
     <RoleGate accessRole={Role.ADMIN}>
-      <AdminKelolaBlogPage blogs={blog} />;
+      <AdminKelolaBlogPage blogs={blog} />
     </RoleGate>
   );
 }

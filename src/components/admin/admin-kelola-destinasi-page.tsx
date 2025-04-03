@@ -71,7 +71,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
           day: "2-digit",
           month: "long",
           year: "numeric",
-        },
+        }
       );
 
       return (
@@ -89,7 +89,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
   const totalPages = Math.ceil(filteredDestinasi.length / itemsPerPage);
   const paginatedDestinasi = filteredDestinasi.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   // Handle hapus destinasi
@@ -104,7 +104,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
             setSuccessMessage(res.success);
             setErrorMessage("");
             setDestinasiData((prevData) =>
-              prevData ? prevData.filter((item) => item.id !== id) : [],
+              prevData ? prevData.filter((item) => item.id !== id) : []
             );
           } else if (res.error) {
             setErrorMessage(res.error);
@@ -124,7 +124,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
   };
 
   return (
-    <main className="flex h-screen">
+    <main className="flex h-screen fixed w-full">
       {/* Sidebar */}
       <div
         className={`hidden md:block h-full ${sidebarOpen ? "block" : "hidden"}`}
@@ -179,10 +179,6 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
                 }}
               />
             </div>
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Tambah Destinasi
-            </Button>
           </div>
 
           {/* Tabel */}
@@ -232,7 +228,14 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
                               Lihat Destinasi
                             </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem>Edit Destinasi</DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Link
+                              className="cursor-pointer"
+                              href={`/admin/kelola-destinasi/edit/${dest.id}`}
+                            >
+                              Edit Destinasi
+                            </Link>
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             onSelect={(e) => e.preventDefault()}

@@ -85,13 +85,18 @@ const DestinasiDetailPage = ({
         </div>
       )}
       {role === "ADMIN" ? (
-        <Link
-          href="/admin/kelola-destinasi"
-          className="flex items-center text-blue-600 mb-6 hover:underline w-fit"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Kembali ke Daftar... Destinasi
-        </Link>
+        <div className="w-full flex justify-between">
+          <Link
+            href="/admin/kelola-destinasi"
+            className="flex items-center text-blue-600 mb-6 hover:underline w-fit"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Kembali ke Daftar...
+          </Link>
+          <Link href={`/admin/kelola-destinasi/edit/${id}`} className="mr-8">
+            <Button>Edit Destinasi</Button>
+          </Link>
+        </div>
       ) : (
         <Link
           href="/destinasi"

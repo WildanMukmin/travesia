@@ -106,7 +106,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
   };
 
   return (
-    <main className="flex h-screen">
+    <main className="flex h-screen fixed w-full">
       <div
         className={`hidden md:block h-full ${sidebarOpen ? "block" : "hidden"}`}
       >
@@ -156,10 +156,6 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                 }}
               />
             </div>
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Tambah Pengguna
-            </Button>
           </div>
           <Table>
             <TableCaption>Daftar pengguna sistem</TableCaption>

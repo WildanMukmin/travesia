@@ -7,7 +7,7 @@ export default async function Page() {
   const destinasi = await getDestinasi();
   return (
     <RoleGate accessRole={Role.ADMIN}>
-      <AdminKelolaDestinasiPage destinasi={destinasi} />;
+      <AdminKelolaDestinasiPage destinasi={destinasi} />
     </RoleGate>
   );
 }

@@ -7,7 +7,7 @@ export default async function Page() {
   const forums = await getAllForum();
   return (
     <RoleGate accessRole={Role.ADMIN}>
-      <AdminKelolaForumPage forums={forums} />;
+      <AdminKelolaForumPage forums={forums} />
     </RoleGate>
   );
 }
