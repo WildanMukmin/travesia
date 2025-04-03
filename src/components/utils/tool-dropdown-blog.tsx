@@ -23,10 +23,15 @@ import { startTransition, useState } from "react";
 
 interface ToolDropdownBlogProps {
   blogId: string;
+  admin?: boolean;
   onDelete: () => void;
 }
 
-const ToolDropdownBlog = ({ blogId, onDelete }: ToolDropdownBlogProps) => {
+const ToolDropdownBlog = ({
+  blogId,
+  admin,
+  onDelete,
+}: ToolDropdownBlogProps) => {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const handleAction = () => {
@@ -44,9 +49,15 @@ const ToolDropdownBlog = ({ blogId, onDelete }: ToolDropdownBlogProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="flex flex-col gap-3">
           <DropdownMenuItem asChild>
-            <Button className="w-full cursor-pointer rounded-lg" asChild>
-              <Link href={`/blog/edit-blog/${blogId}`}>Edit</Link>
-            </Button>
+            {admin ? (
+              <Button className="w-full cursor-pointer rounded-lg" asChild>
+                <Link href={`/admin/kelola-blog/edit/${blogId}`}>Edit</Link>
+              </Button>
+            ) : (
+              <Button className="w-full cursor-pointer rounded-lg" asChild>
+                <Link href={`/blog/edit-blog/${blogId}`}>Edit</Link>
+              </Button>
+            )}
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
             <AlertDialog open={isOpen} onOpenChange={setIsOpen}>

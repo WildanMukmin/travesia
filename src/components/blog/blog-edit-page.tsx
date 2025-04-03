@@ -28,9 +28,15 @@ interface BlogEditPageProps {
   userId: string;
   blogId: string;
   blogData: OneBlogWithCreator;
+  admin?: boolean;
 }
 
-const BlogEditPage = ({ userId, blogId, blogData }: BlogEditPageProps) => {
+const BlogEditPage = ({
+  userId,
+  blogId,
+  blogData,
+  admin,
+}: BlogEditPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -51,29 +57,10 @@ const BlogEditPage = ({ userId, blogId, blogData }: BlogEditPageProps) => {
     },
   });
 
-  // useEffect(() => {
-  //   if (blogId) {
-  //     getDestinasiById(blogId).then((res) => {
-  //       if (res) {
-  //         setData(res);
-  //         // Reset form with data values once they're available
-  //         form.reset({
-  //           namaDestinasi: res.namaDestinasi,
-  //           harga: res.harga.toString(),
-  //           deskripsi: res.deskripsi,
-  //           alamat: res.alamat,
-  //           nomorOwner: res.nomorOwner.toString(),
-  //           kategoriLokasi: res.kategoriLokasi,
-  //           jamOprasional: res.jamOprasional,
-  //           fasilitas: res.fasilitas,
-  //         });
-  //       }
-  //     });
-  //   }
-  // }, [blogId, form]);
-
   useEffect(() => {
-    if (successMessage) {
+    if (successMessage && admin) {
+      redirect("/admin/kelola-blog");
+    } else if (successMessage) {
       redirect("/blog");
     }
   }, [successMessage]);
@@ -345,8 +332,8 @@ const BlogEditPage = ({ userId, blogId, blogData }: BlogEditPageProps) => {
                                     onClick={() =>
                                       field.onChange(
                                         field.value?.filter(
-                                          (_, i) => i !== index,
-                                        ),
+                                          (_, i) => i !== index
+                                        )
                                       )
                                     }
                                     className="h-7 w-7 p-0 text-gray-500 hover:text-red-600 hover:bg-red-50"

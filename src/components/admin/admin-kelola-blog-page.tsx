@@ -211,7 +211,14 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
                               Lihat Blog
                             </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem>Edit Blog</DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Link
+                              className="cursor-pointer"
+                              href={`/admin/kelola-blog/edit/${blog.id}?userId=${blog.userId}`}
+                            >
+                              Edit Blog
+                            </Link>
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             onSelect={(e) => e.preventDefault()}

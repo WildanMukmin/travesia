@@ -16,6 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
 import { startTransition, useEffect, useState } from "react";
+import { Button } from "../ui/button";
 
 interface BlogDetailPageProps {
   slug: string;
@@ -89,7 +90,7 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
                     {slug
                       .split("-")
                       .map(
-                        (word) => word.charAt(0).toUpperCase() + word.slice(1),
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
                       )
                       .join(" ")}
                   </BreadcrumbPage>
@@ -133,11 +134,25 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
 
   const readingTime = Math.max(
     1,
-    Math.ceil(blogData.content.join(" ").split(" ").length / 200),
+    Math.ceil(blogData.content.join(" ").split(" ").length / 200)
   );
 
   return (
     <div className="max-w-full mx-auto px-4 py-8">
+      {user?.role === "ADMIN" && (
+        <div className="w-full flex justify-between mb-4">
+          <Link
+            href="/admin/kelola-blog"
+            className="flex items-center text-blue-600 mb-6 hover:underline w-fit"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Kembali ke Daftar...
+          </Link>
+          <Link href={`/admin/kelola-blog/edit/${blogId}`} className="mr-8">
+            <Button>Edit Blog</Button>
+          </Link>
+        </div>
+      )}
       {/* Breadcrumbs with improved spacing and styling */}
       {user?.role !== "ADMIN" && (
         <div className="flex justify-start mb-8">
@@ -219,15 +234,23 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
             </div>
 
             {/* Dropdown positioned better */}
-            {user?.id === blogData.user.id ||
-              (user?.role === "ADMIN" && (
-                <div className="absolute top-0 -right-8">
-                  <ToolDropdown
-                    blogId={blogId}
-                    onDelete={() => onDelete(blogId)}
-                  />
-                </div>
-              ))}
+            {user?.id === blogData.user.id && user?.role !== "ADMIN" && (
+              <div className="absolute top-0 -right-8">
+                <ToolDropdown
+                  blogId={blogId}
+                  onDelete={() => onDelete(blogId)}
+                />
+              </div>
+            )}
+            {user?.role === "ADMIN" && (
+              <div className="absolute top-0 -right-8">
+                <ToolDropdown
+                  blogId={blogId}
+                  admin={true}
+                  onDelete={() => onDelete(blogId)}
+                />
+              </div>
+            )}
           </div>
 
           {/* Blog Content with improved typography and spacing */}
@@ -249,7 +272,7 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
             className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors font-medium"
           >
             <ArrowLeft size={18} className="mr-2" />
-            Back to all posts
+            Kembali ke daftar Blog
           </Link>
         </div>
       ) : (
@@ -259,7 +282,7 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
             className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors font-medium"
           >
             <ArrowLeft size={18} className="mr-2" />
-            Back to List all posts
+            Kembali ke Kelola Blog
           </Link>
         </div>
       )}

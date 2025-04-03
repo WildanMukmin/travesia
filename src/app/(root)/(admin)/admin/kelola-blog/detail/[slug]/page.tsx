@@ -1,8 +1,8 @@
+import RoleGate from "@/components/auth/role-gate";
 import BlogDetailPage from "@/components/blog/blog-detail-page";
 import { currentUser } from "@/lib/authenticate";
-import { Suspense } from "react";
-import RoleGate from "@/components/auth/role-gate";
 import { Role } from "@prisma/client";
+import { Suspense } from "react";
 
 interface PageProps {
   params: Promise<{

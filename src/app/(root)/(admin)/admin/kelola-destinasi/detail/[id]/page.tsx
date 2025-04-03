@@ -1,7 +1,7 @@
 import { getDestinasiById } from "@/actions/destinasi";
+import RoleGate from "@/components/auth/role-gate";
 import DestinasiDetailPage from "@/components/destinasi/destinasi-detail-page";
 import { currentUser } from "@/lib/authenticate";
-import RoleGate from "@/components/auth/role-gate";
 import { Role } from "@prisma/client";
 
 interface PageProps {
