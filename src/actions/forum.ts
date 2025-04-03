@@ -78,7 +78,7 @@ export const getAllForum = async () => {
 };
 
 export const postingForum = async (
-  data: z.infer<typeof postingForumSchema>,
+  data: z.infer<typeof postingForumSchema>
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -231,7 +231,7 @@ export const dislikeForum = async (forumId: string, userId: string) => {
 };
 
 export const commentForum = async (
-  data: z.infer<typeof postingCommentSchema>,
+  data: z.infer<typeof postingCommentSchema>
 ) => {
   const validatedFields = postingCommentSchema.safeParse(data);
 
@@ -274,5 +274,55 @@ export const deleteForumById = async (id: string) => {
   } catch (error) {
     console.error("Error fetching forum:", error);
     return { error: "Gagal Menghapus forum" };
+  }
+};
+
+export const editForumById = async (
+  data: z.infer<typeof postingForumSchema>,
+  id: string
+) => {
+  const validatedFields = postingForumSchema.safeParse(data);
+
+  if (!validatedFields.success) {
+    return { error: "Mohon isi form dengan benar!" };
+  }
+
+  const { content, image, userId } = validatedFields.data;
+
+  if (!content) {
+    return { error: "Mohon isi content dengan benar!" };
+  }
+
+  if (!userId) {
+    return { error: "Terjadi Error Silahkan Login Kembali!" };
+  }
+
+  if (!id) {
+    return { error: "Forum Tidak di temukan" };
+  }
+
+  const slug = content
+    .toLowerCase()
+    .replace(/[^\w]+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "")
+    .slice(0, 500);
+
+  try {
+    await prisma.forum.update({
+      where: {
+        id,
+      },
+      data: {
+        userId,
+        slug,
+        content,
+      },
+    });
+
+    revalidatePath("/forum");
+    return { success: "Berhasil Mengedit Forum!" };
+  } catch (e) {
+    return { error: "Terjadi Error Saat mengedit ke Forum" };
   }
 };
