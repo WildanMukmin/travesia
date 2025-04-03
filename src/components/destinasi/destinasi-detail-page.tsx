@@ -247,9 +247,9 @@ const DestinasiDetailPage = ({
                 )}
 
                 {role === Role.ADMIN && (
-                  <Link href="/admin/kelola-destinasi">
+                  <Link href={`/admin/kelola-destinasi/edit/${id}`}>
                     <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                      Dashboard Admin
+                      Edit Destinasi
                     </Button>
                   </Link>
                 )}

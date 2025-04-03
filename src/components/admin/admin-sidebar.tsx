@@ -55,7 +55,7 @@ const AdminSidebar = ({ onClose }: AdminSidebarProps) => {
           className="flex items-center gap-2 font-semibold"
         >
           <Image
-            src="/travesia-logo-horizontal.png"
+            src="/travesia-logo-horizontal-white.png"
             alt="Logo"
             width={180}
             height={50}
