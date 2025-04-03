@@ -26,9 +26,10 @@ import * as z from "zod";
 
 interface ForumPostingPageProps {
   userId: string;
+  admin?: boolean;
 }
 
-const ForumPostingPage = ({ userId }: ForumPostingPageProps) => {
+const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -49,7 +50,9 @@ const ForumPostingPage = ({ userId }: ForumPostingPageProps) => {
   });
 
   useEffect(() => {
-    if (successMessage) {
+    if (successMessage && admin) {
+      redirect("/admin/kelola-forum");
+    } else if (successMessage) {
       redirect("/forum");
     }
   }, [successMessage]);

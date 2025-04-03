@@ -162,10 +162,12 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
                 }}
               />
             </div>
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Tambah Forum
-            </Button>
+            <Link href={"/admin/kelola-forum/add"}>
+              <Button>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Tambah Forum
+              </Button>
+            </Link>
           </div>
           <Table>
             <TableCaption>Daftar Forum Travesia</TableCaption>
