@@ -162,10 +162,12 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
                 }}
               />
             </div>
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Tambah Blog
-            </Button>
+            <Link href={"/admin/kelola-blog/add"}>
+              <Button>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Tambah Blog
+              </Button>
+            </Link>
           </div>
           <Table>
             <TableCaption>Daftar Blog Travesia</TableCaption>

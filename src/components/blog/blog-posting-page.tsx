@@ -26,9 +26,10 @@ import * as z from "zod";
 
 interface BlogPostingPageProps {
   userId: string;
+  admin?: boolean;
 }
 
-const BlogPostingPage = ({ userId }: BlogPostingPageProps) => {
+const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -50,7 +51,9 @@ const BlogPostingPage = ({ userId }: BlogPostingPageProps) => {
   });
 
   useEffect(() => {
-    if (successMessage) {
+    if (successMessage && admin) {
+      redirect("/admin/kelola-blog");
+    } else if (successMessage) {
       redirect("/blog");
     }
   }, [successMessage]);
@@ -322,8 +325,8 @@ const BlogPostingPage = ({ userId }: BlogPostingPageProps) => {
                                     onClick={() =>
                                       field.onChange(
                                         field.value?.filter(
-                                          (_, i) => i !== index,
-                                        ),
+                                          (_, i) => i !== index
+                                        )
                                       )
                                     }
                                     className="h-7 w-7 p-0 text-gray-500 hover:text-red-600 hover:bg-red-50"
