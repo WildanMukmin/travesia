@@ -46,7 +46,9 @@ const EditProfileMemberPage = ({
   const [successMessageImage, setSuccessMessageImage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [srcImage, setSrcImage] = useState<string | null>(null);
+  const [srcImage, setSrcImage] = useState<string>(
+    userData?.image?.gambar || ""
+  );
   const genderOptions = ["Laki-laki", "Perempuan"];
 
   const form = useForm<z.infer<typeof editProfileMemberSchema>>({
@@ -145,7 +147,7 @@ const EditProfileMemberPage = ({
 
   const handleRemoveImage = () => {
     setImageFile(null);
-    setSrcImage(null);
+    setSrcImage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
