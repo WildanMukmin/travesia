@@ -11,6 +11,9 @@ export const currentUser = async () => {
       where: {
         id: data.user.id,
       },
+      include: {
+        image: true,
+      },
     });
     return user;
   }

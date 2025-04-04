@@ -15,18 +15,16 @@ import Link from "next/link";
 
 interface ProfileDropdownProps {
   name: string;
+  src: string;
 }
 
-const ProfileDropdown = ({ name }: ProfileDropdownProps) => {
+const ProfileDropdown = ({ name, src }: ProfileDropdownProps) => {
   return (
     <div className="flex flex-col items-center">
       <DropdownMenu>
-        <DropdownMenuTrigger className="bg-black rounded-full w-8 h-8 flex items-center justify-center text-white">
+        <DropdownMenuTrigger className="rounded-full w-8 h-8 flex items-center justify-center text-white">
           <Avatar>
-            <AvatarImage
-              src="https://github.com/wildanmukmin.png"
-              alt="wildan mukmin"
-            />
+            <AvatarImage src={src} alt="wildan mukmin" />
             <AvatarFallback>
               <User height={25} width={25} className="text-black" />
             </AvatarFallback>

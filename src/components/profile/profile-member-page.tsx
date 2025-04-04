@@ -24,9 +24,9 @@ const ProfileMemberPage = ({ userData, admin }: ProfileMemberPageProps) => {
           {/* Bagian foto profil */}
           <section className="md:w-1/3 p-6 flex flex-col items-center justify-center border-r border-gray-200">
             <div className="relative w-48 h-48 rounded-full overflow-hidden mb-4 border-4 border-white">
-              {userData?.imageProfile ? (
+              {userData?.image?.gambar ? (
                 <Image
-                  src={userData?.imageProfile}
+                  src={userData?.image?.gambar}
                   alt={`Foto profil ${userData.name || "pengguna"}`}
                   fill
                   className="object-cover"

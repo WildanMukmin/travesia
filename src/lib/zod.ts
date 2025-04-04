@@ -139,3 +139,11 @@ export const adminSchema = z.object({
   email: z.string().email("Email tidak valid"),
   password: z.string().min(8, "Password harus memiliki minimal 8 karakter"),
 });
+
+export const uploadImageSchema = z.object({
+  userId: z.string().min(1),
+  namaFoto: z.string().min(1),
+  forumId: z.string().optional(),
+  blogId: z.string().optional(),
+  destinasiId: z.string().optional(),
+});

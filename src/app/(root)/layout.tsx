@@ -1,3 +1,4 @@
+import { getImageById } from "@/actions/image";
 import ProfileDropdown from "@/components/profile/profile-dropdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +21,7 @@ export default async function Layout({
 }) {
   const user = await currentUser();
   const isLogin = !!user;
-
+  const imageProfile = await getImageById(user?.image?.id || "");
   if (user?.role === Role.ADMIN) {
     return <>{children}</>;
   }
@@ -62,7 +63,12 @@ export default async function Layout({
                   </Link>
                 </>
               )}
-              {isLogin && <ProfileDropdown name={user?.name || ""} />}
+              {isLogin && (
+                <ProfileDropdown
+                  name={user?.name || ""}
+                  src={imageProfile?.gambar || ""}
+                />
+              )}
             </div>
           </div>
         </div>

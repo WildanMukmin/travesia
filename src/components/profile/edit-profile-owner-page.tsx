@@ -1,5 +1,6 @@
 "use client";
 
+import { updateImageById, uploadImage } from "@/actions/image";
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
@@ -16,9 +17,10 @@ import { GetProfileType, updateProfile } from "@/lib/profile";
 import { editProfileMemberSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ImagePlus, Upload, User } from "lucide-react";
+import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
-import { startTransition, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -38,7 +40,9 @@ const EditProfileOwnerPage = ({
   const [successMessageImage, setSuccessMessageImage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [srcImage, setSrcImage] = useState<string | null>(null);
+  const [srcImage, setSrcImage] = useState<string>(
+    userData?.image?.gambar || "",
+  );
   const genderOptions = ["Laki-laki", "Perempuan"];
 
   const form = useForm<z.infer<typeof editProfileMemberSchema>>({
@@ -104,22 +108,29 @@ const EditProfileOwnerPage = ({
     }
 
     setIsPending(true);
+    setSuccessMessageImage("");
+    setErrorMessageImage("");
 
     try {
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const formData = new FormData();
+      formData.append("gambar", imageFile); // nama harus cocok dengan server
+      formData.append("userId", userData?.id || "");
+      formData.append("namaFoto", imageFile.name); // atau sesuai input kamu
+      // Bisa tambahkan blogId, forumId, destinasiId jika diperlukan
+      let res;
+      if (userData?.image?.gambar) {
+        res = await updateImageById(formData, userData?.image?.id || "");
+      } else {
+        res = await uploadImage(formData);
+      }
 
-      // Here you would implement your actual image upload logic
-      // Example:
-      // const formData = new FormData();
-      // formData.append('image', imageFile);
-      // formData.append('userId', userData.id);
-      // const response = await fetch('/api/upload-profile-image', {
-      //   method: 'POST',
-      //   body: formData
-      // });
-
-      setSuccessMessageImage("Foto profil berhasil disimpan!");
+      if (res.success) {
+        setSuccessMessageImage(res.success);
+        setErrorMessageImage("");
+      } else if (res.error) {
+        setSuccessMessageImage("");
+        setErrorMessageImage(res.error);
+      }
     } catch (error) {
       console.error("Error uploading image:", error);
       setErrorMessageImage("Terjadi kesalahan saat mengunggah foto profil.");
@@ -130,7 +141,7 @@ const EditProfileOwnerPage = ({
 
   const handleRemoveImage = () => {
     setImageFile(null);
-    setSrcImage(null);
+    setSrcImage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -157,7 +168,7 @@ const EditProfileOwnerPage = ({
           <section className="md:w-2/5 p-6 border-b md:border-b-0 md:border-r border-gray-200">
             <h2 className="text-lg font-semibold mb-4 text-gray-800 flex items-center gap-2">
               <ImagePlus className="h-5 w-5 text-blue-600" />
-              Foto Profil (Belum Bekerja)
+              Foto Profil
             </h2>
 
             {errorMessageImage && <FormError message={errorMessageImage} />}

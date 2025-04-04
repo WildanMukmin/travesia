@@ -17,6 +17,7 @@ export const getProfile = async (userId: string) => {
       include: {
         member: true,
         owner: true,
+        image: true,
       },
     });
     return user;
