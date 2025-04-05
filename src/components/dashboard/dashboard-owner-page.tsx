@@ -55,7 +55,7 @@ const DashboardOwnerPage = ({
   const [notifikasiData, setNotifikasiData] = useState(notifikasi || []);
   const [unreadCount, setUnreadCount] = useState(
     notifikasiData?.filter((notif) => notif.status === "belum-dibaca").length ||
-      0,
+      0
   );
 
   const handleReadNotifikasi = async (id: string) => {
@@ -84,7 +84,7 @@ const DashboardOwnerPage = ({
 
       if (result) {
         const updatedNotifikasi = notifikasiData.filter(
-          (notif) => notif.id !== id,
+          (notif) => notif.id !== id
         );
         setNotifikasiData(updatedNotifikasi);
         setUnreadCount((prevCount) => Math.max(0, prevCount - 1));
@@ -191,7 +191,10 @@ const DashboardOwnerPage = ({
             <div className="relative w-full h-96 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
               <Image
-                src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYWNofGVufDB8fDB8fHww"
+                src={
+                  ownerDestinasiData.owner.destinasi.image?.gambar ||
+                  "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+                }
                 alt={ownerDestinasiData?.owner?.destinasi?.namaDestinasi}
                 fill
                 className="w-full h-full object-cover"
@@ -241,7 +244,7 @@ const DashboardOwnerPage = ({
                             </div>
                             <span className="text-gray-700">{fasilitas}</span>
                           </div>
-                        ),
+                        )
                       )}
                     </div>
                   </div>
@@ -301,8 +304,8 @@ const DashboardOwnerPage = ({
                               minimumFractionDigits: 2,
                             }).format(
                               Number(
-                                ownerDestinasiData?.owner?.destinasi?.harga,
-                              ),
+                                ownerDestinasiData?.owner?.destinasi?.harga
+                              )
                             )}
                           </p>
                         </div>

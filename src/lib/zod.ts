@@ -42,6 +42,12 @@ export const daftarDestinasiSchema = z.object({
   fasilitas: z
     .array(z.string())
     .min(1, "Setidaknya berikan 1 fasilitas utama anda"),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
+      message: "Logo harus sebuah file",
+    })
+    .optional(),
 });
 export const editDestinasiSchema = z.object({
   namaDestinasi: z.string().min(1, "Nama Destinasi Wajib di isi"),

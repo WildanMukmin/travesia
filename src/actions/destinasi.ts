@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import * as z from "zod";
+import { uploadImage } from "./image";
 
 export type DestinasiWithOwner = Prisma.PromiseReturnType<typeof getDestinasi>;
 export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
@@ -15,7 +16,7 @@ export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
 export type AllDestinasi = Prisma.PromiseReturnType<typeof getAllDestinasi>;
 
 export const daftarDestinasi = async (
-  data: z.infer<typeof daftarDestinasiSchema>,
+  data: z.infer<typeof daftarDestinasiSchema>
 ) => {
   const validatedFields = daftarDestinasiSchema.safeParse(data);
   const kategoriLokasiData = [
@@ -72,6 +73,7 @@ export const daftarDestinasi = async (
     nomorOwner,
     kategoriLokasi,
     jamOprasional,
+    image,
     fasilitas,
   } = validatedFields.data;
 
@@ -83,6 +85,10 @@ export const daftarDestinasi = async (
 
   if (fasilitas.length < 1) {
     return { error: "Setidaknya berikan 1 fasilitas utama anda" };
+  }
+
+  if (!image) {
+    return { error: "Logo harus sebuah file" };
   }
 
   if (!userId) {
@@ -114,7 +120,7 @@ export const daftarDestinasi = async (
   }
 
   try {
-    await prisma.destinasi.create({
+    const destinasi = await prisma.destinasi.create({
       data: {
         ownerId: owner.id,
         namaDestinasi,
@@ -128,6 +134,19 @@ export const daftarDestinasi = async (
       },
     });
 
+    if (!destinasi) {
+      return { error: "Terjadi kesalahan, silahkan coba lagi" };
+    }
+
+    const formData = new FormData();
+    formData.append("gambar", image);
+    formData.append("destinasiId", destinasi.id);
+    formData.append("namaFoto", image.name);
+    const res = await uploadImage(formData);
+    if (res?.error) {
+      return { error: res.error };
+    }
+
     return { success: "Destinasi berhasil didaftarkan" };
   } catch (e) {
     return { error: "Terjadi kesalahan, silahkan coba lagi" };
@@ -139,7 +158,7 @@ export const daftarDestinasi = async (
 
 export const editDestinasi = async (
   destinasiId: string,
-  data: z.infer<typeof editDestinasiSchema>,
+  data: z.infer<typeof editDestinasiSchema>
 ) => {
   const validatedFields = editDestinasiSchema.safeParse(data);
   const kategoriLokasiData = [
@@ -279,7 +298,7 @@ export const getAllDestinasi = async () => {
 
 export const getPaginatedDestinasi = async (
   page: number = 1,
-  limit: number = 10,
+  limit: number = 10
 ) => {
   try {
     const skip = (page - 1) * limit; // Menghitung jumlah data yang dilewati

@@ -14,7 +14,11 @@ export const getOwnerDestinasi = async (id: string) => {
       include: {
         owner: {
           include: {
-            destinasi: true,
+            destinasi: {
+              include: {
+                image: true,
+              },
+            },
           },
         },
       },
