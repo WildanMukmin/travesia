@@ -5,6 +5,7 @@ import { postingBlogSchema } from "@/lib/zod";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import * as z from "zod";
+import { updateImageById, uploadImage } from "./image";
 
 export type BlogWithCreator = Prisma.PromiseReturnType<typeof getBlog>;
 export type OneBlogWithCreator = Prisma.PromiseReturnType<typeof getOneBlog>;
@@ -91,6 +92,10 @@ export const updateBlog = async (
     return { error: "Terjadi Error Silahkan Login Kembali!" };
   }
 
+  if (!image) {
+    return { error: "Mohon isi gambar dengan benar!" };
+  }
+
   const slug = title
     .toLowerCase()
     .replace(/[^\w]+/g, "-")
@@ -98,7 +103,7 @@ export const updateBlog = async (
     .replace(/-+$/, "");
 
   try {
-    await prisma.blog.update({
+    const blog = await prisma.blog.update({
       where: {
         id,
       },
@@ -108,11 +113,26 @@ export const updateBlog = async (
         userId,
         slug,
       },
+      include: {
+        image: true,
+      },
     });
 
+    const formData = new FormData();
+    formData.append("gambar", image);
+    formData.append("blogId", id);
+    formData.append("namaFoto", image.name);
+    console.log(blog);
+    if (!blog.image?.id) {
+      return { error: "Terjadi Error Saat Mengubah Blog1" };
+    }
+    const res = await updateImageById(formData, blog.image?.id);
+    if (res?.error) {
+      return { error: res.error };
+    }
     return { success: "Blog Berhasil DIubah!" };
   } catch (e) {
-    return { error: "Terjadi Error Saat Mengubah Blog" };
+    return { error: "Terjadi Error Saat Mengubah Blog3" };
   }
 };
 
@@ -129,6 +149,10 @@ export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
     return { error: "Mohon isi form dengan benar!" };
   }
 
+  if (!image) {
+    return { error: "Mohon isi gambar dengan benar!" };
+  }
+
   if (!userId) {
     return { error: "Terjadi Error Silahkan Login Kembali!" };
   }
@@ -140,13 +164,24 @@ export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
     .replace(/-+$/, "");
 
   try {
-    await prisma.blog.create({
+    const blog = await prisma.blog.create({
       data: {
         title,
         content,
         userId,
         slug,
       },
+    });
+
+    const formData = new FormData();
+    formData.append("gambar", image);
+    formData.append("blogId", blog?.id || "");
+    formData.append("namaFoto", image.name);
+
+    await uploadImage(formData).then((res) => {
+      if (res.error) {
+        return { error: "Terjadi Error Saat mempublikasikan Blog" };
+      }
     });
 
     revalidatePath("/blog");

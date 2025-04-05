@@ -188,7 +188,10 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
         {/* Hero Image with improved styling */}
         <div className="relative h-96 w-full overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1740514531864-ea9cec02fbac?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D"
+            src={
+              blogData.image?.gambar ||
+              "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+            }
             alt={blogData.title}
             fill
             className="object-cover transition-transform hover:scale-105 duration-700"

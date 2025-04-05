@@ -37,8 +37,9 @@ export const uploadImage = async (formData: FormData) => {
         namaFoto,
       },
     });
-
-    revalidatePath("/profile/edit-profile");
+    if (userId) {
+      revalidatePath("/profile/edit-profile");
+    }
     return { success: "Berhasil menyimpan gambar." };
   } catch (error) {
     console.error("Upload gagal:", error);

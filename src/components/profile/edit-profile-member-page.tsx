@@ -47,7 +47,7 @@ const EditProfileMemberPage = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [srcImage, setSrcImage] = useState<string>(
-    userData?.image?.gambar || ""
+    userData?.image?.gambar || "",
   );
   const genderOptions = ["Laki-laki", "Perempuan"];
 

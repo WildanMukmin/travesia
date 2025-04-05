@@ -95,7 +95,10 @@ const BlogPage = ({ blogData, user }: BlogPageProps) => {
               blogId={item.id}
               creatorId={item.user.id}
               userId={user?.id || ""}
-              src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+              src={
+                item.image?.gambar ||
+                "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+              }
               judul={`${item.title}`}
               slug={`${item.slug}`}
               deskripsi={item.content[0].slice(0, 100)}

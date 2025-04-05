@@ -1,6 +1,7 @@
 "use client";
 
 import { postingBlog } from "@/actions/blog";
+import { uploadImage } from "@/actions/image";
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
@@ -35,7 +36,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
   const [isPending, setIsPending] = useState(false);
   const [contentItem, setContentItem] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [srcImage, setSrcImage] = useState<string | null>(null);
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
@@ -46,7 +47,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
       userId: userId,
       title: "",
       content: [],
-      image: undefined,
+      image: imageFile,
     },
   });
 
@@ -58,14 +59,18 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
     }
   }, [successMessage]);
 
-  const handleSubmitData = async (data: z.infer<typeof postingBlogSchema>) => {
+  const handleSubmitData = (data: z.infer<typeof postingBlogSchema>) => {
     setErrorMessage("");
     setSuccessMessage("");
     setIsPending(true);
-
+    data.image = imageFile;
+    if (!data.image) {
+      setErrorMessageImage("Belum ada foto profil yang dipilih.");
+      setIsPending(false);
+      return;
+    }
     try {
       startTransition(() => {
-        // handleSaveImage();
         postingBlog(data).then((res) => {
           if (!res) {
             setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
@@ -76,7 +81,6 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
             setSuccessMessage("Blog berhasil dipublikasikan!");
           }
         });
-        // console.log(data);
       });
     } catch (error) {
       setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
@@ -127,37 +131,38 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
 
   const handleSaveImage = async () => {
     if (!imageFile) {
-      setErrorMessageImage("Belum ada file yang dipilih.");
+      setErrorMessageImage("Belum ada foto profil yang dipilih.");
       return;
     }
 
     setIsPending(true);
+    setSuccessMessageImage("");
+    setErrorMessageImage("");
 
     try {
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const formData = new FormData();
+      formData.append("gambar", imageFile); // nama harus cocok dengan server
+      formData.append("namaFoto", imageFile.name); // atau sesuai input kamu
+      // Bisa tambahkan blogId, forumId, destinasiId jika diperlukan
+      const res = await uploadImage(formData);
 
-      // Here you would implement your actual image upload logic
-      // Example:
-      // const formData = new FormData();
-      // formData.append('image', imageFile);
-      // formData.append('destinationId', userId);
-      // const response = await fetch('/api/upload-image', {
-      //   method: 'POST',
-      //   body: formData
-      // });
-
-      setSuccessMessageImage("Gambar berhasil disimpan!");
+      if (res.success) {
+        setSuccessMessageImage(res.success);
+        setErrorMessageImage("");
+      } else if (res.error) {
+        setSuccessMessageImage("");
+        setErrorMessageImage(res.error);
+      }
     } catch (error) {
       console.error("Error uploading image:", error);
-      setErrorMessageImage("Terjadi kesalahan saat mengunggah gambar.");
+      setErrorMessageImage("Terjadi kesalahan saat mengunggah foto profil.");
     } finally {
       setIsPending(false);
     }
   };
 
   const handleRemoveImage = () => {
-    setImageFile(null);
+    setImageFile(undefined);
     setSrcImage(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";

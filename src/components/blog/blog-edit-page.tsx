@@ -42,8 +42,10 @@ const BlogEditPage = ({
   const [isPending, setIsPending] = useState(false);
   const [contentItem, setContentItem] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [srcImage, setSrcImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
+  const [srcImage, setSrcImage] = useState<string>(
+    blogData?.image?.gambar || "",
+  );
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
 
@@ -69,10 +71,14 @@ const BlogEditPage = ({
     setErrorMessage("");
     setSuccessMessage("");
     setIsPending(true);
-
+    data.image = imageFile;
+    if (!data.image && !blogData?.image) {
+      setErrorMessageImage("Belum ada foto yang dipilih.");
+      setIsPending(false);
+      return;
+    }
     try {
       startTransition(() => {
-        // handleSaveImage();
         updateBlog(blogId, data).then((res) => {
           if (!res) {
             setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
@@ -83,7 +89,6 @@ const BlogEditPage = ({
             setSuccessMessage("Blog berhasil dipublikasikan!");
           }
         });
-        // console.log(data);
       });
     } catch (error) {
       setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
@@ -164,8 +169,8 @@ const BlogEditPage = ({
   };
 
   const handleRemoveImage = () => {
-    setImageFile(null);
-    setSrcImage(null);
+    setImageFile(undefined);
+    setSrcImage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
