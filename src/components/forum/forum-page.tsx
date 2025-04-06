@@ -878,7 +878,7 @@ const ForumPage = ({
                                       <div className="flex items-start gap-3">
                                         <Avatar className="h-10 w-10">
                                           <AvatarImage
-                                            src={post.user.image?.gambar}
+                                            src={user?.image?.gambar}
                                             alt="Your avatar"
                                           />
                                           <AvatarFallback>
