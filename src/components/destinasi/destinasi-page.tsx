@@ -1,3 +1,4 @@
+import { DestinasiWithOwner } from "@/actions/destinasi";
 import DestinasiCard from "@/components/card/card-destinasi";
 import DestinasiKategoriCard from "@/components/card/card-kategori";
 import {
@@ -27,7 +28,7 @@ import {
 import Link from "next/link";
 
 interface DestinasiPageProps {
-  data: any[];
+  data: DestinasiWithOwner;
 }
 
 const DestinasiPage = ({ data }: DestinasiPageProps) => {
@@ -126,7 +127,10 @@ const DestinasiPage = ({ data }: DestinasiPageProps) => {
               data.map((field) => (
                 <DestinasiCard
                   key={field.id}
-                  src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                  src={
+                    field.image?.gambar ||
+                    "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+                  }
                   judul={`${field.namaDestinasi}`}
                   kategori={`${field.kategoriLokasi}`}
                   penulis={`Owner ${field.owner?.user?.name ?? "Unknown"}`}

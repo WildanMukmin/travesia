@@ -1,3 +1,4 @@
+import { GetOneDestinasiWithOwner } from "@/actions/destinasi";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,6 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { CurrentUser } from "@/lib/authenticate";
 import { Role } from "@prisma/client";
 import {
   ArrowLeft,
@@ -21,37 +23,17 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface DestinasiDetailPageProps {
-  userId: string;
-  currentUserId: string;
-  id: string;
-  role?: Role;
-  namaDestinasi: string;
-  kategoriLokasi: string;
-  deskripsi: string;
-  fasilitas: string[];
-  namaOwner: string;
-  lokasi: string;
-  jamOperasional: string;
-  harga: number;
+  destinasiData: GetOneDestinasiWithOwner;
+  user: CurrentUser;
 }
 
 const DestinasiDetailPage = ({
-  userId,
-  currentUserId,
-  id,
-  role,
-  namaDestinasi,
-  kategoriLokasi,
-  deskripsi,
-  fasilitas,
-  namaOwner,
-  lokasi,
-  jamOperasional,
-  harga,
+  destinasiData,
+  user,
 }: DestinasiDetailPageProps) => {
   return (
     <main className="mt-10 flex flex-col">
-      {role !== "ADMIN" && (
+      {user?.role !== Role.ADMIN && (
         <div className="flex justify-start mb-8">
           <Breadcrumb>
             <BreadcrumbList>
@@ -70,21 +52,21 @@ const DestinasiDetailPage = ({
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link
-                    href={`/destinasi/kategori/${kategoriLokasi.split(" ").join("-")}`}
+                    href={`/destinasi/kategori/${destinasiData?.kategoriLokasi.split(" ").join("-")}`}
                   >
-                    {kategoriLokasi}
+                    {destinasiData?.kategoriLokasi}
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>{namaDestinasi}</BreadcrumbPage>
+                <BreadcrumbPage>{destinasiData?.namaDestinasi}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       )}
-      {role === "ADMIN" ? (
+      {user?.role === Role.ADMIN ? (
         <div className="w-full flex justify-between">
           <Link
             href="/admin/kelola-destinasi"
@@ -93,7 +75,10 @@ const DestinasiDetailPage = ({
             <ArrowLeft className="w-4 h-4 mr-2" />
             Kembali ke Daftar...
           </Link>
-          <Link href={`/admin/kelola-destinasi/edit/${id}`} className="mr-8">
+          <Link
+            href={`/admin/kelola-destinasi/edit/${destinasiData?.id}`}
+            className="mr-8"
+          >
             <Button>Edit Destinasi</Button>
           </Link>
         </div>
@@ -112,9 +97,11 @@ const DestinasiDetailPage = ({
         <div className="flex justify-between items-start mb-6">
           <div className="mb-4">
             <h1 className="text-4xl font-bold text-gray-900 font-serif mb-2">
-              {namaDestinasi}
+              {destinasiData?.namaDestinasi}
             </h1>
-            <span className="text-gray-600">{kategoriLokasi}</span>
+            <span className="text-gray-600">
+              {destinasiData?.kategoriLokasi}
+            </span>
           </div>
         </div>
 
@@ -122,8 +109,11 @@ const DestinasiDetailPage = ({
           {/* Hero Section with Image */}
           <div className="relative w-full h-96 hover:scale-105 transition mb-7">
             <Image
-              src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
-              alt={namaDestinasi}
+              src={
+                destinasiData?.image?.gambar ||
+                "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+              }
+              alt={destinasiData?.namaDestinasi || ""}
               fill
               className="object-cover"
               priority
@@ -153,14 +143,14 @@ const DestinasiDetailPage = ({
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
                   Tentang Destinasi
                 </h2>
-                <p className="text-gray-600 mb-6">{deskripsi}</p>
+                <p className="text-gray-600 mb-6">{destinasiData?.deskripsi}</p>
 
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
                   Fasilitas
                 </h2>
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   {/* Fasilitas list */}
-                  {fasilitas.map((fasilitas, index) => (
+                  {destinasiData?.fasilitas.map((fasilitas, index) => (
                     <div key={index} className="flex items-center">
                       <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
                         <BadgeCheck className="w-4 h-4 text-blue-600" />
@@ -183,7 +173,9 @@ const DestinasiDetailPage = ({
                     <User className="w-5 h-5 text-blue-600 mt-1 mr-3" />
                     <div>
                       <h4 className="font-medium text-gray-900">Pengelola</h4>
-                      <p className="text-gray-600">{namaOwner}</p>
+                      <p className="text-gray-600">
+                        {destinasiData?.owner.user.name}
+                      </p>
                     </div>
                   </div>
 
@@ -191,7 +183,7 @@ const DestinasiDetailPage = ({
                     <MapPin className="w-5 h-5 text-blue-600 mt-1 mr-3" />
                     <div>
                       <h4 className="font-medium text-gray-900">Lokasi</h4>
-                      <p className="text-gray-600">{lokasi}</p>
+                      <p className="text-gray-600">{destinasiData?.alamat}</p>
                     </div>
                   </div>
 
@@ -202,7 +194,7 @@ const DestinasiDetailPage = ({
                         Jam Operasional
                       </h4>
                       <p className="text-gray-600">
-                        Setiap Hari: {jamOperasional} WIB
+                        Setiap Hari: {destinasiData?.jamOprasional} WIB
                       </p>
                     </div>
                   </div>
@@ -216,12 +208,12 @@ const DestinasiDetailPage = ({
                           style: "currency",
                           currency: "IDR",
                           minimumFractionDigits: 2,
-                        }).format(harga)}
+                        }).format(destinasiData?.harga || 0)}
                       </p>
                     </div>
                   </div>
                 </div>
-                {!role && (
+                {!user?.role && (
                   <Link href="/login">
                     <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
                       Login Akun Untuk Reservasi
@@ -229,25 +221,30 @@ const DestinasiDetailPage = ({
                   </Link>
                 )}
 
-                {role === Role.MEMBER && (
-                  <Link href={`/reservasi/buat-reservasi/${id}`}>
+                {user?.role === Role.MEMBER && (
+                  <Link href={`/reservasi/buat-reservasi/${destinasiData?.id}`}>
                     <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
                       Buat Reservasi
                     </Button>
                   </Link>
                 )}
 
-                {role === Role.OWNER && currentUserId === userId && (
-                  <Link href={`/destinasi/edit-destinasi?id=${id}`}>
-                    <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
-                      <SquarePen />
-                      Edit Destinasi
-                    </Button>
-                  </Link>
-                )}
+                {user?.role === Role.OWNER &&
+                  user.id === destinasiData?.owner.user.id && (
+                    <Link
+                      href={`/destinasi/edit-destinasi?id=${destinasiData?.id}`}
+                    >
+                      <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
+                        <SquarePen />
+                        Edit Destinasi
+                      </Button>
+                    </Link>
+                  )}
 
-                {role === Role.ADMIN && (
-                  <Link href={`/admin/kelola-destinasi/edit/${id}`}>
+                {user?.role === Role.ADMIN && (
+                  <Link
+                    href={`/admin/kelola-destinasi/edit/${destinasiData?.id}`}
+                  >
                     <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
                       Edit Destinasi
                     </Button>

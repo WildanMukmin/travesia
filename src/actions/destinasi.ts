@@ -6,7 +6,7 @@ import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import * as z from "zod";
-import { uploadImage } from "./image";
+import { updateImageById, uploadImage } from "./image";
 
 export type DestinasiWithOwner = Prisma.PromiseReturnType<typeof getDestinasi>;
 export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
@@ -215,6 +215,7 @@ export const editDestinasi = async (
     kategoriLokasi,
     jamOprasional,
     fasilitas,
+    image,
   } = validatedFields.data;
 
   const validHarga = parseInt(harga.replace(/[^0-9]/g, ""), 10);
@@ -232,7 +233,7 @@ export const editDestinasi = async (
   }
 
   try {
-    await prisma.destinasi.update({
+    const destinasi = await prisma.destinasi.update({
       where: {
         id: destinasiId,
       },
@@ -246,8 +247,23 @@ export const editDestinasi = async (
         jamOprasional,
         fasilitas,
       },
+      include: {
+        image: true,
+      },
     });
 
+    const formData = new FormData();
+    formData.append("gambar", image || "");
+    formData.append("destinasiId", destinasi.id);
+    formData.append("namaFoto", image?.name || "");
+    if (!destinasi?.image?.id) {
+      return { error: "Gambar Tidak di temukan!" };
+    }
+    const res = await updateImageById(formData, destinasi.image.id);
+
+    if (res?.error) {
+      return { error: res.error };
+    }
     return { success: "Destinasi berhasil didaftarkan" };
   } catch (e) {
     return { error: "Terjadi kesalahan, silahkan coba lagi" };
@@ -265,7 +281,12 @@ export const getDestinasi = async () => {
       },
       take: 10,
       include: {
-        owner: true,
+        owner: {
+          include: {
+            user: true,
+          },
+        },
+        image: true,
       },
     });
     return destinasi;
@@ -339,6 +360,7 @@ export const getDestinasiById = async (id: string) => {
             user: true,
           },
         },
+        image: true,
       },
     });
     return destinasi;

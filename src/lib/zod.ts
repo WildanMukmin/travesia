@@ -60,6 +60,12 @@ export const editDestinasiSchema = z.object({
   fasilitas: z
     .array(z.string())
     .min(1, "Setidaknya berikan 1 fasilitas utama anda"),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size > 0 || file.type.startsWith("image/"), {
+      message: "Logo harus sebuah file",
+    })
+    .optional(),
 });
 
 export const buatReservasiSchema = z.object({
