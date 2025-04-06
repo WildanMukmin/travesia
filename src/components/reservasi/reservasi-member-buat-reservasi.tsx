@@ -290,7 +290,7 @@ const ReservasiMemberBuatReservasi = ({
                               variant={"outline"}
                               className={cn(
                                 "w-full pl-3 text-left font-normal border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500",
-                                !field.value && "text-muted-foreground",
+                                !field.value && "text-muted-foreground"
                               )}
                             >
                               {field.value ? (
@@ -342,7 +342,7 @@ const ReservasiMemberBuatReservasi = ({
               {errorMessage && <FormError message={errorMessage} />}
 
               <div className="flex flex-col sm:flex-row justify-between pt-6 gap-4">
-                <Link href="/dashboard" className="w-full sm:w-auto">
+                <Link href="/reservasi" className="w-full sm:w-auto">
                   <Button
                     type="button"
                     disabled={isPending}

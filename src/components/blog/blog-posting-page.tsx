@@ -330,8 +330,8 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
                                     onClick={() =>
                                       field.onChange(
                                         field.value?.filter(
-                                          (_, i) => i !== index,
-                                        ),
+                                          (_, i) => i !== index
+                                        )
                                       )
                                     }
                                     className="h-7 w-7 p-0 text-gray-500 hover:text-red-600 hover:bg-red-50"
@@ -359,7 +359,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
               {successMessage && <FormSuccess message={successMessage} />}
 
               <div className="flex flex-col sm:flex-row justify-between pt-6 gap-4">
-                <Link href="/dashboard" className="w-full sm:w-auto">
+                <Link href="/blog" className="w-full sm:w-auto">
                   <Button
                     type="button"
                     disabled={isPending}

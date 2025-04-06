@@ -36,8 +36,10 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
   const [isPending, setIsPending] = useState(false);
   const [contentItem, setContentItem] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [srcImage, setSrcImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
+  const [srcImage, setSrcImage] = useState<string>(
+    forumData?.image?.gambar || ""
+  );
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
 
@@ -46,7 +48,6 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
     defaultValues: {
       userId: userId,
       content: forumData?.content,
-      image: undefined,
     },
   });
 
@@ -62,6 +63,8 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
     setErrorMessage("");
     setSuccessMessage("");
     setIsPending(true);
+
+    data.image = imageFile;
 
     try {
       startTransition(() => {
@@ -149,8 +152,8 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
   };
 
   const handleRemoveImage = () => {
-    setImageFile(null);
-    setSrcImage(null);
+    setImageFile(undefined);
+    setSrcImage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -272,7 +275,7 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
               {successMessage && <FormSuccess message={successMessage} />}
 
               <div className="flex flex-col sm:flex-row justify-between pt-6 gap-4">
-                <Link href="/dashboard" className="w-full sm:w-auto">
+                <Link href="/forum" className="w-full sm:w-auto">
                   <Button
                     type="button"
                     disabled={isPending}

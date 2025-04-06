@@ -35,8 +35,8 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
   const [isPending, setIsPending] = useState(false);
   const [contentItem, setContentItem] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [srcImage, setSrcImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
+  const [srcImage, setSrcImage] = useState<string>("");
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
 
@@ -60,12 +60,11 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
   const handleSubmitData = async (data: z.infer<typeof postingForumSchema>) => {
     setErrorMessage("");
     setSuccessMessage("");
+    data.image = imageFile;
     setIsPending(true);
 
     try {
       startTransition(() => {
-        // handleSaveImage();
-        // console.log(data);
         postingForum(data).then((res) => {
           if (!res) {
             setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
@@ -98,10 +97,12 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const maxSize = 1000 * 1024; // 1 MB
-      const validTypes = ["image/png", "image/webp"];
+      const validTypes = ["image/png", "image/webp", "image/jpeg"];
 
       if (!validTypes.includes(file.type)) {
-        setErrorMessageImage("Hanya file PNG dan WebP yang diperbolehkan.");
+        setErrorMessageImage(
+          "Hanya file PNG, JPEG, dan WebP yang diperbolehkan."
+        );
         return;
       }
 
@@ -148,8 +149,8 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
   };
 
   const handleRemoveImage = () => {
-    setImageFile(null);
-    setSrcImage(null);
+    setImageFile(undefined);
+    setSrcImage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -271,7 +272,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
               {successMessage && <FormSuccess message={successMessage} />}
 
               <div className="flex flex-col sm:flex-row justify-between pt-6 gap-4">
-                <Link href="/dashboard" className="w-full sm:w-auto">
+                <Link href="/forum" className="w-full sm:w-auto">
                   <Button
                     type="button"
                     disabled={isPending}

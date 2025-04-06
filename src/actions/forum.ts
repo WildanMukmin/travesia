@@ -5,6 +5,7 @@ import { postingCommentSchema, postingForumSchema } from "@/lib/zod";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import * as z from "zod";
+import { updateImageById, uploadImage } from "./image";
 
 export type ForumWithCreator = Prisma.PromiseReturnType<typeof getForum>;
 export type OneForumWithCreator = Prisma.PromiseReturnType<typeof getForumById>;
@@ -78,7 +79,7 @@ export const getAllForum = async () => {
 };
 
 export const postingForum = async (
-  data: z.infer<typeof postingForumSchema>,
+  data: z.infer<typeof postingForumSchema>
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -104,13 +105,25 @@ export const postingForum = async (
     .slice(0, 500);
 
   try {
-    await prisma.forum.create({
+    const forum = await prisma.forum.create({
       data: {
         userId,
         slug,
         content,
       },
     });
+
+    if (image) {
+      const formData = new FormData();
+      formData.append("gambar", image);
+      formData.append("forumId", forum?.id || "");
+      formData.append("namaFoto", image.name);
+      const res = await uploadImage(formData);
+
+      if (res.error) {
+        return { error: res.error };
+      }
+    }
 
     revalidatePath("/forum");
     return { success: "Berhasil Posting ke Forum!" };
@@ -231,7 +244,7 @@ export const dislikeForum = async (forumId: string, userId: string) => {
 };
 
 export const commentForum = async (
-  data: z.infer<typeof postingCommentSchema>,
+  data: z.infer<typeof postingCommentSchema>
 ) => {
   const validatedFields = postingCommentSchema.safeParse(data);
 
@@ -279,7 +292,7 @@ export const deleteForumById = async (id: string) => {
 
 export const editForumById = async (
   data: z.infer<typeof postingForumSchema>,
-  id: string,
+  id: string
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -309,7 +322,7 @@ export const editForumById = async (
     .slice(0, 500);
 
   try {
-    await prisma.forum.update({
+    const forum = await prisma.forum.update({
       where: {
         id,
       },
@@ -318,7 +331,22 @@ export const editForumById = async (
         slug,
         content,
       },
+      include: {
+        image: true,
+      },
     });
+
+    if (image) {
+      const formData = new FormData();
+      formData.append("gambar", image);
+      formData.append("forumId", forum?.id || "");
+      formData.append("namaFoto", image.name);
+      const res = await updateImageById(formData, forum?.image?.id || "");
+
+      if (res.error) {
+        return { error: res.error };
+      }
+    }
 
     revalidatePath("/forum");
     return { success: "Berhasil Mengedit Forum!" };
