@@ -101,7 +101,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
 
       if (!validTypes.includes(file.type)) {
         setErrorMessageImage(
-          "Hanya file PNG, JPEG, dan WebP yang diperbolehkan."
+          "Hanya file PNG, JPEG, dan WebP yang diperbolehkan.",
         );
         return;
       }

@@ -38,7 +38,7 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [srcImage, setSrcImage] = useState<string>(
-    forumData?.image?.gambar || ""
+    forumData?.image?.gambar || "",
   );
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");

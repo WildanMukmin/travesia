@@ -55,7 +55,7 @@ const DashboardOwnerPage = ({
   const [notifikasiData, setNotifikasiData] = useState(notifikasi || []);
   const [unreadCount, setUnreadCount] = useState(
     notifikasiData?.filter((notif) => notif.status === "belum-dibaca").length ||
-      0
+      0,
   );
 
   const handleReadNotifikasi = async (id: string) => {
@@ -84,7 +84,7 @@ const DashboardOwnerPage = ({
 
       if (result) {
         const updatedNotifikasi = notifikasiData.filter(
-          (notif) => notif.id !== id
+          (notif) => notif.id !== id,
         );
         setNotifikasiData(updatedNotifikasi);
         setUnreadCount((prevCount) => Math.max(0, prevCount - 1));
@@ -244,7 +244,7 @@ const DashboardOwnerPage = ({
                             </div>
                             <span className="text-gray-700">{fasilitas}</span>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   </div>
@@ -304,8 +304,8 @@ const DashboardOwnerPage = ({
                               minimumFractionDigits: 2,
                             }).format(
                               Number(
-                                ownerDestinasiData?.owner?.destinasi?.harga
-                              )
+                                ownerDestinasiData?.owner?.destinasi?.harga,
+                              ),
                             )}
                           </p>
                         </div>

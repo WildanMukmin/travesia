@@ -514,7 +514,7 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
                               type="button"
                               onClick={() =>
                                 field.onChange(
-                                  field.value?.filter((s) => s !== facility)
+                                  field.value?.filter((s) => s !== facility),
                                 )
                               }
                               className="h-5 w-5 p-0 ml-1 text-blue-700 hover:text-red-600 hover:bg-transparent"

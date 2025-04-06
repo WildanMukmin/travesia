@@ -44,7 +44,7 @@ const BlogEditPage = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [srcImage, setSrcImage] = useState<string>(
-    blogData?.image?.gambar || ""
+    blogData?.image?.gambar || "",
   );
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
@@ -337,8 +337,8 @@ const BlogEditPage = ({
                                     onClick={() =>
                                       field.onChange(
                                         field.value?.filter(
-                                          (_, i) => i !== index
-                                        )
+                                          (_, i) => i !== index,
+                                        ),
                                       )
                                     }
                                     className="h-7 w-7 p-0 text-gray-500 hover:text-red-600 hover:bg-red-50"
