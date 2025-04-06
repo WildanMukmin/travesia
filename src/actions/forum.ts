@@ -18,11 +18,19 @@ export const getForum = async () => {
         createdAt: "desc",
       },
       include: {
-        user: true,
+        user: {
+          include: {
+            image: true,
+          },
+        },
         image: true,
         comment: {
           include: {
-            user: true,
+            user: {
+              include: {
+                image: true,
+              },
+            },
           },
         },
         like: true,
@@ -43,11 +51,19 @@ export const getForumById = async (id: string) => {
         id,
       },
       include: {
-        user: true,
+        user: {
+          include: {
+            image: true,
+          },
+        },
         image: true,
         comment: {
           include: {
-            user: true,
+            user: {
+              include: {
+                image: true,
+              },
+            },
           },
         },
         like: true,
@@ -266,7 +282,11 @@ export const commentForum = async (
         pesan,
       },
       include: {
-        user: true,
+        user: {
+          include: {
+            image: true,
+          },
+        },
       },
     });
     return { success: "Komentar Berhasil Dibuat!", commentData };
