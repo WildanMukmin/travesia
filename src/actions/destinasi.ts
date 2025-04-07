@@ -14,6 +14,10 @@ export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
   typeof getDestinasiById
 >;
 
+export type GetDestinasiWithOwnerByKategori = Prisma.PromiseReturnType<
+  typeof getDestinasiByKategori
+>;
+
 export type AllDestinasi = Prisma.PromiseReturnType<typeof getAllDestinasi>;
 
 export const daftarDestinasi = async (
@@ -389,6 +393,7 @@ export const getDestinasiByKategori = async (kategori: string) => {
             user: true,
           },
         },
+        image: true,
       },
     });
     return destinasi;
