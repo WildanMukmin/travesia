@@ -369,12 +369,22 @@ export const editForumById = async (
       },
     });
 
-    if (image) {
+    if (image && forum?.image?.id) {
       const formData = new FormData();
       formData.append("gambar", image);
       formData.append("forumId", forum?.id || "");
       formData.append("namaFoto", image.name);
       const res = await updateImageById(formData, forum?.image?.id || "");
+
+      if (res.error) {
+        return { error: res.error };
+      }
+    } else if (image && !forum?.image?.id) {
+      const formData = new FormData();
+      formData.append("gambar", image);
+      formData.append("forumId", forum?.id || "");
+      formData.append("namaFoto", image.name);
+      const res = await uploadImage(formData);
 
       if (res.error) {
         return { error: res.error };

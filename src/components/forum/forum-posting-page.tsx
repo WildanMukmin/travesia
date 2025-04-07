@@ -67,17 +67,17 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
       startTransition(() => {
         postingForum(data).then((res) => {
           if (!res) {
-            setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
+            setErrorMessage("Terjadi kesalahan saat mempublikasikan forum.");
           }
           if (res?.error) {
             setErrorMessage(res.error);
           } else if (res?.success) {
-            setSuccessMessage("Blog berhasil dipublikasikan!");
+            setSuccessMessage("Forum berhasil dipublikasikan!");
           }
         });
       });
     } catch (error) {
-      setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
+      setErrorMessage("Terjadi kesalahan saat mempublikasikan Forum.");
       console.error(error);
     } finally {
       setIsPending(false);
@@ -200,7 +200,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
                 />
 
                 <div className="mt-4">
-                  <FormLabel className="font-medium">Image Blog</FormLabel>
+                  <FormLabel className="font-medium">Image Forum</FormLabel>
                   {/* Image Upload Card */}
                   {errorMessageImage && (
                     <FormError message={errorMessageImage} />

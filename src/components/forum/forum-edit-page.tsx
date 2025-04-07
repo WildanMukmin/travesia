@@ -72,17 +72,17 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
         // console.log(data);
         editForumById(data, forumData?.id || "").then((res) => {
           if (!res) {
-            setErrorMessage("Terjadi kesalahan saat mengupdate blog.");
+            setErrorMessage("Terjadi kesalahan saat mengupdate Forum.");
           }
           if (res?.error) {
             setErrorMessage(res.error);
           } else if (res?.success) {
-            setSuccessMessage("Blog berhasil dipublikasikan!");
+            setSuccessMessage("Forum berhasil dipublikasikan!");
           }
         });
       });
     } catch (error) {
-      setErrorMessage("Terjadi kesalahan saat mengupdate blog.");
+      setErrorMessage("Terjadi kesalahan saat mengupdate Forum.");
       console.error(error);
     } finally {
       setIsPending(false);
@@ -205,7 +205,7 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
                 />
 
                 <div className="mt-4">
-                  <FormLabel className="font-medium">Image Blog</FormLabel>
+                  <FormLabel className="font-medium">Image Forum</FormLabel>
                   {/* Image Upload Card */}
                   {errorMessageImage && (
                     <FormError message={errorMessageImage} />
@@ -277,16 +277,29 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
               {successMessage && <FormSuccess message={successMessage} />}
 
               <div className="flex flex-col sm:flex-row justify-between pt-6 gap-4">
-                <Link href="/forum" className="w-full sm:w-auto">
-                  <Button
-                    type="button"
-                    disabled={isPending}
-                    variant="outline"
-                    className="w-full flex items-center justify-center gap-2 border-gray-300"
-                  >
-                    <ArrowLeft className="h-4 w-4" /> Kembali
-                  </Button>
-                </Link>
+                {admin ? (
+                  <Link href="/admin/kelola-forum" className="w-full sm:w-auto">
+                    <Button
+                      type="button"
+                      disabled={isPending}
+                      variant="outline"
+                      className="w-full flex items-center justify-center gap-2 border-gray-300"
+                    >
+                      <ArrowLeft className="h-4 w-4" /> Kembali
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href="/forum" className="w-full sm:w-auto">
+                    <Button
+                      type="button"
+                      disabled={isPending}
+                      variant="outline"
+                      className="w-full flex items-center justify-center gap-2 border-gray-300"
+                    >
+                      <ArrowLeft className="h-4 w-4" /> Kembali
+                    </Button>
+                  </Link>
+                )}
                 <Button
                   type="submit"
                   disabled={isPending}

@@ -27,7 +27,12 @@ export default async function Page({ params }: PageProps) {
   return (
     <RoleGate accessRole={Role.ADMIN}>
       <div className="max-w-screen-xl mx-auto px-4">
-        <ForumPage forumData={forum} user={user} userName={user.name || ""} />
+        <ForumPage
+          forumData={forum}
+          user={user}
+          userName={user.name || ""}
+          admin={true}
+        />
       </div>
     </RoleGate>
   );
