@@ -74,7 +74,7 @@ export const deleteBlog = async (id: string) => {
 
 export const updateBlog = async (
   id: string,
-  data: z.infer<typeof postingBlogSchema>,
+  data: z.infer<typeof postingBlogSchema>
 ) => {
   const validatedFields = postingBlogSchema.safeParse(data);
 
@@ -90,10 +90,6 @@ export const updateBlog = async (
 
   if (!userId) {
     return { error: "Terjadi Error Silahkan Login Kembali!" };
-  }
-
-  if (!image) {
-    return { error: "Mohon isi gambar dengan benar!" };
   }
 
   const slug = title
@@ -119,16 +115,17 @@ export const updateBlog = async (
     });
 
     const formData = new FormData();
-    formData.append("gambar", image);
+    formData.append("gambar", image || "");
     formData.append("blogId", id);
-    formData.append("namaFoto", image.name);
-    console.log(blog);
+    formData.append("namaFoto", image?.name || "");
     if (!blog.image?.id) {
       return { error: "Terjadi Error Saat Mengubah Blog1" };
     }
-    const res = await updateImageById(formData, blog.image?.id);
-    if (res?.error) {
-      return { error: res.error };
+    if (image) {
+      const res = await updateImageById(formData, blog.image?.id);
+      if (res?.error) {
+        return { error: res.error };
+      }
     }
     return { success: "Blog Berhasil DIubah!" };
   } catch (e) {

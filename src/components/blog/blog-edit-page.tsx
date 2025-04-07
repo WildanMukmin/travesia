@@ -368,16 +368,29 @@ const BlogEditPage = ({
               {successMessage && <FormSuccess message={successMessage} />}
 
               <div className="flex flex-col sm:flex-row justify-between pt-6 gap-4">
-                <Link href="/blog" className="w-full sm:w-auto">
-                  <Button
-                    type="button"
-                    disabled={isPending}
-                    variant="outline"
-                    className="w-full flex items-center justify-center gap-2 border-gray-300"
-                  >
-                    <ArrowLeft className="h-4 w-4" /> Kembali
-                  </Button>
-                </Link>
+                {admin ? (
+                  <Link href="/admin/kelola-blog" className="w-full sm:w-auto">
+                    <Button
+                      type="button"
+                      disabled={isPending}
+                      variant="outline"
+                      className="w-full flex items-center justify-center gap-2 border-gray-300"
+                    >
+                      <ArrowLeft className="h-4 w-4" /> Kembali
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href="/blog" className="w-full sm:w-auto">
+                    <Button
+                      type="button"
+                      disabled={isPending}
+                      variant="outline"
+                      className="w-full flex items-center justify-center gap-2 border-gray-300"
+                    >
+                      <ArrowLeft className="h-4 w-4" /> Kembali
+                    </Button>
+                  </Link>
+                )}
                 <Button
                   type="submit"
                   disabled={isPending}

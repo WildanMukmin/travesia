@@ -253,18 +253,20 @@ export const editDestinasi = async (
       },
     });
 
-    const formData = new FormData();
-    formData.append("gambar", image || "");
-    formData.append("destinasiId", destinasi.id);
-    formData.append("namaFoto", image?.name || "");
     if (!destinasi?.image?.id) {
       return { error: "Gambar Tidak di temukan!" };
     }
-    const res = await updateImageById(formData, destinasi.image.id);
-
-    if (res?.error) {
-      return { error: res.error };
+    if (image) {
+      const formData = new FormData();
+      formData.append("gambar", image);
+      formData.append("destinasiId", destinasi.id);
+      formData.append("namaFoto", image?.name);
+      const res = await updateImageById(formData, destinasi.image.id);
+      if (res?.error) {
+        return { error: res.error };
+      }
     }
+
     return { success: "Destinasi berhasil didaftarkan" };
   } catch (e) {
     return { error: "Terjadi kesalahan, silahkan coba lagi" };
