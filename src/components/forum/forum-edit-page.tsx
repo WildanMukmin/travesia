@@ -38,7 +38,7 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [srcImage, setSrcImage] = useState<string>(
-    forumData?.image?.gambar || ""
+    forumData?.image?.gambar || "",
   );
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
@@ -106,7 +106,7 @@ const ForumEditPage = ({ userId, forumData, admin }: ForumEditPageProps) => {
 
       if (!validTypes.includes(file.type)) {
         setErrorMessageImage(
-          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan.",
         );
         return;
       }

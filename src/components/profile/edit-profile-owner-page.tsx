@@ -41,7 +41,7 @@ const EditProfileOwnerPage = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [srcImage, setSrcImage] = useState<string>(
-    userData?.image?.gambar || ""
+    userData?.image?.gambar || "",
   );
   const genderOptions = ["Laki-laki", "Perempuan"];
 
@@ -87,7 +87,7 @@ const EditProfileOwnerPage = ({
 
       if (!validTypes.includes(file.type)) {
         setErrorMessageImage(
-          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan.",
         );
         return;
       }

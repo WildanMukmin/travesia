@@ -79,7 +79,7 @@ export const deleteBlog = async (id: string) => {
 
 export const updateBlog = async (
   id: string,
-  data: z.infer<typeof postingBlogSchema>
+  data: z.infer<typeof postingBlogSchema>,
 ) => {
   const validatedFields = postingBlogSchema.safeParse(data);
 
