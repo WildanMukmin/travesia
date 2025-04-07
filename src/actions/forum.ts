@@ -3,9 +3,9 @@
 import { prisma } from "@/lib/prisma";
 import { postingCommentSchema, postingForumSchema } from "@/lib/zod";
 import { Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 import * as z from "zod";
 import { updateImageById, uploadImage } from "./image";
+import { del } from "@vercel/blob";
 
 export type ForumWithCreator = Prisma.PromiseReturnType<typeof getForum>;
 export type OneForumWithCreator = Prisma.PromiseReturnType<typeof getForumById>;
@@ -95,7 +95,7 @@ export const getAllForum = async () => {
 };
 
 export const postingForum = async (
-  data: z.infer<typeof postingForumSchema>,
+  data: z.infer<typeof postingForumSchema>
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -141,7 +141,6 @@ export const postingForum = async (
       }
     }
 
-    revalidatePath("/forum");
     return { success: "Berhasil Posting ke Forum!" };
   } catch (e) {
     return { error: "Terjadi Error Saat mempublikasikan ke Forum" };
@@ -150,12 +149,19 @@ export const postingForum = async (
 
 export const deleteForum = async (id: string) => {
   try {
-    await prisma.forum.delete({
+    const deleteForum = await prisma.forum.delete({
       where: {
         id,
       },
+      include: {
+        image: true,
+      },
     });
-    revalidatePath("/forum");
+
+    if (deleteForum?.image?.gambar) {
+      await del(deleteForum.image.gambar);
+    }
+
     return { success: "Forum Berhasil Dihapus!" };
   } catch (error) {
     console.error("Error fetching forum:", error);
@@ -260,7 +266,7 @@ export const dislikeForum = async (forumId: string, userId: string) => {
 };
 
 export const commentForum = async (
-  data: z.infer<typeof postingCommentSchema>,
+  data: z.infer<typeof postingCommentSchema>
 ) => {
   const validatedFields = postingCommentSchema.safeParse(data);
 
@@ -298,11 +304,18 @@ export const commentForum = async (
 
 export const deleteForumById = async (id: string) => {
   try {
-    await prisma.forum.delete({
+    const deleteForum = await prisma.forum.delete({
       where: {
         id,
       },
+      include: {
+        image: true,
+      },
     });
+
+    if (deleteForum?.image?.gambar) {
+      await del(deleteForum.image.gambar);
+    }
     return { success: "Forum Berhasil Dihapus!" };
   } catch (error) {
     console.error("Error fetching forum:", error);
@@ -312,7 +325,7 @@ export const deleteForumById = async (id: string) => {
 
 export const editForumById = async (
   data: z.infer<typeof postingForumSchema>,
-  id: string,
+  id: string
 ) => {
   const validatedFields = postingForumSchema.safeParse(data);
 
@@ -368,7 +381,6 @@ export const editForumById = async (
       }
     }
 
-    revalidatePath("/forum");
     return { success: "Berhasil Mengedit Forum!" };
   } catch (e) {
     return { error: "Terjadi Error Saat mengedit ke Forum" };

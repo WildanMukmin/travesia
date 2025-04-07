@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { del } from "@vercel/blob";
 
 export type AllUsers = Prisma.PromiseReturnType<typeof getAllUser>;
 
@@ -39,10 +40,17 @@ export const deleteUserByEmail = async (email: string) => {
   try {
     const user = await prisma.user.delete({
       where: { email },
+      include: {
+        image: true,
+      },
     });
 
     if (!user) {
       return { error: "User dengan email tersebut tidak ditemukan" };
+    }
+
+    if (user?.image?.gambar) {
+      await del(user.image.gambar);
     }
 
     return { success: "User Berhasil Dihapus!" };
@@ -61,12 +69,18 @@ export const deleteUserByid = async (id: string) => {
   try {
     const user = await prisma.user.delete({
       where: { id },
+      include: {
+        image: true,
+      },
     });
 
     if (!user) {
       return { error: "User dengan ID tersebut tidak ditemukan" };
     }
 
+    if (user?.image?.gambar) {
+      await del(user.image.gambar);
+    }
     return { success: "User Berhasil Dihapus!" };
   } catch (error) {
     console.error("Error saat menghapus user:", error);

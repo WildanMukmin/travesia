@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import * as z from "zod";
 import { updateImageById, uploadImage } from "./image";
+import { del } from "@vercel/blob";
 
 export type DestinasiWithOwner = Prisma.PromiseReturnType<typeof getDestinasi>;
 export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
@@ -399,11 +400,17 @@ export const getDestinasiByKategori = async (kategori: string) => {
 
 export const deleteDestinasiById = async (id: string) => {
   try {
-    await prisma.destinasi.delete({
+    const deleteDestinasi = await prisma.destinasi.delete({
       where: {
         id,
       },
+      include: {
+        image: true,
+      },
     });
+    if (deleteDestinasi?.image?.gambar) {
+      await del(deleteDestinasi.image.gambar);
+    }
     return { success: "Destinasi berhasil dihapus" };
   } catch (error) {
     console.error("Error deleting destinasi:", error);

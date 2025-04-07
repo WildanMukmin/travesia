@@ -3,9 +3,9 @@
 import { prisma } from "@/lib/prisma";
 import { postingBlogSchema } from "@/lib/zod";
 import { Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 import * as z from "zod";
 import { updateImageById, uploadImage } from "./image";
+import { del } from "@vercel/blob";
 
 export type BlogWithCreator = Prisma.PromiseReturnType<typeof getBlog>;
 export type OneBlogWithCreator = Prisma.PromiseReturnType<typeof getOneBlog>;
@@ -59,12 +59,17 @@ export const getOneBlog = async (id: string) => {
 
 export const deleteBlog = async (id: string) => {
   try {
-    await prisma.blog.delete({
+    const deleteBlog = await prisma.blog.delete({
       where: {
         id,
       },
+      include: {
+        image: true,
+      },
     });
-    revalidatePath("/blog");
+    if (deleteBlog?.image?.gambar) {
+      await del(deleteBlog.image.gambar);
+    }
     return { success: "Blog Berhasil Dihapus!" };
   } catch (error) {
     console.error("Error fetching blog:", error);
@@ -181,7 +186,6 @@ export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
       }
     });
 
-    revalidatePath("/blog");
     return { success: "Blog Berhasil Dibuat!" };
   } catch (e) {
     return { error: "Terjadi Error Saat mempublikasikan Blog" };
@@ -190,11 +194,19 @@ export const postingBlog = async (data: z.infer<typeof postingBlogSchema>) => {
 
 export const deleteBlogById = async (id: string) => {
   try {
-    await prisma.blog.delete({
+    const deleteBlog = await prisma.blog.delete({
       where: {
         id,
       },
+      include: {
+        image: true,
+      },
     });
+
+    if (deleteBlog?.image?.gambar) {
+      await del(deleteBlog.image.gambar);
+    }
+
     return { success: "Blog Berhasil Dihapus!" };
   } catch (error) {
     console.error("Error fetching blog:", error);
