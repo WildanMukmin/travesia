@@ -41,7 +41,7 @@ const EditProfileOwnerPage = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [srcImage, setSrcImage] = useState<string>(
-    userData?.image?.gambar || "",
+    userData?.image?.gambar || ""
   );
   const genderOptions = ["Laki-laki", "Perempuan"];
 
@@ -83,10 +83,12 @@ const EditProfileOwnerPage = ({
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const maxSize = 1000 * 1024; // 1 MB
-      const validTypes = ["image/png", "image/webp"];
+      const validTypes = ["image/png", "image/webp", "image/jpeg", "image/jpg"];
 
       if (!validTypes.includes(file.type)) {
-        setErrorMessageImage("Hanya file PNG dan WebP yang diperbolehkan.");
+        setErrorMessageImage(
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
+        );
         return;
       }
 
@@ -189,7 +191,7 @@ const EditProfileOwnerPage = ({
                 >
                   <input
                     type="file"
-                    accept=".png,.webp"
+                    accept=".png,.webp,.jpeg,.jpg"
                     className="hidden"
                     ref={fileInputRef}
                     onChange={handleFileChange}

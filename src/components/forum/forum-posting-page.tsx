@@ -97,11 +97,11 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const maxSize = 1000 * 1024; // 1 MB
-      const validTypes = ["image/png", "image/webp", "image/jpeg"];
+      const validTypes = ["image/png", "image/webp", "image/jpeg", "image/jpg"];
 
       if (!validTypes.includes(file.type)) {
         setErrorMessageImage(
-          "Hanya file PNG, JPEG, dan WebP yang diperbolehkan.",
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
         );
         return;
       }
@@ -221,7 +221,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
                       >
                         <input
                           type="file"
-                          accept=".png,.webp"
+                          accept=".png,.webp,.jpeg,.jpg"
                           className="hidden"
                           ref={fileInputRef}
                           onChange={handleFileChange}

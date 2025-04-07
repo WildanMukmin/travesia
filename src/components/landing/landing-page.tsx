@@ -83,7 +83,10 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
               <CardBlog
                 key={item.id}
                 blogId={item?.id}
-                src="https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+                src={
+                  item?.image?.gambar ||
+                  "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+                }
                 judul={`${item.title}`}
                 slug={`${item.slug}`}
                 deskripsi={item.content[0].slice(0, 100)}
@@ -127,7 +130,10 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
                         key={item.id}
                       >
                         <DestinasiCard
-                          src="https://images.unsplash.com/photo-1739609579483-00b49437cc45?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8"
+                          src={
+                            item?.image?.gambar ||
+                            "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+                          }
                           judul={`${item.namaDestinasi}`}
                           id={item.id}
                           deskripsi={`${item.deskripsi.slice(0, 100)}......`}

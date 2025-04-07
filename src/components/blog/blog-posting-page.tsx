@@ -111,10 +111,12 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const maxSize = 1000 * 1024; // 1 MB
-      const validTypes = ["image/png", "image/webp"];
+      const validTypes = ["image/png", "image/webp", "image/jpeg", "image/jpg"];
 
       if (!validTypes.includes(file.type)) {
-        setErrorMessageImage("Hanya file PNG dan WebP yang diperbolehkan.");
+        setErrorMessageImage(
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
+        );
         return;
       }
 
@@ -235,7 +237,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
                       >
                         <input
                           type="file"
-                          accept=".png,.webp"
+                          accept=".png,.webp,.jpeg,.jpg"
                           className="hidden"
                           ref={fileInputRef}
                           onChange={handleFileChange}
@@ -330,8 +332,8 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
                                     onClick={() =>
                                       field.onChange(
                                         field.value?.filter(
-                                          (_, i) => i !== index,
-                                        ),
+                                          (_, i) => i !== index
+                                        )
                                       )
                                     }
                                     className="h-7 w-7 p-0 text-gray-500 hover:text-red-600 hover:bg-red-50"

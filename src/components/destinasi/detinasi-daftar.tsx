@@ -142,10 +142,12 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const maxSize = 1000 * 1024; // 1 MB
-      const validTypes = ["image/png", "image/webp"];
+      const validTypes = ["image/png", "image/webp", "image/jpeg", "image/jpg"];
 
       if (!validTypes.includes(file.type)) {
-        setErrorMessageImage("Hanya file PNG dan WebP yang diperbolehkan.");
+        setErrorMessageImage(
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
+        );
         return;
       }
 
@@ -233,7 +235,7 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
               >
                 <input
                   type="file"
-                  accept=".png,.webp"
+                  accept=".png,.webp,.jpeg,.jpg"
                   className="hidden"
                   ref={fileInputRef}
                   onChange={handleFileChange}
@@ -514,7 +516,7 @@ const DestinasiDaftarPage = ({ userId }: DestinasiDaftarPageProps) => {
                               type="button"
                               onClick={() =>
                                 field.onChange(
-                                  field.value?.filter((s) => s !== facility),
+                                  field.value?.filter((s) => s !== facility)
                                 )
                               }
                               className="h-5 w-5 p-0 ml-1 text-blue-700 hover:text-red-600 hover:bg-transparent"
