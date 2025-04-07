@@ -53,8 +53,10 @@ const DestinasiEditAdminPage = ({
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [srcImage, setSrcImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
+  const [srcImage, setSrcImage] = useState<string>(
+    destinasiData?.image?.gambar || ""
+  );
   const [facilitiesInput, setFacilitiesInput] = useState("");
   const kategoriLokasiData = [
     "Aceh",
@@ -115,8 +117,9 @@ const DestinasiEditAdminPage = ({
   const handleSubmitData = (data: z.infer<typeof editDestinasiSchema>) => {
     setErrorMessage("");
     setIsPending(true);
+    data.image = imageFile;
     startTransition(() => {
-      editDestinasi(destinasiId, data).then((res) => {
+      editDestinasi(destinasiId, data, true).then((res) => {
         if (res?.error) {
           setErrorMessage(res?.error);
         }
@@ -203,8 +206,8 @@ const DestinasiEditAdminPage = ({
   };
 
   const handleRemoveImage = () => {
-    setImageFile(null);
-    setSrcImage(null);
+    setImageFile(undefined);
+    setSrcImage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -214,7 +217,6 @@ const DestinasiEditAdminPage = ({
 
   return (
     <main className="container mx-auto py-10 px-4">
-      {/* Data Destinasi Upload Card */}
       <Card className="w-full mx-auto shadow-md mb-8">
         <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100">
           <div className="flex items-center justify-between">
@@ -227,7 +229,96 @@ const DestinasiEditAdminPage = ({
               </p>
             </div>
           </div>
+          {errorMessageImage && <FormError message={errorMessageImage} />}
+          {successMessageImage && <FormSuccess message={successMessageImage} />}
         </CardHeader>
+        <CardContent className="pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col">
+              <p className="text-sm text-gray-600 mb-2">
+                Unggah foto destinasi wisata Anda (format PNG/WebP, max 1MB)
+              </p>
+
+              <div
+                onClick={handleButtonClick}
+                className={`cursor-pointer rounded-lg border-2 border-dashed p-4 flex flex-col items-center justify-center h-64 transition-all
+                  ${srcImage ? "border-blue-300 bg-blue-50" : "border-gray-300 bg-gray-50 hover:bg-gray-100"}`}
+              >
+                <input
+                  type="file"
+                  accept=".png,.webp,.jpeg,.jpg"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+
+                {srcImage ? (
+                  <div className="relative flex flex-col items-center">
+                    <Image
+                      src={srcImage}
+                      width={200}
+                      height={150}
+                      alt="Foto Destinasi"
+                      className="rounded-md shadow-md max-h-44 object-contain"
+                    />
+                    <p className="text-sm text-blue-600 mt-2">
+                      {imageFile?.name}
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-3 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveImage();
+                      }}
+                    >
+                      Hapus Gambar
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center">
+                    <ImagePlus className="h-16 w-16 text-gray-400 mb-2" />
+                    <p className="text-sm text-gray-600 text-center mb-1">
+                      Klik untuk memilih gambar
+                    </p>
+                    <p className="text-xs text-gray-500 text-center">
+                      Format yang didukung: PNG, WebP (max. 1MB)
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <p className="text-sm text-gray-600 mb-2">
+                Petunjuk Unggah Foto:
+              </p>
+              <ul className="space-y-2 text-sm text-gray-700 mb-4">
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">✓</span>
+                  Foto harus jelas dan menampilkan destinasi dengan baik
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">✓</span>
+                  Pilih foto yang menarik untuk memikat pengunjung
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">✓</span>
+                  Ukuran file maksimal 1MB
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">✓</span>
+                  Format yang diterima: PNG dan WebP
+                </li>
+                <li className="flex items-start">
+                  <span className="text-red-500 mr-2">✗</span>
+                  Hindari foto buram atau terlalu gelap
+                </li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
         <CardContent className="pt-6">
           <Form {...form}>
             <form
@@ -458,10 +549,7 @@ const DestinasiEditAdminPage = ({
               {errorMessage && <FormError message={errorMessage} />}
 
               <div className="flex flex-col sm:flex-row justify-between pt-6 gap-4">
-                <Link
-                  href="/admin/kelola-destinasi"
-                  className="w-full sm:w-auto"
-                >
+                <Link href="/dashboard" className="w-full sm:w-auto">
                   <Button
                     type="button"
                     disabled={isPending}
@@ -481,116 +569,6 @@ const DestinasiEditAdminPage = ({
               </div>
             </form>
           </Form>
-        </CardContent>
-      </Card>
-
-      {/* Image Upload Card */}
-      <Card className="w-full mx-auto shadow-md mb-6">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xl font-bold text-blue-800">
-              Foto Destinasi Wisata (Belum Berkerja)
-            </CardTitle>
-          </div>
-          {errorMessageImage && <FormError message={errorMessageImage} />}
-          {successMessageImage && <FormSuccess message={successMessageImage} />}
-        </CardHeader>
-        <CardContent className="pt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex flex-col">
-              <p className="text-sm text-gray-600 mb-2">
-                Unggah foto destinasi wisata Anda (format PNG/WebP, max 100KB)
-              </p>
-
-              <div
-                onClick={handleButtonClick}
-                className={`cursor-pointer rounded-lg border-2 border-dashed p-4 flex flex-col items-center justify-center h-64 transition-all
-                  ${srcImage ? "border-blue-300 bg-blue-50" : "border-gray-300 bg-gray-50 hover:bg-gray-100"}`}
-              >
-                <input
-                  type="file"
-                  accept=".png,.webp,.jpeg,.jpg"
-                  className="hidden"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                />
-
-                {srcImage ? (
-                  <div className="relative flex flex-col items-center">
-                    <Image
-                      src={srcImage}
-                      width={200}
-                      height={150}
-                      alt="Foto Destinasi"
-                      className="rounded-md shadow-md max-h-44 object-contain"
-                    />
-                    <p className="text-sm text-blue-600 mt-2">
-                      {imageFile?.name}
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-3 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemoveImage();
-                      }}
-                    >
-                      Hapus Gambar
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center">
-                    <ImagePlus className="h-16 w-16 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600 text-center mb-1">
-                      Klik untuk memilih gambar
-                    </p>
-                    <p className="text-xs text-gray-500 text-center">
-                      Format yang didukung: PNG, WebP (max. 100KB)
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="flex flex-col">
-              <p className="text-sm text-gray-600 mb-2">
-                Petunjuk Unggah Foto:
-              </p>
-              <ul className="space-y-2 text-sm text-gray-700 mb-4">
-                <li className="flex items-start">
-                  <span className="text-blue-500 mr-2">✓</span>
-                  Foto harus jelas dan menampilkan destinasi dengan baik
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-500 mr-2">✓</span>
-                  Pilih foto yang menarik untuk memikat pengunjung
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-500 mr-2">✓</span>
-                  Ukuran file maksimal 100KB
-                </li>
-                <li className="flex items-start">
-                  <span className="text-blue-500 mr-2">✓</span>
-                  Format yang diterima: PNG dan WebP
-                </li>
-                <li className="flex items-start">
-                  <span className="text-red-500 mr-2">✗</span>
-                  Hindari foto buram atau terlalu gelap
-                </li>
-              </ul>
-
-              <Button
-                onClick={handleSaveImage}
-                disabled={isPending || !imageFile}
-                className={`mt-auto bg-blue-600 hover:bg-blue-700 flex items-center gap-2
-                  ${!imageFile ? "opacity-50 cursor-not-allowed" : ""}`}
-              >
-                <Upload className="h-4 w-4" />
-                {isPending ? "Menyimpan..." : "Simpan Gambar"}
-              </Button>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </main>

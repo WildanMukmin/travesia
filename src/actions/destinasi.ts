@@ -16,7 +16,7 @@ export type GetOneDestinasiWithOwner = Prisma.PromiseReturnType<
 export type AllDestinasi = Prisma.PromiseReturnType<typeof getAllDestinasi>;
 
 export const daftarDestinasi = async (
-  data: z.infer<typeof daftarDestinasiSchema>,
+  data: z.infer<typeof daftarDestinasiSchema>
 ) => {
   const validatedFields = daftarDestinasiSchema.safeParse(data);
   const kategoriLokasiData = [
@@ -159,6 +159,7 @@ export const daftarDestinasi = async (
 export const editDestinasi = async (
   destinasiId: string,
   data: z.infer<typeof editDestinasiSchema>,
+  admin: boolean = false
 ) => {
   const validatedFields = editDestinasiSchema.safeParse(data);
   const kategoriLokasiData = [
@@ -268,8 +269,13 @@ export const editDestinasi = async (
   } catch (e) {
     return { error: "Terjadi kesalahan, silahkan coba lagi" };
   } finally {
-    revalidatePath("/dashboard");
-    redirect("/dashboard");
+    if (admin) {
+      revalidatePath(`/admin/kelola-destinasi/detail/${destinasiId}`);
+      redirect(`/admin/kelola-destinasi/detail/${destinasiId}`);
+    } else {
+      revalidatePath("/dashboard");
+      redirect("/dashboard");
+    }
   }
 };
 
@@ -319,7 +325,7 @@ export const getAllDestinasi = async () => {
 
 export const getPaginatedDestinasi = async (
   page: number = 1,
-  limit: number = 10,
+  limit: number = 10
 ) => {
   try {
     const skip = (page - 1) * limit; // Menghitung jumlah data yang dilewati
