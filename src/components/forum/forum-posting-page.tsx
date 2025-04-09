@@ -33,7 +33,6 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
-  const [contentItem, setContentItem] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [srcImage, setSrcImage] = useState<string>("");
@@ -71,6 +70,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
           }
           if (res?.error) {
             setErrorMessage(res.error);
+            setIsPending(false);
           } else if (res?.success) {
             setSuccessMessage("Forum berhasil dipublikasikan!");
           }
@@ -80,8 +80,17 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
       setErrorMessage("Terjadi kesalahan saat mempublikasikan Forum.");
       console.error(error);
     } finally {
-      setIsPending(false);
+      clearMessages(5000);
     }
+  };
+
+  const clearMessages = (timeout: number = 10000) => {
+    setTimeout(() => {
+      setSuccessMessage("");
+      setSuccessMessageImage("");
+      setErrorMessage("");
+      setErrorMessageImage("");
+    }, timeout);
   };
 
   const handleButtonClick = () => {
@@ -101,50 +110,22 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
 
       if (!validTypes.includes(file.type)) {
         setErrorMessageImage(
-          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan.",
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
         );
+        clearMessages();
         return;
       }
 
       if (file.size > maxSize) {
         setErrorMessageImage("Ukuran file harus kurang dari 1 MB.");
+        clearMessages();
         return;
       }
 
       setImageFile(file);
       setSrcImage(URL.createObjectURL(file));
       setSuccessMessageImage("File berhasil diunggah!");
-    }
-  };
-
-  const handleSaveImage = async () => {
-    if (!imageFile) {
-      setErrorMessageImage("Belum ada file yang dipilih.");
-      return;
-    }
-
-    setIsPending(true);
-
-    try {
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Here you would implement your actual image upload logic
-      // Example:
-      // const formData = new FormData();
-      // formData.append('image', imageFile);
-      // formData.append('destinationId', userId);
-      // const response = await fetch('/api/upload-image', {
-      //   method: 'POST',
-      //   body: formData
-      // });
-
-      setSuccessMessageImage("Gambar berhasil disimpan!");
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      setErrorMessageImage("Terjadi kesalahan saat mengunggah gambar.");
-    } finally {
-      setIsPending(false);
+      clearMessages();
     }
   };
 
@@ -156,6 +137,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
     }
     setSuccessMessageImage("");
     setErrorMessageImage("");
+    clearMessages();
   };
 
   return (
@@ -242,6 +224,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
                             <Button
                               variant="outline"
                               size="sm"
+                              disabled={isPending}
                               className="mt-3 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
                               onClick={(e) => {
                                 e.stopPropagation();

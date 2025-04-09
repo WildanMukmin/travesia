@@ -101,24 +101,46 @@ const ForumPage = ({
       redirect("/admin/kelola-forum");
     }
   }, [oneData]);
+
+  const clearMessages = (timeout: number = 10000) => {
+    setTimeout(() => {
+      setSuccessMessage("");
+      setErrorMessage("");
+    }, timeout);
+  };
+
   const handleDelete = (forumId: string) => {
-    startTransition(() => {
-      deleteForum(forumId).then((res) => {
-        if (res?.error) {
-          setErrorMessage(res?.error);
-        }
-        if (res?.success) {
-          setSuccessMessage(res?.success);
-          setData(
-            (prevData) => prevData?.filter((item) => item.id !== forumId) ?? [],
-          );
-          setOneData(undefined);
-        }
+    setErrorMessage("");
+    setSuccessMessage("");
+    setIsPending(true);
+    try {
+      startTransition(() => {
+        deleteForum(forumId).then((res) => {
+          if (res?.error) {
+            setErrorMessage(res?.error);
+            setIsPending(false);
+          }
+          if (res?.success) {
+            setSuccessMessage(res?.success);
+            setData(
+              (prevData) =>
+                prevData?.filter((item) => item.id !== forumId) ?? []
+            );
+            setOneData(undefined);
+            setIsPending(false);
+          }
+        });
       });
-    });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      clearMessages();
+    }
   };
 
   const handleCommentClick = (id: string) => {
+    setErrorMessage("");
+    setSuccessMessage("");
     setOpenComment(id);
   };
   const handleLike = (forumId: string, userId: string) => {
@@ -135,11 +157,11 @@ const ForumPage = ({
                         ? [...item.like, res.likeData] // Jika menambah like
                         : item.like.filter((like) => like.userId !== userId), // Jika unlike
                       dislike: item.dislike.filter(
-                        (dislike) => dislike.userId !== userId,
+                        (dislike) => dislike.userId !== userId
                       ), // Hapus dislike jika ada
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
 
           setOneData((prevData) =>
@@ -150,10 +172,10 @@ const ForumPage = ({
                     ? [...prevData.like, res.likeData]
                     : prevData.like.filter((like) => like.userId !== userId),
                   dislike: prevData.dislike.filter(
-                    (dislike) => dislike.userId !== userId,
+                    (dislike) => dislike.userId !== userId
                   ),
                 }
-              : prevData,
+              : prevData
           );
         }
       });
@@ -173,12 +195,12 @@ const ForumPage = ({
                       dislike: res.dislikeData
                         ? [...item.dislike, res.dislikeData] // Jika menambah dislike
                         : item.dislike.filter(
-                            (dislike) => dislike.userId !== userId,
+                            (dislike) => dislike.userId !== userId
                           ), // Jika undislike
                       like: item.like.filter((like) => like.userId !== userId), // Hapus like jika ada
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
 
           setOneData((prevData) =>
@@ -188,11 +210,11 @@ const ForumPage = ({
                   dislike: res.dislikeData
                     ? [...prevData.dislike, res.dislikeData] // Perbaiki dari prevData.like ke prevData.dislike
                     : prevData.dislike.filter(
-                        (dislike) => dislike.userId !== userId,
+                        (dislike) => dislike.userId !== userId
                       ),
                   like: prevData.like.filter((like) => like.userId !== userId),
                 }
-              : prevData,
+              : prevData
           );
         }
       });
@@ -200,7 +222,7 @@ const ForumPage = ({
   };
 
   const handlePostingComment = (
-    dataForm: z.infer<typeof postingCommentSchema>,
+    dataForm: z.infer<typeof postingCommentSchema>
   ) => {
     setErrorMessage("");
     dataForm.forumId = openComment;
@@ -209,6 +231,7 @@ const ForumPage = ({
       commentForum(dataForm).then((res) => {
         if (res?.error) {
           setErrorMessage(res?.error);
+          setIsPending(false);
         }
         if (res?.success) {
           setData(
@@ -221,8 +244,8 @@ const ForumPage = ({
                         ? [...item.comment, res.commentData]
                         : item.comment,
                     }
-                  : item,
-              ) ?? [],
+                  : item
+              ) ?? []
           );
 
           setOneData((prevData) =>
@@ -233,12 +256,13 @@ const ForumPage = ({
                     ? [...prevData.comment, res.commentData]
                     : prevData.comment,
                 }
-              : prevData,
+              : prevData
           );
+          setIsPending(false);
         }
       });
       form.setValue("pesan", "");
-      setIsPending(false);
+      clearMessages();
     });
   };
 
@@ -258,7 +282,10 @@ const ForumPage = ({
           <h2 className="text-3xl font-bold text-blue-900">Community Forum</h2>
           <div className="flex gap-3">
             <Link href={`/admin/kelola-forum/edit/${forumData?.id}`}>
-              <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+              <Button
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
+                disabled={isPending}
+              >
                 <PenSquare size={16} />
                 <span>Edit Postingan</span>
               </Button>
@@ -324,7 +351,7 @@ const ForumPage = ({
                       <p className="text-gray-800 mb-4">{oneData?.content}</p>
 
                       {oneData?.image?.gambar && (
-                        <div className="mb-4 overflow-hidden rounded-lg">
+                        <div className="w-full h-[700px] items-center justify-center flex mb-4 overflow-hidden rounded-lg">
                           <Image
                             src={oneData?.image?.gambar}
                             alt="Post Image"
@@ -340,6 +367,7 @@ const ForumPage = ({
                           <DialogTrigger asChild>
                             <Button
                               variant="ghost"
+                              disabled={isPending}
                               onClick={() =>
                                 handleCommentClick(oneData?.id || "")
                               }
@@ -349,7 +377,7 @@ const ForumPage = ({
                               <span>{oneData?.comment.length}</span>
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="w-full h-96 flex flex-col">
+                          <DialogContent className="w-full flex flex-col">
                             <DialogTitle className="sr-only">
                               Postingan Forum dan Komentar
                             </DialogTitle>
@@ -396,7 +424,7 @@ const ForumPage = ({
                                           {oneData?.content}
                                         </p>
                                         {oneData?.image?.gambar && (
-                                          <div className="mb-4 overflow-hidden rounded-lg">
+                                          <div className="w-full h-[500px] items-center justify-center flex mb-4 overflow-scroll overflow-x-hidden rounded-lg">
                                             <Image
                                               src={oneData?.image?.gambar}
                                               alt="Post Image"
@@ -485,7 +513,7 @@ const ForumPage = ({
                                     <Form {...form}>
                                       <form
                                         onSubmit={form.handleSubmit(
-                                          handlePostingComment,
+                                          handlePostingComment
                                         )}
                                         className="space-y-6"
                                       >
@@ -509,14 +537,6 @@ const ForumPage = ({
                                             </FormItem>
                                           )}
                                         />
-                                        {errorMessage && (
-                                          <FormError message={errorMessage} />
-                                        )}
-                                        {successMessage && (
-                                          <FormSuccess
-                                            message={successMessage}
-                                          />
-                                        )}
                                         <div className="flex justify-end gap-2">
                                           <Button
                                             className="bg-blue-600 hover:bg-blue-700"
@@ -541,7 +561,11 @@ const ForumPage = ({
                                 </span>
                               </div>
                               <DialogClose asChild>
-                                <Button type="button" variant="secondary">
+                                <Button
+                                  type="button"
+                                  variant="secondary"
+                                  disabled={isPending}
+                                >
                                   Close
                                 </Button>
                               </DialogClose>
@@ -550,6 +574,7 @@ const ForumPage = ({
                         </Dialog>
 
                         <Button
+                          disabled={isPending}
                           variant="ghost"
                           onClick={() =>
                             handleLike(oneData?.id || "", user?.id || "")
@@ -560,7 +585,7 @@ const ForumPage = ({
                             size={18}
                             strokeWidth={
                               (oneData?.like?.filter(
-                                (like) => like.userId === user?.id,
+                                (like) => like.userId === user?.id
                               ).length ?? 0) > 0
                                 ? 3
                                 : 1
@@ -570,6 +595,7 @@ const ForumPage = ({
                         </Button>
 
                         <Button
+                          disabled={isPending}
                           variant="ghost"
                           onClick={() =>
                             handleDislike(oneData?.id || "", user?.id || "")
@@ -580,7 +606,7 @@ const ForumPage = ({
                             size={18}
                             strokeWidth={
                               (oneData?.dislike?.filter(
-                                (dislike) => dislike.userId === user?.id,
+                                (dislike) => dislike.userId === user?.id
                               ).length ?? 0) > 0
                                 ? 3
                                 : 1
@@ -629,7 +655,10 @@ const ForumPage = ({
             />
           </div>
           <Link href="/forum/posting-forum">
-            <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+            <Button
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
+              disabled={isPending}
+            >
               <PenSquare size={16} />
               <span>Posting Forum</span>
             </Button>
@@ -667,7 +696,11 @@ const ForumPage = ({
               </TabsTrigger>
             </TabsList>
 
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="flex items-center gap-2"
+              disabled={isPending}
+            >
               <Filter size={14} />
               <span>Filter</span>
             </Button>
@@ -736,7 +769,7 @@ const ForumPage = ({
                             <p className="text-gray-800 mb-4">{post.content}</p>
 
                             {post.image?.gambar && (
-                              <div className="mb-4 overflow-hidden rounded-lg">
+                              <div className="w-full h-[700px] items-center justify-center flex mb-4 overflow-hidden rounded-lg">
                                 <Image
                                   src={post.image?.gambar}
                                   alt="Post Image"
@@ -751,6 +784,7 @@ const ForumPage = ({
                               <Dialog>
                                 <DialogTrigger asChild>
                                   <Button
+                                    disabled={isPending}
                                     variant="ghost"
                                     onClick={() => handleCommentClick(post.id)}
                                     className="flex items-center gap-2 hover:text-blue-500 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
@@ -759,7 +793,7 @@ const ForumPage = ({
                                     <span>{post.comment.length}</span>
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent className="w-full h-96 flex flex-col">
+                                <DialogContent className="w-full h-[90vh] flex flex-col">
                                   <DialogTitle className="sr-only">
                                     Postingan Forum dan Komentar
                                   </DialogTitle>
@@ -806,7 +840,7 @@ const ForumPage = ({
                                                 {post.content}
                                               </p>
                                               {post.image?.gambar && (
-                                                <div className="mb-4 overflow-hidden rounded-lg">
+                                                <div className="w-full h-[500px] items-center justify-center flex mb-4 overflow-scroll overflow-x-hidden rounded-lg">
                                                   <Image
                                                     src={post.image?.gambar}
                                                     alt="Post Image"
@@ -898,7 +932,7 @@ const ForumPage = ({
                                           <Form {...form}>
                                             <form
                                               onSubmit={form.handleSubmit(
-                                                handlePostingComment,
+                                                handlePostingComment
                                               )}
                                               className="space-y-6"
                                             >
@@ -922,16 +956,6 @@ const ForumPage = ({
                                                   </FormItem>
                                                 )}
                                               />
-                                              {errorMessage && (
-                                                <FormError
-                                                  message={errorMessage}
-                                                />
-                                              )}
-                                              {successMessage && (
-                                                <FormSuccess
-                                                  message={successMessage}
-                                                />
-                                              )}
                                               <div className="flex justify-end gap-2">
                                                 <Button
                                                   className="bg-blue-600 hover:bg-blue-700"
@@ -956,7 +980,11 @@ const ForumPage = ({
                                       </span>
                                     </div>
                                     <DialogClose asChild>
-                                      <Button type="button" variant="secondary">
+                                      <Button
+                                        type="button"
+                                        variant="secondary"
+                                        disabled={isPending}
+                                      >
                                         Close
                                       </Button>
                                     </DialogClose>
@@ -965,6 +993,7 @@ const ForumPage = ({
                               </Dialog>
 
                               <Button
+                                disabled={isPending}
                                 variant="ghost"
                                 onClick={() =>
                                   handleLike(post.id, user?.id || "")
@@ -975,7 +1004,7 @@ const ForumPage = ({
                                   size={18}
                                   strokeWidth={
                                     post.like.filter(
-                                      (like) => like.userId === user?.id,
+                                      (like) => like.userId === user?.id
                                     ).length > 0
                                       ? 3
                                       : 1
@@ -985,6 +1014,7 @@ const ForumPage = ({
                               </Button>
 
                               <Button
+                                disabled={isPending}
                                 variant="ghost"
                                 onClick={() =>
                                   handleDislike(post.id, user?.id || "")
@@ -995,7 +1025,7 @@ const ForumPage = ({
                                   size={18}
                                   strokeWidth={
                                     post.dislike.filter(
-                                      (dislike) => dislike.userId === user?.id,
+                                      (dislike) => dislike.userId === user?.id
                                     ).length > 0
                                       ? 3
                                       : 1
