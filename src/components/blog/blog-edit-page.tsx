@@ -85,6 +85,7 @@ const BlogEditPage = ({
           }
           if (res?.error) {
             setErrorMessage(res.error);
+            setIsPending(false);
           } else if (res?.success) {
             setSuccessMessage("Blog berhasil dipublikasikan!");
           }
@@ -94,13 +95,7 @@ const BlogEditPage = ({
       setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
       console.error(error);
     } finally {
-      setIsPending(false);
-    }
-  };
-
-  const handleButtonClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+      clearMessages(10000);
     }
   };
 
@@ -109,6 +104,21 @@ const BlogEditPage = ({
       const currentContent = form.getValues("content") || [];
       form.setValue("content", [...currentContent, contentItem.trim()]);
       setContentItem("");
+    }
+  };
+
+  const clearMessages = (timeout: number = 10000) => {
+    setTimeout(() => {
+      setSuccessMessage("");
+      setSuccessMessageImage("");
+      setErrorMessageImage("");
+      setErrorMessage("");
+    }, timeout);
+  };
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -125,48 +135,20 @@ const BlogEditPage = ({
         setErrorMessageImage(
           "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan.",
         );
+        clearMessages();
         return;
       }
 
       if (file.size > maxSize) {
         setErrorMessageImage("Ukuran file harus kurang dari 1 MB.");
+        clearMessages();
         return;
       }
 
       setImageFile(file);
       setSrcImage(URL.createObjectURL(file));
       setSuccessMessageImage("File berhasil diunggah!");
-    }
-  };
-
-  const handleSaveImage = async () => {
-    if (!imageFile) {
-      setErrorMessageImage("Belum ada file yang dipilih.");
-      return;
-    }
-
-    setIsPending(true);
-
-    try {
-      // Simulate API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Here you would implement your actual image upload logic
-      // Example:
-      // const formData = new FormData();
-      // formData.append('image', imageFile);
-      // formData.append('destinationId', userId);
-      // const response = await fetch('/api/upload-image', {
-      //   method: 'POST',
-      //   body: formData
-      // });
-
-      setSuccessMessageImage("Gambar berhasil disimpan!");
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      setErrorMessageImage("Terjadi kesalahan saat mengunggah gambar.");
-    } finally {
-      setIsPending(false);
+      clearMessages();
     }
   };
 
@@ -178,6 +160,7 @@ const BlogEditPage = ({
     }
     setSuccessMessageImage("");
     setErrorMessageImage("");
+    clearMessages();
   };
 
   return (

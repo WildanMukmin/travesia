@@ -1,7 +1,6 @@
 "use client";
 
 import { postingBlog } from "@/actions/blog";
-import { uploadImage } from "@/actions/image";
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
@@ -77,6 +76,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
           }
           if (res?.error) {
             setErrorMessage(res.error);
+            setIsPending(false);
           } else if (res?.success) {
             setSuccessMessage("Blog berhasil dipublikasikan!");
           }
@@ -86,13 +86,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
       setErrorMessage("Terjadi kesalahan saat mempublikasikan blog.");
       console.error(error);
     } finally {
-      setIsPending(false);
-    }
-  };
-
-  const handleButtonClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+      clearMessages();
     }
   };
 
@@ -101,6 +95,21 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
       const currentContent = form.getValues("content") || [];
       form.setValue("content", [...currentContent, contentItem.trim()]);
       setContentItem("");
+    }
+  };
+
+  const clearMessages = (timeout: number = 10000) => {
+    setTimeout(() => {
+      setSuccessMessage("");
+      setSuccessMessageImage("");
+      setErrorMessageImage("");
+      setErrorMessage("");
+    }, timeout);
+  };
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -117,60 +126,32 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
         setErrorMessageImage(
           "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan.",
         );
+        clearMessages();
         return;
       }
 
       if (file.size > maxSize) {
         setErrorMessageImage("Ukuran file harus kurang dari 1 MB.");
+        clearMessages();
         return;
       }
 
       setImageFile(file);
       setSrcImage(URL.createObjectURL(file));
       setSuccessMessageImage("File berhasil diunggah!");
-    }
-  };
-
-  const handleSaveImage = async () => {
-    if (!imageFile) {
-      setErrorMessageImage("Belum ada foto profil yang dipilih.");
-      return;
-    }
-
-    setIsPending(true);
-    setSuccessMessageImage("");
-    setErrorMessageImage("");
-
-    try {
-      const formData = new FormData();
-      formData.append("gambar", imageFile); // nama harus cocok dengan server
-      formData.append("namaFoto", imageFile.name); // atau sesuai input kamu
-      // Bisa tambahkan blogId, forumId, destinasiId jika diperlukan
-      const res = await uploadImage(formData);
-
-      if (res.success) {
-        setSuccessMessageImage(res.success);
-        setErrorMessageImage("");
-      } else if (res.error) {
-        setSuccessMessageImage("");
-        setErrorMessageImage(res.error);
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      setErrorMessageImage("Terjadi kesalahan saat mengunggah foto profil.");
-    } finally {
-      setIsPending(false);
+      clearMessages();
     }
   };
 
   const handleRemoveImage = () => {
     setImageFile(undefined);
-    setSrcImage(null);
+    setSrcImage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
     setSuccessMessageImage("");
     setErrorMessageImage("");
+    clearMessages();
   };
 
   return (
@@ -257,6 +238,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
                             </p>
                             <Button
                               variant="outline"
+                              disabled={isPending}
                               size="sm"
                               className="mt-3 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
                               onClick={(e) => {
@@ -326,6 +308,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
                                     Paragraf {index + 1}
                                   </p>
                                   <Button
+                                    disabled={isPending}
                                     variant="ghost"
                                     size="sm"
                                     type="button"

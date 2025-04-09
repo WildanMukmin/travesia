@@ -34,6 +34,14 @@ const BlogPage = ({ blogData, user }: BlogPageProps) => {
   const [data, setData] = useState(blogData);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const clearMessages = (timeout: number = 10000) => {
+    setTimeout(() => {
+      setSuccessMessage("");
+      setErrorMessage("");
+    }, timeout);
+  };
+
   const onDelete = (id: string) => {
     startTransition(() => {
       deleteBlog(id).then((res) => {
@@ -47,6 +55,7 @@ const BlogPage = ({ blogData, user }: BlogPageProps) => {
           );
         }
       });
+      clearMessages();
     });
   };
 
