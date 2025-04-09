@@ -79,20 +79,22 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
 
         <div className="space-y-6">
           {blogData &&
-            blogData.map((item) => (
-              <CardBlog
-                key={item.id}
-                blogId={item?.id}
-                src={
-                  item?.image?.gambar ||
-                  "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
-                }
-                judul={`${item.title}`}
-                slug={`${item.slug}`}
-                deskripsi={item.content[0].slice(0, 100)}
-                penulis={`${item.user.name} pada ${item.createdAt.toLocaleDateString()}`}
-              />
-            ))}
+            blogData
+              .slice(0, 3)
+              .map((item) => (
+                <CardBlog
+                  key={item.id}
+                  blogId={item?.id}
+                  src={
+                    item?.image?.gambar ||
+                    "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
+                  }
+                  judul={`${item.title}`}
+                  slug={`${item.slug}`}
+                  deskripsi={item.content[0].slice(0, 100)}
+                  penulis={`${item.user.name} pada ${item.createdAt.toLocaleDateString()}`}
+                />
+              ))}
           {blogData && blogData.length === 0 && (
             <p className="text-center">Belum ada Postingan</p>
           )}
@@ -134,7 +136,11 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
                             item?.image?.gambar ||
                             "https://images.unsplash.com/photo-1724271362937-391a150db603?w=500&auto=format&fit=crop&q=60"
                           }
-                          judul={`${item.namaDestinasi}`}
+                          judul={
+                            item.namaDestinasi.length <= 30
+                              ? item.namaDestinasi
+                              : `${item.namaDestinasi.slice(0, 30)} ...`
+                          }
                           id={item.id}
                           deskripsi={`${item.deskripsi.slice(0, 100)}......`}
                         />

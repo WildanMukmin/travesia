@@ -22,14 +22,14 @@ const DestinasiCardCarousel = ({
   deskripsi = "",
 }: DestinasiCardCarouselProps) => {
   return (
-    <Card className="rounded-3xl w-[400px] hover:-translate-y-2 transition">
-      <CardHeader>
+    <Card className="rounded-3xl w-[400px] hover:-translate-y-2 transition h-[360px]">
+      <CardHeader className="p-0 overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 w-full h-[200px] flex justify-center items-center">
         <Image
           src={src as string}
           alt={judul as string}
           width={350}
           height={450}
-          className="rounded-lg"
+          className="rounded-lg hover:scale-105 transition-transform duration-300 w-full"
         />
       </CardHeader>
       <CardContent>
