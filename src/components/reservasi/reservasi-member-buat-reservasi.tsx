@@ -287,6 +287,7 @@ const ReservasiMemberBuatReservasi = ({
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
+                              disabled={isPending}
                               variant={"outline"}
                               className={cn(
                                 "w-full pl-3 text-left font-normal border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500",

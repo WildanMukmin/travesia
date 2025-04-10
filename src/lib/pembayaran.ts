@@ -28,6 +28,10 @@ export const pembayaran = async (
     where: { id: reservasiId },
   });
   if (!reservasi) return { error: "Reservasi Tidak Ditemukan" };
+
+  if (reservasi.totalHarga + 2000 !== validHarga)
+    return { error: "Nominal Pembayaran Tidak Sesuai" };
+
   if (reservasi.status === "selesai") {
     return { error: "Pembayaran Sudah Tidak Berlaku" };
   }

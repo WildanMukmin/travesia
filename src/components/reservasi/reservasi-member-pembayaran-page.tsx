@@ -32,7 +32,7 @@ const ReservasiMemberPembayaranPage = ({
 
   useEffect(() => {
     const generateQRCode = async () => {
-      const url = `https://travesia-mu.vercel.app/simulasi-bayar?reservasiId=${id}&userMemberId=${reservasi?.member?.userId}&userOwnerId=${reservasi?.destinasi?.owner?.userId}&harga=${reservasi?.totalHarga}`;
+      const url = `https://travesia-mu.vercel.app/simulasi-bayar?reservasiId=${id}&userMemberId=${reservasi?.member?.userId}&userOwnerId=${reservasi?.destinasi?.owner?.userId}`;
       const qrCodeDataURL = await QRCode.toDataURL(url);
       setQrCode(qrCodeDataURL);
     };

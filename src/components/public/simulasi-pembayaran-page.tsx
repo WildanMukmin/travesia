@@ -1,5 +1,6 @@
 "use client";
 
+import { getReservasiById } from "@/actions/reservasi";
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-succsess";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ import { simulasiPembayaranSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, CheckCircle, CreditCard } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { startTransition, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -29,12 +30,12 @@ const ReservasiMemberSimulasiBayarPage = () => {
   const reservasiId = searchParams.get("reservasiId");
   const userMemberId = searchParams.get("userMemberId");
   const userOwnerId = searchParams.get("userOwnerId");
-  const harga = searchParams.get("harga");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [harga, setHarga] = useState("");
 
-  if (!userMemberId || !harga || !reservasiId || !userOwnerId) {
+  if (!userMemberId || !reservasiId || !userOwnerId) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <div className="flex items-center mb-4 text-red-500">
@@ -47,6 +48,16 @@ const ReservasiMemberSimulasiBayarPage = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+    startTransition(() => {
+      getReservasiById(reservasiId).then((data) => {
+        const harga = data?.totalHarga && data?.totalHarga + 2000;
+        setHarga(harga?.toString() ?? "");
+        form.setValue("harga", harga?.toString() ?? "");
+      });
+    });
+  }, [reservasiId]);
 
   const form = useForm<z.infer<typeof simulasiPembayaranSchema>>({
     resolver: zodResolver(simulasiPembayaranSchema),
@@ -64,15 +75,18 @@ const ReservasiMemberSimulasiBayarPage = () => {
     setErrorMessage("");
     setIsPending(true);
     startTransition(() => {
-      pembayaran(data).then((data) => {
-        if (data?.error) {
-          setErrorMessage(data?.error);
-        }
-        if (data?.success) {
-          setSuccessMessage(data?.success);
-        }
-      });
-      setIsPending(false);
+      pembayaran(data)
+        .then((data) => {
+          if (data?.error) {
+            setErrorMessage(data?.error);
+          }
+          if (data?.success) {
+            setSuccessMessage(data?.success);
+          }
+        })
+        .finally(() => {
+          setIsPending(false);
+        });
     });
   };
 
@@ -158,7 +172,7 @@ const ReservasiMemberSimulasiBayarPage = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={isPending}
+                          disabled={true}
                           className="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
                           placeholder="Masukkan nominal pembayaran"
                         />
