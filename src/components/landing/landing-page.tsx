@@ -14,11 +14,9 @@ import {
 } from "@/components/ui/carousel";
 import { Role, User } from "@prisma/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Input } from "../ui/input";
 import { useEffect, useState } from "react";
 
 interface LandingPageProps {
@@ -90,7 +88,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
 
   return (
     <main className="flex-wrap">
-      <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-[660px] flex items-center justify-center overflow-hidden">
         {/* Image Slider with Transition */}
         <div className="absolute inset-0 z-0">
           {images.map((image, index) => (
@@ -115,7 +113,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10" />
 
         {/* Content */}
-        <div className="relative z-20 text-white text-center px-4 max-w-4xl mx-auto">
+        <div className="relative z-20 text-white text-center px-4 max-w-4xl mx-auto mt-32">
           <h1 className="text-4xl sm:text-6xl font-bold drop-shadow-lg transition-all duration-500">
             {images[currentIndex].title}
           </h1>
@@ -124,7 +122,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
           </p>
 
           {/* Improved Search Box */}
-          <div className="mt-8 flex justify-center">
+          {/* <div className="mt-8 flex justify-center">
             <div className="bg-white/95 backdrop-blur-sm rounded-full p-1 shadow-lg flex w-full max-w-xl items-center transition-all duration-300 hover:shadow-xl">
               <Input
                 type="text"
@@ -135,29 +133,29 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
                 Cari
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Enhanced Navigation Arrows */}
-        <button
+        <Button
           onClick={goToPrevSlide}
           className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 p-3 rounded-full transition-all duration-300 text-white/80 hover:text-white"
           aria-label="Previous slide"
         >
           <ChevronLeft size={28} />
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={goToNextSlide}
           className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 p-3 rounded-full transition-all duration-300 text-white/80 hover:text-white"
           aria-label="Next slide"
         >
           <ChevronRight size={28} />
-        </button>
+        </Button>
 
         {/* Slide Indicators */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
           {images.map((_, index) => (
-            <button
+            <Button
               key={index}
               onClick={() => setCurrentIndex(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
@@ -171,11 +169,9 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
         </div>
 
         {/* Branding with improved styling */}
-        <div className="absolute top-6 left-6 z-30">
-          <h2 className="text-2xl font-bold text-white drop-shadow-md">
-            Travesia
-          </h2>
-          <p className="text-sm font-light text-white/90 drop-shadow-sm">
+        <div className="absolute top-28 left-auto z-30 flex flex-col items-center text-white">
+          <h2 className="text-5xl font-bold drop-shadow-2xl">Travesia</h2>
+          <p className="text-xl font-light /90 drop-shadow-2xl">
             Jelajahi setiap sudut Indonesia
           </p>
         </div>
