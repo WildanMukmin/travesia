@@ -83,8 +83,9 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
 
   // Handle hapus forum
   const handleAction = (id: string) => {
+    setIsPending(true);
+    setIsOpen(true);
     startTransition(() => {
-      setIsPending(true);
       deleteForumById(id)
         .then((res) => {
           if (res.success) {
@@ -163,7 +164,7 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
               />
             </div>
             <Link href={"/admin/kelola-forum/add"}>
-              <Button>
+              <Button disabled={isPending}>
                 <PlusCircle className="mr-2 h-4 w-4" />
                 Tambah Forum
               </Button>
@@ -199,7 +200,11 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
+                          <Button
+                            variant="ghost"
+                            className="h-8 w-8 p-0"
+                            disabled={isPending}
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -229,6 +234,7 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
                             <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                               <AlertDialogTrigger asChild>
                                 <Button
+                                  disabled={isPending}
                                   className="w-full cursor-pointer rounded-lg"
                                   variant="destructive"
                                 >
@@ -287,6 +293,7 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
             <div className="flex justify-center mt-4 space-x-2">
               {Array.from({ length: totalPages }, (_, i) => (
                 <Button
+                  disabled={isPending}
                   key={i + 1}
                   variant={currentPage === i + 1 ? "default" : "outline"}
                   onClick={() => setCurrentPage(i + 1)}

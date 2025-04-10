@@ -51,7 +51,7 @@ interface DashboardAdminPageProps {
 const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
   const [destinasiData, setDestinasiData] =
     useState<DestinasiWithOwner>(destinasi);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -94,10 +94,9 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
 
   // Handle hapus destinasi
   const handleAction = (id: string) => {
+    setIsPending(true);
+    setIsOpen(true);
     startTransition(() => {
-      setIsPending(true);
-      setIsOpen(true);
-
       deleteDestinasiById(id)
         .then((res) => {
           if (res.success) {
@@ -134,12 +133,12 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
 
       {/* Konten Utama */}
       <div className="flex-1 overflow-y-auto px-4 py-6 md:px-12">
-        <button
+        <Button
           className="md:hidden mb-4 p-2 rounded-md bg-blue-800 text-white"
           onClick={() => setSidebarOpen(!sidebarOpen)}
         >
           <Menu className="h-5 w-5" />
-        </button>
+        </Button>
 
         <AdminHeader
           headline="Admin Kelola Destinasi"
@@ -214,7 +213,11 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
+                          <Button
+                            variant="ghost"
+                            className="h-8 w-8 p-0"
+                            disabled={isPending}
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -244,6 +247,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
                             <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                               <AlertDialogTrigger asChild>
                                 <Button
+                                  disabled={isPending}
                                   className="w-full cursor-pointer rounded-lg"
                                   variant="destructive"
                                 >
@@ -266,16 +270,16 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
                                     asChild
                                   >
                                     <Button
-                                      variant={"default"}
                                       disabled={isPending}
+                                      variant={"default"}
                                     >
                                       {isPending ? "Memuat..." : "Tidak"}
                                     </Button>
                                   </AlertDialogCancel>
                                   <Button
                                     className="w-full text-white bg-red-600 cursor-pointer hover:text-red-600 hover:bg-white flex gap-2"
-                                    onClick={() => handleAction(dest.id)}
                                     disabled={isPending}
+                                    onClick={() => handleAction(dest.id)}
                                   >
                                     {isPending ? "Memuat..." : "Ya"}
                                   </Button>

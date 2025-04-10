@@ -83,8 +83,9 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
 
   // Handle hapus blog
   const handleAction = (id: string) => {
+    setIsPending(true);
+    setIsOpen(true);
     startTransition(() => {
-      setIsPending(true);
       deleteBlogById(id)
         .then((res) => {
           if (res.success) {
@@ -93,14 +94,16 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
             setBlogsData((prevData) =>
               prevData ? prevData.filter((item) => item.id !== id) : [],
             );
+            setIsPending(false);
+            setIsOpen(false);
           } else if (res.error) {
             setErrorMessage(res.error);
             setSuccessMessage("");
+            setIsPending(false);
+            setIsOpen(false);
           }
         })
         .finally(() => {
-          setIsPending(false);
-          setIsOpen(false);
           setTimeout(() => {
             setSuccessMessage("");
             setErrorMessage("");
@@ -118,12 +121,12 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-6 md:px-12">
-        <button
+        <Button
           className="md:hidden mb-4 p-2 rounded-md bg-blue-800 text-white"
           onClick={() => setSidebarOpen(!sidebarOpen)}
         >
           <Menu className="h-5 w-5" />
-        </button>
+        </Button>
 
         <AdminHeader
           headline="Admin Kelola Blog Travesia"
@@ -163,7 +166,7 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
               />
             </div>
             <Link href={"/admin/kelola-blog/add"}>
-              <Button>
+              <Button disabled={isPending}>
                 <PlusCircle className="mr-2 h-4 w-4" />
                 Tambah Blog
               </Button>
@@ -199,7 +202,11 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
+                          <Button
+                            variant="ghost"
+                            className="h-8 w-8 p-0"
+                            disabled={isPending}
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -229,6 +236,7 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
                             <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                               <AlertDialogTrigger asChild>
                                 <Button
+                                  disabled={isPending}
                                   className="w-full cursor-pointer rounded-lg"
                                   variant="destructive"
                                 >

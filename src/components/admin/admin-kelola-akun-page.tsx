@@ -82,8 +82,9 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
   );
 
   const handleAction = (id: string) => {
+    setIsOpen(true);
+    setIsPending(true);
     startTransition(() => {
-      setIsOpen(true);
       deleteUserByid(id).then((res) => {
         console.log(res);
         if (res.success) {
@@ -92,12 +93,15 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
           setUsersData((prevData) =>
             prevData ? prevData.filter((item) => item.id !== id) : [],
           );
+          setIsPending(false);
+          setIsOpen(false);
         } else if (res.error) {
           setErrorMessage(res.error);
           setSuccessMessage("");
+          setIsPending(false);
+          setIsOpen(false);
         }
       });
-      setIsOpen(false);
       setTimeout(() => {
         setSuccessMessage("");
         setErrorMessage("");
@@ -114,12 +118,12 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-6 md:px-12">
-        <button
+        <Button
           className="md:hidden mb-4 p-2 rounded-md bg-blue-800 text-white"
           onClick={() => setSidebarOpen(!sidebarOpen)}
         >
           <Menu className="h-5 w-5" />
-        </button>
+        </Button>
 
         <AdminHeader
           headline="Admin Kelola Akun Travesia"
@@ -186,7 +190,11 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
+                        <Button
+                          variant="ghost"
+                          className="h-8 w-8 p-0"
+                          disabled={isPending}
+                        >
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -214,6 +222,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                           <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                             <AlertDialogTrigger asChild>
                               <Button
+                                disabled={isPending}
                                 className="w-full cursor-pointer rounded-lg"
                                 variant="destructive"
                               >
@@ -265,6 +274,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
             <div className="flex justify-center mt-4 space-x-2">
               {Array.from({ length: totalPages }, (_, i) => (
                 <Button
+                  disabled={isPending}
                   key={i + 1}
                   variant={currentPage === i + 1 ? "default" : "outline"}
                   onClick={() => setCurrentPage(i + 1)}
