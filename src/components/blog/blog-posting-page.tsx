@@ -64,7 +64,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
     setIsPending(true);
     data.image = imageFile;
     if (!data.image) {
-      setErrorMessageImage("Belum ada foto profil yang dipilih.");
+      setErrorMessageImage("Belum ada foto yang dipilih.");
       setIsPending(false);
       return;
     }
@@ -124,7 +124,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
 
       if (!validTypes.includes(file.type)) {
         setErrorMessageImage(
-          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan.",
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
         );
         clearMessages();
         return;
@@ -138,7 +138,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
 
       setImageFile(file);
       setSrcImage(URL.createObjectURL(file));
-      setSuccessMessageImage("File berhasil diunggah!");
+      setSuccessMessageImage("Foto berhasil diunggah!");
       clearMessages();
     }
   };
@@ -315,8 +315,8 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
                                     onClick={() =>
                                       field.onChange(
                                         field.value?.filter(
-                                          (_, i) => i !== index,
-                                        ),
+                                          (_, i) => i !== index
+                                        )
                                       )
                                     }
                                     className="h-7 w-7 p-0 text-gray-500 hover:text-red-600 hover:bg-red-50"

@@ -44,7 +44,7 @@ const BlogEditPage = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [srcImage, setSrcImage] = useState<string>(
-    blogData?.image?.gambar || "",
+    blogData?.image?.gambar || ""
   );
   const [errorMessageImage, setErrorMessageImage] = useState("");
   const [successMessageImage, setSuccessMessageImage] = useState("");
@@ -72,11 +72,6 @@ const BlogEditPage = ({
     setSuccessMessage("");
     setIsPending(true);
     data.image = imageFile;
-    if (!data.image && !blogData?.image) {
-      setErrorMessageImage("Belum ada foto yang dipilih.");
-      setIsPending(false);
-      return;
-    }
     try {
       startTransition(() => {
         updateBlog(blogId, data).then((res) => {
@@ -133,7 +128,7 @@ const BlogEditPage = ({
 
       if (!validTypes.includes(file.type)) {
         setErrorMessageImage(
-          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan.",
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
         );
         clearMessages();
         return;
@@ -147,7 +142,7 @@ const BlogEditPage = ({
 
       setImageFile(file);
       setSrcImage(URL.createObjectURL(file));
-      setSuccessMessageImage("File berhasil diunggah!");
+      setSuccessMessageImage("Foto berhasil diunggah!");
       clearMessages();
     }
   };
@@ -322,8 +317,8 @@ const BlogEditPage = ({
                                     onClick={() =>
                                       field.onChange(
                                         field.value?.filter(
-                                          (_, i) => i !== index,
-                                        ),
+                                          (_, i) => i !== index
+                                        )
                                       )
                                     }
                                     className="h-7 w-7 p-0 text-gray-500 hover:text-red-600 hover:bg-red-50"

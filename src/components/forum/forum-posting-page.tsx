@@ -59,7 +59,6 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
   const handleSubmitData = async (data: z.infer<typeof postingForumSchema>) => {
     setErrorMessage("");
     setSuccessMessage("");
-    data.image = imageFile;
     setIsPending(true);
 
     try {
@@ -110,7 +109,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
 
       if (!validTypes.includes(file.type)) {
         setErrorMessageImage(
-          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan.",
+          "Hanya file PNG, JPEG, JPG, dan WebP yang diperbolehkan."
         );
         clearMessages();
         return;
@@ -124,7 +123,7 @@ const ForumPostingPage = ({ userId, admin }: ForumPostingPageProps) => {
 
       setImageFile(file);
       setSrcImage(URL.createObjectURL(file));
-      setSuccessMessageImage("File berhasil diunggah!");
+      setSuccessMessageImage("Foto berhasil diunggah!");
       clearMessages();
     }
   };
