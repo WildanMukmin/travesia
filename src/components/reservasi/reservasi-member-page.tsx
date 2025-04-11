@@ -36,11 +36,12 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
     id: string,
     userOwnerId: string,
     userMemberId: string,
+    alasan: string
   ) => {
+    // console.log(id, userOwnerId, userMemberId, alasan);
+    setIsLoading(true);
     startTransition(() => {
-      setIsLoading(true);
-
-      pengajuanPembatalanReservasi(id, userOwnerId, userMemberId).then(
+      pengajuanPembatalanReservasi(id, userOwnerId, userMemberId, alasan).then(
         (res) => {
           if (res.success) {
             setSuccessMessage(res.success);
@@ -51,9 +52,16 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
           }
 
           setIsLoading(false);
-        },
+          clearMessages();
+        }
       );
     });
+  };
+
+  const clearMessages = (timeout: number = 10000) => {
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, timeout);
   };
 
   const handleFilter = (status: string) => {
@@ -124,11 +132,12 @@ const ReservasiMemberPage = ({ reservasiData }: ReservasiMemberPageProps) => {
                           <ButtonPengajuanPembatalanTable
                             isLoading={isLoading}
                             name=""
-                            aksi={() =>
+                            aksi={(alasan) =>
                               handleClickPengajuanPembatalan(
                                 item.id,
                                 item.destinasi.owner.userId,
                                 item.member?.userId || "",
+                                alasan
                               )
                             }
                             content="Ajukan Pembatalan"

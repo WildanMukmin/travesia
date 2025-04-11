@@ -31,21 +31,21 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
   }
   const images = [
     {
-      src: "https://images.unsplash.com/photo-1569158049406-6dc6f71ccd48?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGJlYXV0aWZ1bCUyMG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D",
+      src: "/landing-page/1.jpg",
       alt: "Pemandangan alam Indonesia",
       title: "Dunia Penuh Cerita",
       subtitle:
         "Dari Sabang sampai Merauke, temukan wisata alam dan budaya yang memukau hati",
     },
     {
-      src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJlYXV0aWZ1bCUyMG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D",
+      src: "/landing-page/2.jpg",
       alt: "Pantai tropis di Indonesia",
       title: "Jelajahi Surga Tropis",
       subtitle:
         "Nikmati keindahan pantai di Bali, Lombok, dan pulau-pulau eksotis lainnya",
     },
     {
-      src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YmVhdXRpZnVsJTIwbmF0dXJlfGVufDB8fDB8fHww",
+      src: "/landing-page/3.jpg",
       alt: "Pegunungan hijau Indonesia",
       title: "Petualangan Nusantara",
       subtitle:
@@ -67,7 +67,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
     if (!isTransitioning) {
       setIsTransitioning(true);
       setCurrentIndex(
-        (prevIndex) => (prevIndex - 1 + images.length) % images.length,
+        (prevIndex) => (prevIndex - 1 + images.length) % images.length
       );
     }
   };
@@ -102,7 +102,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
                 src={image.src}
                 alt={image.alt}
                 fill
-                className="object-cover"
+                className="object-cover brightness-75 hover:brightness-100 transition-all duration-300"
                 priority={index === currentIndex}
               />
             </div>
@@ -110,7 +110,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
         </div>
 
         {/* Overlay with improved gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent z-10" />
 
         {/* Content */}
         <div className="relative z-20 text-white text-center px-4 max-w-4xl mx-auto mt-32">
@@ -168,10 +168,14 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
           ))}
         </div>
 
-        {/* Branding with improved styling */}
-        <div className="absolute top-28 left-auto z-30 flex flex-col items-center text-white">
+        {/* Branding with improved styling  bg-black py-4 px-10 rounded-2xl bg-opacity-15*/}
+        <div
+          className={`absolute top-28 left-auto z-30 flex flex-col items-center ${
+            currentIndex === 0 ? "text-white" : "text-white"
+          }`}
+        >
           <h2 className="text-5xl font-bold drop-shadow-2xl">Travesia</h2>
-          <p className="text-xl font-light /90 drop-shadow-2xl">
+          <p className="text-2xl font-light /90 drop-shadow-2xl">
             Jelajahi setiap sudut Indonesia
           </p>
         </div>

@@ -155,7 +155,7 @@ const ReservasiMemberPembayaranPage = ({
                   <p className="text-sm text-yellow-700">Menunggu Pembayaran</p>
                 </div>
                 <p className="text-sm font-medium text-yellow-700">
-                  Expired dalam: {timeRemaining}
+                  Mohon bayar dalam: {timeRemaining}
                 </p>
               </div>
             ) : (

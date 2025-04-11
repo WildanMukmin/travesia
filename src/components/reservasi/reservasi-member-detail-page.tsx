@@ -59,15 +59,22 @@ const ReservasiMemberDetailPage = ({
     dibatalkan: <XCircleIcon className="w-4 h-4 mr-1" />,
   };
 
+  const clearMessages = (timeout: number = 10000) => {
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, timeout);
+  };
+
   const handleClickPengajuanPembatalan = (
     id: string,
     userOwnerId: string,
     userMemberId: string,
+    alasan: string
   ) => {
     startTransition(() => {
       setIsLoading(true);
 
-      pengajuanPembatalanReservasi(id, userOwnerId, userMemberId)
+      pengajuanPembatalanReservasi(id, userOwnerId, userMemberId, alasan)
         .then((res) => {
           if (res?.success) {
             setSuccessMessage(res.success);
@@ -81,7 +88,7 @@ const ReservasiMemberDetailPage = ({
                     member: prevData.member ?? null,
                     destinasi: prevData.destinasi ?? null, // Pastikan properti penting tetap ada
                   }
-                : prevData,
+                : prevData
             );
           }
         })
@@ -90,6 +97,7 @@ const ReservasiMemberDetailPage = ({
         })
         .finally(() => {
           setIsLoading(false);
+          clearMessages();
         });
     });
   };
@@ -219,7 +227,7 @@ const ReservasiMemberDetailPage = ({
                       <span className="block">
                         {data?.tanggalReservasi.toLocaleDateString(
                           "id-ID",
-                          options,
+                          options
                         )}
                       </span>
                       <span className="text-xs text-gray-500">
@@ -300,11 +308,12 @@ const ReservasiMemberDetailPage = ({
                 isLoading={isLoading}
                 typeButton="button"
                 name="Ajukan Pembatalan"
-                aksi={() =>
+                aksi={(alasan) =>
                   handleClickPengajuanPembatalan(
                     data?.id || "",
                     data?.destinasi.owner.userId || "",
                     data?.member?.userId || "",
+                    alasan
                   )
                 }
                 content="Ajukan Pembatalan"
