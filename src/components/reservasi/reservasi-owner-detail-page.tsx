@@ -63,6 +63,12 @@ const ReservasiOwnerDetailPage = ({
     day: "numeric",
   };
 
+  const clearMessages = (timeout: number = 10000) => {
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, timeout);
+  };
+
   if (!reservasiData || !data) {
     return (
       <AlertPage detail="Reservasi tidak ditemukan" title="Terjadi Kesalahan" />
@@ -102,6 +108,7 @@ const ReservasiOwnerDetailPage = ({
           console.error("Terjadi kesalahan:", error);
         })
         .finally(() => {
+          clearMessages();
           setIsLoading(false);
         });
     });

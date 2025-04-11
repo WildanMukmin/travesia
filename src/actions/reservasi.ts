@@ -18,7 +18,7 @@ export type ReservasiWithMember = Prisma.PromiseReturnType<
 export type AllReservasi = Prisma.PromiseReturnType<typeof getAllReservasi>;
 
 export const buatReservasi = async (
-  data: z.infer<typeof buatReservasiSchema>
+  data: z.infer<typeof buatReservasiSchema>,
 ) => {
   const validatedFields = buatReservasiSchema.safeParse(data);
   if (!validatedFields.success) {
@@ -42,7 +42,7 @@ export const buatReservasi = async (
   }
   const validJumlahTiket = parseInt(
     jumlahPengunjung.replace(/[^0-9]/g, ""),
-    10
+    10,
   );
   if (isNaN(validJumlahTiket) || validJumlahTiket <= 0) {
     return { error: "Jumlah Pengunjung Tidak Valid, Minimal isi 1" };
@@ -231,7 +231,7 @@ export const pengajuanPembatalanReservasi = async (
   id: string,
   userOwnerId: string,
   userMemberId: string,
-  alasan: string
+  alasan: string,
 ) => {
   try {
     await prisma.$transaction([
@@ -273,7 +273,7 @@ export const pengajuanPembatalanReservasi = async (
 export const penerimaanPengajuanPembatalanReservasi = async (
   id: string,
   userOwnerId: string,
-  userMemberId: string
+  userMemberId: string,
 ) => {
   try {
     // Gunakan Prisma Transaction agar semua operasi berhasil atau gagal sekaligus

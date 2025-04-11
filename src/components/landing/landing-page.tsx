@@ -67,7 +67,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
     if (!isTransitioning) {
       setIsTransitioning(true);
       setCurrentIndex(
-        (prevIndex) => (prevIndex - 1 + images.length) % images.length
+        (prevIndex) => (prevIndex - 1 + images.length) % images.length,
       );
     }
   };

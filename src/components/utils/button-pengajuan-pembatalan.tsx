@@ -45,7 +45,7 @@ interface ButtonPengajuanPembatalanTableProps {
   isLoading: boolean;
   role?: Role;
   typeButton?: string;
-  aksi: (value: string) => void; // sekarang aksi menerima value
+  aksi: (value?: string) => void; // sekarang aksi menerima value
   content: string;
 }
 
@@ -83,6 +83,103 @@ const ButtonPengajuanPembatalanTable = ({
     setIsOpen(false);
   };
 
+  const handleAction = () => {
+    aksi();
+    setIsOpen(false);
+  };
+
+  if (role === Role.MEMBER) {
+    return (
+      <TooltipProvider>
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <AlertDialogTrigger asChild>
+                {typeButton === "icon" ? (
+                  <Button
+                    variant="destructive"
+                    className="rounded-full w-8 h-8"
+                    disabled={isLoading}
+                  >
+                    <TicketX />
+                  </Button>
+                ) : (
+                  <Button
+                    variant="destructive"
+                    className="rounded-lg"
+                    size="sm"
+                    disabled={isLoading}
+                  >
+                    <X />
+                    {name}
+                  </Button>
+                )}
+              </AlertDialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent className="bg-red-500 text-white">
+              <p>{content}</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <AlertDialogContent>
+            <Form {...form}>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Konfirmasi Pembatalan</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {role === Role.MEMBER
+                    ? "Apakah Anda yakin ingin mengajukan pembatalan reservasi ini? Tindakan ini tidak dapat dibatalkan."
+                    : "Apakah Anda yakin ingin menerima pembatalan reservasi ini? Tindakan ini tidak dapat dibatalkan."}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+
+              <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="space-y-6"
+              >
+                <FormField
+                  control={form.control}
+                  name="alasan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Alasan Pembatalan</FormLabel>
+                      <Select
+                        disabled={isPending}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih alasan pembatalan" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {alasanList.map((item) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Batal</AlertDialogCancel>
+                  <Button
+                    type="submit"
+                    variant="destructive"
+                    className="bg-red-600 text-white"
+                  >
+                    {role === Role.MEMBER ? "Ya, Ajukan" : "Terima"}
+                  </Button>
+                </AlertDialogFooter>
+              </form>
+            </Form>
+          </AlertDialogContent>
+        </AlertDialog>
+      </TooltipProvider>
+    );
+  }
   return (
     <TooltipProvider>
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -116,59 +213,25 @@ const ButtonPengajuanPembatalanTable = ({
         </Tooltip>
 
         <AlertDialogContent>
-          <Form {...form}>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Konfirmasi Pembatalan</AlertDialogTitle>
-              <AlertDialogDescription>
-                {role === Role.MEMBER
-                  ? "Apakah Anda yakin ingin mengajukan pembatalan reservasi ini? Tindakan ini tidak dapat dibatalkan."
-                  : "Apakah Anda yakin ingin menerima pembatalan reservasi ini? Tindakan ini tidak dapat dibatalkan."}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-6"
-            >
-              <FormField
-                control={form.control}
-                name="alasan"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Alasan Pembatalan</FormLabel>
-                    <Select
-                      disabled={isPending}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih alasan pembatalan" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {alasanList.map((item) => (
-                          <SelectItem key={item} value={item}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <AlertDialogFooter>
-                <AlertDialogCancel>Batal</AlertDialogCancel>
-                <Button
-                  type="submit"
-                  variant="destructive"
-                  className="bg-red-600 text-white"
-                >
-                  {role === Role.MEMBER ? "Ya, Ajukan" : "Terima"}
-                </Button>
-              </AlertDialogFooter>
-            </form>
-          </Form>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Konfirmasi Pembatalan</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menerima pembatalan reservasi ini?
+              Tindakan ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button
+                variant="destructive"
+                onClick={handleAction}
+                className="bg-red-600 text-white"
+              >
+                Terima
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </TooltipProvider>
