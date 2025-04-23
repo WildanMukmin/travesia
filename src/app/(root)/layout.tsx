@@ -80,7 +80,7 @@ export default async function Layout({
             <NavigationMenuItem>
               <Link href="/" legacyBehavior passHref>
                 <NavigationMenuLink className="font-normal hover:underline">
-                  HOME
+                  BERANDA
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
@@ -133,7 +133,7 @@ export default async function Layout({
                   className="font-bold flex items-center gap-2"
                 >
                   <HomeIcon />
-                  Dashboard
+                  DASBOR
                 </Link>
               </Button>
             </div>

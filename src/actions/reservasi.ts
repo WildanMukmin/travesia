@@ -65,8 +65,8 @@ export const buatReservasi = async (
     return { error: "Terjadi kesalahan, silahkan login kembali 3" };
   }
   let idReservasi = "";
-  const expired = new Date(new Date().getTime() + 60 * 1000);
-  // const expired = new Date(new Date().getTime() + 24 * 3600 * 1000);
+  // const expired = new Date(new Date().getTime() + 60 * 1000);
+  const expired = new Date(new Date().getTime() + 24 * 3600 * 1000);
   try {
     const reservasi = await prisma.reservasi.create({
       data: {
