@@ -216,7 +216,7 @@ const DestinasiDetailPage = ({
                 {!user?.role && (
                   <Link href="/login">
                     <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                      Login Akun Untuk Reservasi
+                      Masuk Akun Untuk Reservasi
                     </Button>
                   </Link>
                 )}

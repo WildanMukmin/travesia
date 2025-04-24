@@ -196,7 +196,7 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
                 />
 
                 <div className="mt-4">
-                  <FormLabel className="font-medium">Image Blog</FormLabel>
+                  <FormLabel className="font-medium">Gambar Blog</FormLabel>
                   {/* Image Upload Card */}
                   {errorMessageImage && (
                     <FormError message={errorMessageImage} />
@@ -207,8 +207,8 @@ const BlogPostingPage = ({ userId, admin }: BlogPostingPageProps) => {
                   <div className="w-full">
                     <div className="flex flex-col">
                       <p className="text-sm text-gray-600 mb-2">
-                        Unggah foto destinasi wisata Anda (format PNG/WebP, max
-                        1MB)
+                        Unggah gambar destinasi wisata Anda (format PNG/WebP,
+                        max 1MB)
                       </p>
 
                       <div

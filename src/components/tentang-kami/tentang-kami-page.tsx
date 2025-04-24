@@ -291,7 +291,7 @@ const TentangKamiPage = () => {
           <CardHeader>
             <CardTitle className="text-2xl">Media Partner</CardTitle>
             <CardDescription>
-              Travesia berkolaborasi dengan berbagai owner destinasi dan
+              Travesia berkolaborasi dengan berbagai pemilik destinasi dan
               komunitas pecinta alam untuk membangun ekosistem petualangan yang
               lebih luas dan bermanfaat.
             </CardDescription>

@@ -37,7 +37,7 @@ const LogoutButton = () => {
         <AlertDialogHeader>
           <AlertDialogTitle>Apakah anda yakin ingin keluar?</AlertDialogTitle>
           <AlertDialogDescription>
-            Setelah anda keluar, anda akan diarahkan ke halaman login!
+            Setelah anda keluar, anda akan diarahkan ke halaman masuk!
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -206,7 +206,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
                 />
               ))}
           {blogData && blogData.length === 0 && (
-            <p className="text-center">Belum ada Postingan</p>
+            <p className="text-center">Belum ada Unggahan</p>
           )}
         </div>
         <div className="w-full flex items-center justify-center">

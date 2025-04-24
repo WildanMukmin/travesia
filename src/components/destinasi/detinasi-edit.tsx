@@ -253,7 +253,7 @@ const DestinasiEditPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex flex-col">
               <p className="text-sm text-gray-600 mb-2">
-                Unggah foto destinasi wisata Anda (format PNG/WebP, max 1MB)
+                Unggah gambar destinasi wisata Anda (format PNG/WebP, max 1MB)
               </p>
 
               <div

@@ -229,7 +229,7 @@ const DestinasiPage = ({ data }: DestinasiPageProps) => {
                   }
                   judul={`${field.namaDestinasi}`}
                   kategori={`${field.kategoriLokasi}`}
-                  penulis={`Owner ${field.owner?.user?.name ?? "Unknown"}`}
+                  penulis={`Pemilik : ${field.owner?.user?.name ?? "Unknown"}`}
                   deskripsi={field.deskripsi.slice(0, 100)}
                   id={field.id}
                 />

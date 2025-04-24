@@ -132,7 +132,7 @@ const DashboardMemberPage = ({
               <SheetHeader>
                 <SheetTitle className="flex items-center">
                   <Bell className="mr-2 h-5 w-5 text-blue-600" />
-                  Notifikasi
+                  Pemberitahuan
                 </SheetTitle>
                 <SheetDescription asChild>
                   <CardContent>
@@ -209,7 +209,7 @@ const DashboardMemberPage = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {statsCards.map((card, index) => (
             <Link href={card.link} key={index}>
-              <Card className="hover:shadow-lg hover:shadow-[#0b63f2] transition-all border border-[#0b63f2]">
+              <Card className="hover:shadow-sm hover:shadow-[#0b63f2] transition-all border border-[#0b63f2]">
                 <CardContent className="flex items-center p-6">
                   {card.icon}
                   <div className="ml-4">
@@ -223,7 +223,7 @@ const DashboardMemberPage = ({
         </div>
 
         {/* Recent Activities */}
-        <Card>
+        <Card className="hover:shadow-sm hover:shadow-[#0b63f2] transition-all border border-[#0b63f2]">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Activity className="mr-2 h-5 w-5 text-blue-600" />
@@ -276,7 +276,10 @@ const DashboardMemberPage = ({
       </section>
       <section>
         <div className="flex p-8 gap-8">
-          <Link href={"/blog"} className="w-full">
+          <Link
+            href={"/blog"}
+            className="w-full hover:shadow-sm hover:shadow-[#0b63f2] transition-all border border-[#0b63f2] rounded-xl"
+          >
             <Card className="hover:shadow-lg transition-all w-full">
               <CardContent className="flex items-center p-6">
                 <div className="ml-4">
@@ -289,7 +292,10 @@ const DashboardMemberPage = ({
             </Card>
           </Link>
 
-          <Link href={"/blog"} className="w-full">
+          <Link
+            href={"/blog"}
+            className="w-full hover:shadow-sm hover:shadow-[#0b63f2] transition-all border border-[#0b63f2] rounded-xl"
+          >
             <Card className="hover:shadow-lg transition-all w-full">
               <CardContent className="flex items-center p-6">
                 <div className="ml-4">

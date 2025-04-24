@@ -77,7 +77,7 @@ const LoginPage = () => {
                         <Input
                           {...field}
                           disabled={isPending}
-                          placeholder="Enter an email address"
+                          placeholder="Masukan email anda"
                           className="border-2 border-gray-100 shadow-sm"
                           type="email"
                         />
@@ -92,12 +92,12 @@ const LoginPage = () => {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel>Kata Sandi</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             disabled={isPending}
-                            placeholder="Password"
+                            placeholder="********"
                             className="border-2 border-gray-100 shadow-sm"
                             type={showPassword ? "text" : "password"}
                           />

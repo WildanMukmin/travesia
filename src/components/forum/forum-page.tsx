@@ -279,7 +279,7 @@ const ForumPage = ({
           </Link>
         </div>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b-2 border-blue-800 pb-4 mb-6">
-          <h2 className="text-3xl font-bold text-blue-900">Community Forum</h2>
+          <h2 className="text-3xl font-bold text-blue-900">Forum Komunitas</h2>
           <div className="flex gap-3">
             <Link href={`/admin/kelola-forum/edit/${forumData?.id}`}>
               <Button
@@ -645,12 +645,12 @@ const ForumPage = ({
       </div>
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b-2 border-blue-800 pb-4 mb-6">
-        <h2 className="text-3xl font-bold text-blue-900">Community Forum</h2>
+        <h2 className="text-3xl font-bold text-blue-900">Forum Komunitas</h2>
         <div className="flex gap-3">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
             <Input
-              placeholder="Search posts..."
+              placeholder="Cari Unggahan..."
               className="pl-8 w-full sm:w-64 bg-gray-50"
             />
           </div>
@@ -660,7 +660,7 @@ const ForumPage = ({
               disabled={isPending}
             >
               <PenSquare size={16} />
-              <span>Posting Forum</span>
+              <span>Unggah Forum</span>
             </Button>
           </Link>
         </div>
@@ -688,11 +688,11 @@ const ForumPage = ({
               </TabsTrigger>
               <TabsTrigger value="latest" className="flex items-center gap-1">
                 <Clock size={14} />
-                <span>Latest</span>
+                <span>Terbaru</span>
               </TabsTrigger>
               <TabsTrigger value="popular" className="flex items-center gap-1">
                 <Eye size={14} />
-                <span>Most Viewed</span>
+                <span>Paling Banyak Dilihat</span>
               </TabsTrigger>
             </TabsList>
 
@@ -1043,20 +1043,20 @@ const ForumPage = ({
               ))
             ) : (
               <p className="text-center text-gray-500 py-4">
-                Tampilan post trending akan muncul di sini
+                Tampilan forum trending akan muncul di sini
               </p>
             )}
           </TabsContent>
 
           <TabsContent value="latest" className="space-y-6">
             <p className="text-center text-gray-500 py-4">
-              Tampilan post terbaru akan muncul di sini
+              Tampilan forum terbaru akan muncul di sini
             </p>
           </TabsContent>
 
           <TabsContent value="popular" className="space-y-6">
             <p className="text-center text-gray-500 py-4">
-              Tampilan post terpopuler akan muncul di sini
+              Tampilan forum terpopuler akan muncul di sini
             </p>
           </TabsContent>
         </Tabs>

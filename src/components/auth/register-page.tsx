@@ -169,12 +169,12 @@ const RegisterPage = () => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Username</FormLabel>
+                        <FormLabel>Nama Pengguna</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             disabled={isPending}
-                            placeholder="Username"
+                            placeholder="Nama Pengguna"
                             className="border-2 border-gray-100 shadow-sm"
                             type="text"
                           />
@@ -193,7 +193,7 @@ const RegisterPage = () => {
                           <Input
                             {...field}
                             disabled={isPending}
-                            placeholder="Enter an email address"
+                            placeholder="Masukan email anda"
                             className="border-2 border-gray-100 shadow-sm"
                             type="email"
                           />
@@ -208,7 +208,7 @@ const RegisterPage = () => {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>Kata Sandi</FormLabel>
                           <FormControl>
                             <Input
                               {...field}
@@ -242,7 +242,7 @@ const RegisterPage = () => {
                       name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Confirm Password</FormLabel>
+                          <FormLabel>Konfirmasi Kata Sandi</FormLabel>
                           <FormControl>
                             <Input
                               {...field}

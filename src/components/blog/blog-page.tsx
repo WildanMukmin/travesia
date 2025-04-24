@@ -80,7 +80,7 @@ const BlogPage = ({ blogData, user }: BlogPageProps) => {
         <h2 className="text-3xl font-bold">Blog</h2>
         {isLogin && (
           <Link href="/blog/posting-blog">
-            <Button>Posting Blog</Button>
+            <Button>Unggah Blog</Button>
           </Link>
         )}
       </div>
@@ -116,7 +116,7 @@ const BlogPage = ({ blogData, user }: BlogPageProps) => {
             />
           ))}
         {data && data.length === 0 && (
-          <p className="text-center">Belum ada Postingan</p>
+          <p className="text-center">Belum ada Unggahan</p>
         )}
       </div>
 

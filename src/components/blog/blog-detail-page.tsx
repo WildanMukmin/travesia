@@ -220,7 +220,7 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
               <div className="flex items-center">
                 <User size={16} className="mr-2" />
                 <span>
-                  By{" "}
+                  Pembuat{" "}
                   <Link
                     href="/author/wildan-mukmin"
                     className="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors"
@@ -232,7 +232,7 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
 
               <div className="flex items-center">
                 <Clock size={16} className="mr-2" />
-                <span>{readingTime} min read</span>
+                <span>{readingTime} Dibaca</span>
               </div>
             </div>
 
