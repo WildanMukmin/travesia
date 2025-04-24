@@ -1,16 +1,11 @@
 import { getImageById } from "@/actions/image";
+import Navbar from "@/components/layouts/navbar";
 import ProfileDropdown from "@/components/profile/profile-dropdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 import { currentUser } from "@/lib/authenticate";
 import { Role } from "@prisma/client";
-import { Facebook, HomeIcon, Instagram, Search, Twitter } from "lucide-react";
+import { Facebook, Instagram, Search, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -46,11 +41,14 @@ export default async function Layout({
           </Link>
 
           <div className="flex items-center space-x-4">
-            <Button variant="outline">
+            <Button
+              variant="default"
+              className="bg-[#0B63F2] rounded-lg hover:bg[#1e40af]"
+            >
               <Search className="h-5 w-5" />
             </Button>
 
-            <Input placeholder="Search" className="w-80" />
+            <Input placeholder="Cari" className="w-80" />
 
             <div className="flex items-center space-x-4">
               {!isLogin && (
@@ -75,70 +73,7 @@ export default async function Layout({
       </header>
       <div className="max-w-screen-xl mx-auto px-4">
         {/* Navigation */}
-        <NavigationMenu className="justify-start border-t border-b py-2 my-2 w-full max-w-full">
-          <NavigationMenuList className="space-x-6">
-            <NavigationMenuItem>
-              <Link href="/" legacyBehavior passHref>
-                <NavigationMenuLink className="font-normal hover:underline">
-                  BERANDA
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/blog" legacyBehavior passHref>
-                <NavigationMenuLink className="font-normal hover:underline">
-                  BLOG
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/destinasi" legacyBehavior passHref>
-                <NavigationMenuLink className="font-normal hover:underline">
-                  DESTINASI
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            {isLogin && (
-              <NavigationMenuItem>
-                <Link href="/forum" legacyBehavior passHref>
-                  <NavigationMenuLink className="font-normal hover:underline">
-                    FORUM
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            )}
-
-            {isLogin && (
-              <NavigationMenuItem>
-                <Link href="/reservasi" legacyBehavior passHref>
-                  <NavigationMenuLink className="font-normal hover:underline">
-                    RESERVASI
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            )}
-            <NavigationMenuItem>
-              <Link href="/tentang-kami" legacyBehavior passHref>
-                <NavigationMenuLink className="font-normal hover:underline">
-                  TENTANG KAMI
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-          {isLogin && (
-            <div className="ml-auto">
-              <Button variant="outline">
-                <Link
-                  href="/dashboard"
-                  className="font-bold flex items-center gap-2"
-                >
-                  <HomeIcon />
-                  DASBOR
-                </Link>
-              </Button>
-            </div>
-          )}
-        </NavigationMenu>
+        <Navbar isLogin={isLogin} />
         {children}
       </div>
       <footer className="w-full bg-gray-100 py-8 mt-12">

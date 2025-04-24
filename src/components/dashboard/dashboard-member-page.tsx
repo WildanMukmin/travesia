@@ -115,8 +115,8 @@ const DashboardMemberPage = ({
     <main className="flex min-h-screen flex-col bg-gray-50">
       {/* Header with Notification Icon */}
       <div className="flex justify-between items-center p-8 pb-0">
-        <h2 className="text-3xl font-semibold text-gray-800">
-          Welcome Back, {name.charAt(0).toUpperCase() + name.slice(1)}
+        <h2 className="text-3xl font-semibold text-[#0b63f2]">
+          Selamat Datang, {name.charAt(0).toUpperCase() + name.slice(1)}
         </h2>
         <div className="relative">
           <Sheet>
@@ -209,11 +209,11 @@ const DashboardMemberPage = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {statsCards.map((card, index) => (
             <Link href={card.link} key={index}>
-              <Card className="hover:shadow-lg transition-all">
+              <Card className="hover:shadow-lg hover:shadow-[#0b63f2] transition-all border border-[#0b63f2]">
                 <CardContent className="flex items-center p-6">
                   {card.icon}
                   <div className="ml-4">
-                    <h3 className="text-sm text-gray-500">{card.title}</h3>
+                    <h3 className="text-sm text-[#0b63f2]">{card.title}</h3>
                     <p className="text-2xl font-bold">{card.value}</p>
                   </div>
                 </CardContent>

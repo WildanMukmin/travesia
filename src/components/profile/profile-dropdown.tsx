@@ -35,7 +35,7 @@ const ProfileDropdown = ({ name, src }: ProfileDropdownProps) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href="/profile" className="w-full cursor-pointer">
-              Profile
+              Profil
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

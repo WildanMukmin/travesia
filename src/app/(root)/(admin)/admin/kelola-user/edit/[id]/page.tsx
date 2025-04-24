@@ -1,14 +1,10 @@
 import RoleGate from "@/components/auth/role-gate";
 import EditProfileMemberPage from "@/components/profile/edit-profile-member-page";
 import EditProfileOwnerPage from "@/components/profile/edit-profile-owner-page";
-import ProfileMemberPage from "@/components/profile/profile-member-page";
-import ProfileOwnerPage from "@/components/profile/profile-owner-page";
-import { Button } from "@/components/ui/button";
 import AlertPage from "@/components/utils/alert-page";
 import { getUserById } from "@/data/user";
 import { getProfile } from "@/lib/profile";
 import { Role } from "@prisma/client";
-import { UserPen } from "lucide-react";
 import Link from "next/link";
 interface PageProps {
   params: Promise<{

@@ -164,7 +164,7 @@ const EditProfileMemberPage = ({
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
           <div className="flex items-center gap-3">
             <User className="h-6 w-6" />
-            <h1 className="text-2xl font-bold">Edit Profil</h1>
+            <h1 className="text-2xl font-bold">Ubah Profil</h1>
           </div>
           <p className="text-blue-100 mt-1">
             Perbarui informasi profil dan foto Anda
