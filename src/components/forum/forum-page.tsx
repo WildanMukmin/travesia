@@ -287,7 +287,7 @@ const ForumPage = ({
                 disabled={isPending}
               >
                 <PenSquare size={16} />
-                <span>Edit Postingan</span>
+                <span>Ubah Postingan</span>
               </Button>
             </Link>
           </div>

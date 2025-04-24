@@ -327,7 +327,7 @@ const DashboardOwnerPage = ({
               >
                 <Button size={"sm"}>
                   <SquarePen className="mr-2 h-4 w-4" />
-                  Edit Destinasi
+                  Ubah Destinasi
                 </Button>
               </Link>
             </CardFooter>

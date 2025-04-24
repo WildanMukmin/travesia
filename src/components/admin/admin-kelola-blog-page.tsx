@@ -225,7 +225,7 @@ const AdminKelolaBlogPage = ({ blogs }: AdminKelolaBlogPageProps) => {
                               className="cursor-pointer"
                               href={`/admin/kelola-blog/edit/${blog.id}?userId=${blog.userId}`}
                             >
-                              Edit Blog
+                              Ubah Blog
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />

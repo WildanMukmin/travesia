@@ -149,7 +149,7 @@ const BlogDetailPage = ({ slug, user }: BlogDetailPageProps) => {
             Kembali ke Daftar...
           </Link>
           <Link href={`/admin/kelola-blog/edit/${blogId}`} className="mr-8">
-            <Button>Edit Blog</Button>
+            <Button>Ubah Blog</Button>
           </Link>
         </div>
       )}

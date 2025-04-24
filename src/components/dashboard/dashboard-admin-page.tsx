@@ -158,7 +158,7 @@ import { AllForum } from "@/actions/forum";
 //                     <DropdownMenuContent align="end">
 //                       <DropdownMenuLabel>Aksi</DropdownMenuLabel>
 //                       <DropdownMenuItem>Lihat Detail</DropdownMenuItem>
-//                       <DropdownMenuItem>Edit Pemesanan</DropdownMenuItem>
+//                       <DropdownMenuItem>Ubah Pemesanan</DropdownMenuItem>
 //                       <DropdownMenuSeparator />
 //                       <DropdownMenuItem className="text-red-600">
 //                         Batalkan Pemesanan
@@ -329,7 +329,7 @@ import { AllForum } from "@/actions/forum";
 //                     <DropdownMenuContent align="end">
 //                       <DropdownMenuLabel>Aksi</DropdownMenuLabel>
 //                       <DropdownMenuItem>Lihat Detail</DropdownMenuItem>
-//                       <DropdownMenuItem>Edit Paket</DropdownMenuItem>
+//                       <DropdownMenuItem>Ubah Paket</DropdownMenuItem>
 //                       <DropdownMenuSeparator />
 //                       <DropdownMenuItem className="text-red-600">
 //                         Hapus Paket
@@ -413,7 +413,7 @@ import { AllForum } from "@/actions/forum";
 //                     <DropdownMenuContent align="end">
 //                       <DropdownMenuLabel>Aksi</DropdownMenuLabel>
 //                       <DropdownMenuItem>Lihat Detail</DropdownMenuItem>
-//                       <DropdownMenuItem>Edit Pengguna</DropdownMenuItem>
+//                       <DropdownMenuItem>Ubah Pengguna</DropdownMenuItem>
 //                       <DropdownMenuSeparator />
 //                       <DropdownMenuItem className="text-red-600">
 //                         Nonaktifkan Pengguna

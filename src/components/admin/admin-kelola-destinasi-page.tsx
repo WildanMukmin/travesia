@@ -236,7 +236,7 @@ const AdminKelolaDestinasiPage = ({ destinasi }: DashboardAdminPageProps) => {
                               className="cursor-pointer"
                               href={`/admin/kelola-destinasi/edit/${dest.id}`}
                             >
-                              Edit Destinasi
+                              Ubah Destinasi
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />

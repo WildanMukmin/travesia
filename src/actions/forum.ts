@@ -391,8 +391,8 @@ export const editForumById = async (
       }
     }
 
-    return { success: "Berhasil Mengedit Forum!" };
+    return { success: "Berhasil Mengubah Forum!" };
   } catch (e) {
-    return { error: "Terjadi Error Saat mengedit ke Forum" };
+    return { error: "Terjadi Error Saat Mengubah Forum" };
   }
 };

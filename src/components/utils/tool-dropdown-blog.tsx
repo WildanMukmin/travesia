@@ -51,11 +51,11 @@ const ToolDropdownBlog = ({
           <DropdownMenuItem asChild>
             {admin ? (
               <Button className="w-full cursor-pointer rounded-lg" asChild>
-                <Link href={`/admin/kelola-blog/edit/${blogId}`}>Edit</Link>
+                <Link href={`/admin/kelola-blog/edit/${blogId}`}>Ubah</Link>
               </Button>
             ) : (
               <Button className="w-full cursor-pointer rounded-lg" asChild>
-                <Link href={`/blog/edit-blog/${blogId}`}>Edit</Link>
+                <Link href={`/blog/edit-blog/${blogId}`}>Ubah</Link>
               </Button>
             )}
           </DropdownMenuItem>

@@ -165,7 +165,7 @@ const BlogEditPage = ({
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-blue-800">
-                Edit Blog
+                Ubah Blog
               </CardTitle>
               <p className="text-blue-600 mt-1 text-sm">
                 Bagikan pengalaman dan pengetahuan Anda

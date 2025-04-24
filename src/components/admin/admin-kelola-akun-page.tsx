@@ -210,7 +210,7 @@ const AdminKelolaAkunPage = ({ users }: AdminKelolaAkunPageProps) => {
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Link href={`/admin/kelola-user/edit/${user.id}`}>
-                            Edit Pengguna
+                            Ubah Pengguna
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />

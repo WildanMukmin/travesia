@@ -79,7 +79,7 @@ const DestinasiDetailPage = ({
             href={`/admin/kelola-destinasi/edit/${destinasiData?.id}`}
             className="mr-8"
           >
-            <Button>Edit Destinasi</Button>
+            <Button>Ubah Destinasi</Button>
           </Link>
         </div>
       ) : (
@@ -236,7 +236,7 @@ const DestinasiDetailPage = ({
                     >
                       <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
                         <SquarePen />
-                        Edit Destinasi
+                        Ubah Destinasi
                       </Button>
                     </Link>
                   )}
@@ -246,7 +246,7 @@ const DestinasiDetailPage = ({
                     href={`/admin/kelola-destinasi/edit/${destinasiData?.id}`}
                   >
                     <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
-                      Edit Destinasi
+                      Ubah Destinasi
                     </Button>
                   </Link>
                 )}

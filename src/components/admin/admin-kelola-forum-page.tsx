@@ -223,7 +223,7 @@ const AdminKelolaForumPage = ({ forums }: AdminKelolaForumPageProps) => {
                               className="cursor-pointer"
                               href={`/admin/kelola-forum/edit/${forum.id}`}
                             >
-                              Edit Postingan
+                              Ubah Postingan
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
