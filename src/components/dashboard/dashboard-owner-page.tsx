@@ -199,15 +199,7 @@ const DashboardOwnerPage = ({
                 fill
                 className="w-full h-full object-cover"
               />
-              {ownerDestinasiData?.owner?.destinasi?.buka ? (
-                <Badge className="absolute top-4 right-4 z-20 bg-green-500 hover:bg-green-600">
-                  Buka
-                </Badge>
-              ) : (
-                <Badge className="absolute top-4 right-4 z-20 bg-red-500 hover:bg-red-600">
-                  Tutup
-                </Badge>
-              )}
+              
             </div>
 
             <CardHeader className="pb-2">
