@@ -115,7 +115,7 @@ const DashboardMemberPage = ({
     <main className="flex min-h-screen flex-col bg-gray-50">
       {/* Header with Notification Icon */}
       <div className="flex justify-between items-center p-8 pb-0">
-        <h2 className="text-3xl font-semibold text-[#0b63f2]">
+        <h2 className="text-3xl font-semibold text-[#000000]">
           Selamat Datang, {name.charAt(0).toUpperCase() + name.slice(1)}
         </h2>
         <div className="relative">
