@@ -221,7 +221,7 @@ const LandingPage = ({ destinasiData, blogData, user }: LandingPageProps) => {
       {/* Top Destinasi */}
       <div className="mt-10">
         <h2 className="text-3xl font-bold border-b-2 border-blue-800 pb-2 mb-4">
-          Top Destinasi ⭐
+          Top Destinasi 
         </h2>
         <div className="flex flex-col gap-3 items-center justify-center">
           {destinasiData && destinasiData.length < 1 ? (
